@@ -13,50 +13,41 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class AnvilColor implements Listener {
-	
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent e)
-	{
-		if(!e.isCancelled())
-		{	
-			Inventory inv = e.getInventory();
-			if(inv instanceof AnvilInventory)
-			{
-				HumanEntity entity = e.getWhoClicked();
-				if(entity instanceof Player)
-				{
-					Player p = (Player)entity;
-					if(p.hasPermission("popcraft.anvilcolor"))
-					{
-						InventoryView view = e.getView();
-						int rawSlot = e.getRawSlot();
-						if(rawSlot == view.convertSlot(rawSlot))
-						{
-							if(rawSlot == 2)
-							{
-								ItemStack item = e.getCurrentItem();
-								if(item != null)
-								{
-									ItemMeta meta = item.getItemMeta();
-									if(meta != null)
-									{
-										if(meta.hasDisplayName())
-										{
-											ItemMeta m = item.getItemMeta();
-											String displayName = meta.getDisplayName();
-											if(!p.hasPermission("popcraft.anvilcolor.magic") && displayName.contains("&k"))
-												displayName.replace("&k", "");
-											m.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
-											item.setItemMeta(m);
-											e.setCurrentItem(item);
-										}
-									}
-								}
-							}
-						}
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+	if (!e.isCancelled()) {
+	    Inventory inv = e.getInventory();
+	    if (inv instanceof AnvilInventory) {
+		HumanEntity entity = e.getWhoClicked();
+		if (entity instanceof Player) {
+		    Player p = (Player) entity;
+		    if (p.hasPermission("popcraft.anvilcolor")) {
+			InventoryView view = e.getView();
+			int rawSlot = e.getRawSlot();
+			if (rawSlot == view.convertSlot(rawSlot)) {
+			    if (rawSlot == 2) {
+				ItemStack item = e.getCurrentItem();
+				if (item != null) {
+				    ItemMeta meta = item.getItemMeta();
+				    if (meta != null) {
+					if (meta.hasDisplayName()) {
+					    ItemMeta m = item.getItemMeta();
+					    String displayName = meta.getDisplayName();
+					    if (!p.hasPermission("popcraft.anvilcolor.magic")
+						    && displayName.contains("&k"))
+						displayName.replace("&k", "");
+					    m.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
+					    item.setItemMeta(m);
+					    e.setCurrentItem(item);
 					}
+				    }
 				}
+			    }
 			}
+		    }
 		}
+	    }
 	}
+    }
 }
