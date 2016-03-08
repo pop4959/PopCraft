@@ -1,0 +1,34 @@
+spawn:
+  coordinate-x: 0
+  coordinate-y: 64
+  coordinate-z: 0
+  radius: 128
+fireworks:
+  radius: 20
+  variedheight: 5
+commands:
+  tpr:
+    cooldown: 120000
+    range: 2500
+    extendedrange: 9999
+  fireworks:
+    cooldown: 30000
+magicmessage:
+  enableonstartup: false
+  defaultinterval: 72000
+  defaultmessage: Hello
+antispam:
+  enabled: false
+  cooldown: 300
+playerheads:
+  enabled: false
+  chance: 0.0
+profanityprotect:
+- item1
+- item2 etc
+jonslogger:
+  flag: www.,http,.net,.org,.cat,.com,wiki.,.club,.info,.html,.edu,.gov,.mil
+  commands: /msg,/tell,/mail,/me,/r,/t,/m,/w,/whisper
+  checkip: true
+  showban: true
+  file: /home/thinkserver/Desktop/minecraft/syncsite.sh

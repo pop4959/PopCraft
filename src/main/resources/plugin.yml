@@ -1,0 +1,243 @@
+name: PopCraft
+main: org.popcraft.popcraft.PopCraft
+version: 1.5.1.1
+description: Specially crafted plugin for the PopCraft server.
+author: pop4959
+authors: [waffelmonster]
+website: popcraft.enjin.com
+
+commands:
+   popcraft:
+      description: Allows various administrative tasks.
+      aliases: pc
+      permission: popcraft.popcraft
+      permission-message: You can't use this.
+      usage: /popcraft <args>
+   magicmessage:
+      description: Set an automatic broadcast message.
+      aliases: mm
+      permission: popcraft.magicmessage
+      permission-message: You can't use this.
+      usage: /magicmessage [start <message>/stop/show/force]
+   uuid:
+      description: Lets you look up a player's UUID.
+      aliases: id
+      permission: popcraft.uuid
+      permission-message: You can't use this.
+      usage: /uuid
+   fireworks:
+      description: Spawns fireworks.
+      aliases: [fw, flare]
+      permission: popcraft.fireworks
+      permission-message: You can't use this.
+      usage: /fireworks
+   tpr:
+      description: Teleport to a random location.
+      aliases: 
+      permission: popcraft.tpr
+      permission-message: You can't use this.
+      usage: /tpr
+   listgen:
+      description: Generate a list of all players on the server.
+      aliases: lg
+      permission: popcraft.listgen
+      permission-message: You can't use this.
+      usage: /listgen
+   me:
+      description: Describes an action in the context of the player.
+      aliases: 
+      permission: popcraft.me
+      permission-message: You can't use this.
+      usage: /me <action>
+   donate:
+      description: Displays information about donating, and donations.
+      aliases: [d, donation, donations, donating, buy]
+      permission: popcraft.donate
+      permission-message: You can't use this.
+      usage: /donate
+   trail:
+      description: Set a movement trail effect!
+      aliases: tr
+      permission: popcraft.trail
+      permission-message: You can't use this.
+      usage: /trail <material> <damage>
+   staff:
+      description: Broadcast, or privately message to all staff members on the server.
+      aliases: [st, mods]
+      permission: popcraft.staff
+      permission-message: You can't use this.
+      usage: /staff <message>
+   flames:
+      description: Wherever you step will burn.
+      aliases: f
+      permission: popcraft.flames
+      permission-message: You can't use this.
+      usage: /flames
+   hearts:
+      description: Spread love wherever you go!
+      aliases: h
+      permission: popcraft.hearts
+      permission-message: You can't use this.
+      usage: /hearts
+   kudos:
+      description: Give a person extra ladder points.
+      aliases: k
+      permission: popcraft.kudos
+      permission-message: You can't use this.
+      usage: /kudos
+   generateworld:
+      description: Allows you to generate the world.
+      permission: popcraft.generateworld
+      permission-message: You can't use this.
+      usage: /generateworld
+   music:
+      description: Allows you to play a music discs.
+      permission: popcraft.music
+      permission-message: You can't use this.
+      usage: /music <disc/list>
+   pvp:
+      description: Allows you to toggle PvP.
+      permission: popcraft.pvp
+      permission-message: You can't use this.
+      usage: /pvp
+   worldspawn:
+      description: Allows you to set the world's spawnpoint.
+      permission: popcraft.worldspawn
+      permission-message: You can't use this.
+      usage: /worldspawn
+   textures:
+      description: Allows you to use the PopCraft texture pack.
+      aliases: [tx, resource, resources, resourcepack, texturepack]
+      permission: popcraft.textures
+      permission-message: You can't use this.
+      usage: /textures
+   getscore:
+      description: Allows you to get the score of a user.
+      permission: popcraft.getscore
+      permission-message: You can't use this.
+      usage: /getscore <username> <scoreboard>
+   supersay:
+      description: Allows the server to speak in the context of user format.
+      aliases: [ssay, ss]
+      permission: popcraft.supersay
+      permission-message: You can't use this.
+      usage: /supersay <message>
+   pop:
+      description: Allows the server to speak in the context of the owner.
+      aliases: p
+      permission: popcraft.pop
+      permission-message: You can't use this.
+      usage: /pop <message>
+   lockdown:
+      description: Toggles the ability of players to join the server.
+      permission: popcraft.lockdown
+      permission-message: You can't use this.
+      usage: /lockdown
+   plugins:
+      description: Allows you to see the server's plugins.
+      aliases: pl
+      permission: popcraft.plugins
+      permission-message: You can't use this.
+      usage: /plugins
+   version:
+      description: Allows you to see the server's version.
+      aliases: ver
+      permission: popcraft.version
+      permission-message: You can't use this.
+      usage: /version
+   piggyback:
+      description: Toggles the ability of others to piggyback on you.
+      aliases: ride
+      permission: popcraft.piggyback
+      permission-message: You can't use this.
+      usage: /piggyback
+   lol:
+      description: You thought this was an actual command.
+      permission: jonslogger.lol
+      permission-message: You don't have the permission you dummy.
+   lolreload:
+      description: Just some old random command.
+      permission: jonslogger.lol
+      permission-message: You don't have the permission you bigger dummy.
+   handicap:
+      description: Handicap yourself!
+      permission: popcraft.handicap
+      permission-message: You can't use this.
+      usage: /handicap <hp/off>
+   vote:
+      description: Vote for PopCraft as the best server!
+      permission: popcraft.vote
+      permission-message: You can't use this.
+      usage: /vote
+   aura:
+      description: Set an aura for your player!
+      permission: popcraft.aura
+      permission-message: You can't use this.
+      usage: /aura <type>
+
+permissions:
+  popcraft.magicmessage:
+    description: Allows you to set automatic global broadcasts.
+    default: op
+  popcraft.magicmessage.receive:
+    description: Allows a player to receive MagicMessage broadcasts.
+    default: op
+  popcraft.uuid:
+    description: Allows you to view others' UUIDs.
+    default: op
+  popcraft.fireworks:
+    description: Allows you to spawn fireworks.
+    default: op
+  popcraft.fireworks.others:
+    description: Allows you to spawn more fireworks.
+    default: op
+  popcraft.tpr:
+    description: Allows you to teleport to a random location.
+    default: op
+  popcraft.listgen:
+    description: Allows you to generate a player list.
+    default: op
+  popcraft.me:
+    description: Allows you to write a message in third person.
+    default: true
+  popcraft.donate:
+    description: Allows you to view donation info.
+    default: true
+  popcraft.trail.*:
+    description: Allows you to set custom trails for any player.
+    children:
+      popcraft.trail: true
+      popcraft.trail.custom: true
+  popcraft.trail:
+    description: Allows you to set a preset trail.
+    default: op
+  popcraft.trail.custom:
+    description: Allows you to set a custom trail.
+    default: op
+  popcraft.staff:
+    description: Allows you to send staff messages.
+    default: op
+  popcraft.tab.donator:
+    description: Allows you to automatically receive a purple tab color upon joining as a donator.
+    default: false
+  popcraft.tab.popular:
+    description: Allows you to automatically receive a gold tab color upon joining as a popular player.
+    default: false
+  popcraft.jumper:
+    description: Allows you to jump high with a feather.
+    default: false
+  popcraft.flames:
+    description: Allows you to toggle flames that follow you.
+    default: op
+  popcraft.generateworld:
+    description: Allows you to generate the world.
+    default: op
+  popcraft.music:
+    description: Allows you to play a music discs.
+    default: op
+  popcraft.pvp:
+    description: Allows you to toggle PvP.
+    default: op
+  popcraft.worldspawn:
+    description: Allows you to change the world's spawnpoint.
+    default: op
