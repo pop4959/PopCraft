@@ -61,6 +61,15 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEnable() {
 	getLogger().info("PopCraft plugin starting up...");
 	plugin = this;
+	config = getConfig();
+	config.options().copyDefaults(true);
+	saveConfig();
+	if (config.getBoolean("magicmessage.enableonstartup")) {
+	    MagicMessage.setMessage(config.getString("magicmessage.defaultmessage"));
+	    MagicMessage.setEnabled(true);
+	    MagicMessage.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, MagicMessage,
+		    config.getLong("magicmessage.defaultinterval"), config.getLong("magicmessage.defaultinterval")));
+	}
 	registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
 		new Aura(), new Trail());
 	getCommand("textures").setExecutor(new Textures());
@@ -88,15 +97,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("trail").setExecutor(new Trail());
 	getCommand("flames").setExecutor(new Trail());
 	getCommand("hearts").setExecutor(new Trail());
-	config = getConfig();
-	config.options().copyDefaults(true);
-	saveConfig();
-	if (config.getBoolean("magicmessage.enableonstartup")) {
-	    MagicMessage.setMessage(config.getString("magicmessage.defaultmessage"));
-	    MagicMessage.setEnabled(true);
-	    MagicMessage.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, MagicMessage,
-		    config.getLong("magicmessage.defaultinterval"), config.getLong("magicmessage.defaultinterval")));
-	}
     }
 
     @Override
@@ -174,7 +174,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	Player player = event.getPlayer();
 	event.setQuitMessage(ChatColor.GREEN + "\u2715 " + player.getName());
     }
-    
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
 	final Player player = event.getPlayer();
