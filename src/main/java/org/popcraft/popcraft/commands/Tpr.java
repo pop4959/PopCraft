@@ -14,6 +14,9 @@ import org.popcraft.popcraft.utils.Message;
 
 public class Tpr implements CommandExecutor {
 
+    private static final int RANGE = PopCraft.config.getInt("commands.tpr.range");
+    private static final int EXTENDED_RANGE = PopCraft.config.getInt("commands.tpr.extendedrange");
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	final Player player = (Player) sender;
@@ -22,24 +25,19 @@ public class Tpr implements CommandExecutor {
 		Bukkit.getScheduler().runTask(PopCraft.getPlugin(), new Runnable() {
 		    public void run() {
 			boolean notSafe = true;
-			Location randomLocation = getPseudoRandomCoordinate();
-			if (player.hasPermission("popcraft.tpr.extended"))
-			    randomLocation = getRandomCoordinate();
+			Location randLoc = player.getLocation();
 			while (notSafe) {
-			    if (!randomLocation.getBlock().getBiome().equals(Biome.RIVER)
-				    && !randomLocation.getBlock().getBiome().equals(Biome.FROZEN_RIVER)
-				    && !randomLocation.getBlock().getBiome().equals(Biome.DEEP_OCEAN)
-				    && !randomLocation.getBlock().getBiome().equals(Biome.OCEAN)
-				    && !randomLocation.getBlock().getBiome().equals(Biome.FROZEN_OCEAN)
-				    && randomLocation.add(0, -1, 0).getBlock().getType() != Material.STATIONARY_LAVA) {
+			    randLoc = player.hasPermission("popcraft.tpr.extended") ? getRandomCoordinate()
+				    : getPseudoRandomCoordinate();
+			    if (!randLoc.getBlock().getBiome().equals(Biome.RIVER)
+				    && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_RIVER)
+				    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_OCEAN)
+				    && !randLoc.getBlock().getBiome().equals(Biome.OCEAN)
+				    && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_OCEAN)
+				    && randLoc.add(0, -1, 0).getBlock().getType() != Material.STATIONARY_LAVA) {
 				notSafe = false;
-				player.teleport(randomLocation);
+				player.teleport(randLoc);
 				Message.normal(player, "Teleporting to a random location...");
-			    } else {
-				if (player.hasPermission("popcraft.tpr.extended"))
-				    randomLocation = getRandomCoordinate();
-				else
-				    randomLocation = getPseudoRandomCoordinate();
 			    }
 			}
 		    }
@@ -53,57 +51,19 @@ public class Tpr implements CommandExecutor {
     }
 
     private Location getPseudoRandomCoordinate() {
-	double xsign = Math.random();
-	double zsign = Math.random();
-	if (xsign > 0.5) {
-	    xsign = 1;
-	} else {
-	    xsign = -1;
-	}
-	if (zsign > 0.5) {
-	    zsign = 1;
-	} else {
-	    zsign = -1;
-	}
-	Location randomLocation = new Location(Bukkit.getServer().getWorld("world"),
-		xsign * PopCraft.config.getInt("commands.tpr.range") * Math.random()
-			+ PopCraft.config.getDouble("spawn.coordinate-x"),
-		0, zsign * PopCraft.config.getInt("commands.tpr.range") * Math.random()
-			+ PopCraft.config.getDouble("spawn.coordinate-z"));
-	if (Math.abs(randomLocation.getX()) < PopCraft.config.getInt("spawn.radius"))
-	    randomLocation.setX(xsign * 2 * randomLocation.getX() + PopCraft.config.getInt("spawn.radius"));
-	if (Math.abs(randomLocation.getZ()) < PopCraft.config.getInt("spawn.radius"))
-	    randomLocation.setZ(zsign * 2 * randomLocation.getZ() + PopCraft.config.getInt("spawn.radius"));
-	randomLocation.setY(Bukkit.getWorld("world").getHighestBlockYAt(randomLocation));
-	randomLocation.add(0, 1, 0);
-	return randomLocation;
+	double[] direction = { Math.random() > 0.5 ? 1 : -1, Math.random() > 0.5 ? 1 : -1 };
+	Location location = new Location(Bukkit.getServer().getWorlds().get(0), RANGE * direction[0] * Math.random(), 0,
+		RANGE * direction[1] * Math.random());
+	location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+	return location;
     }
 
     private Location getRandomCoordinate() {
-	double xsign = Math.random();
-	double zsign = Math.random();
-	if (xsign > 0.5) {
-	    xsign = 1;
-	} else {
-	    xsign = -1;
-	}
-	if (zsign > 0.5) {
-	    zsign = 1;
-	} else {
-	    zsign = -1;
-	}
-	Location randomLocation = new Location(Bukkit.getServer().getWorld("world"),
-		xsign * PopCraft.config.getInt("commands.tpr.extendedrange") * Math.random()
-			+ PopCraft.config.getDouble("spawn.coordinate-x"),
-		0, zsign * PopCraft.config.getInt("commands.tpr.extendedrange") * Math.random()
-			+ PopCraft.config.getDouble("spawn.coordinate-z"));
-	if (Math.abs(randomLocation.getX()) < PopCraft.config.getInt("spawn.radius"))
-	    randomLocation.setX(xsign * 2 * randomLocation.getX() + PopCraft.config.getInt("spawn.radius"));
-	if (Math.abs(randomLocation.getZ()) < PopCraft.config.getInt("spawn.radius"))
-	    randomLocation.setZ(zsign * 2 * randomLocation.getZ() + PopCraft.config.getInt("spawn.radius"));
-	randomLocation.setY(Bukkit.getWorld("world").getHighestBlockYAt(randomLocation));
-	randomLocation.add(0, 1, 0);
-	return randomLocation;
+	double[] direction = { Math.random() > 0.5 ? 1 : -1, Math.random() > 0.5 ? 1 : -1 };
+	Location location = new Location(Bukkit.getServer().getWorlds().get(0),
+		EXTENDED_RANGE * direction[0] * Math.random(), 0, EXTENDED_RANGE * direction[1] * Math.random());
+	location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+	return location;
     }
 
 }
