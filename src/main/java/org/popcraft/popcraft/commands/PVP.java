@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.LivingEntity;
@@ -61,15 +62,14 @@ public class PVP implements Listener, CommandExecutor {
 	Entity attacker = e.getDamager();
 	if (victim instanceof Player) {
 	    try {
-		if (victim.getLocation().distance(Bukkit.getWorld("world").getSpawnLocation()) < 8)
+		if (victim.getLocation().distance(
+			Bukkit.getWorld(Bukkit.getServer().getWorlds().get(0).getName()).getSpawnLocation()) < 8)
 		    e.setCancelled(true);
 	    } catch (IllegalArgumentException ex) {
 	    }
 	    if (attacker instanceof Player) {
 		if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker)))
 		    e.setCancelled(true);
-		else
-		    Cooldown.reset((Player) victim, "pvp", 5000);
 	    }
 	    if (attacker instanceof Projectile) {
 		Projectile projectile = (Projectile) e.getDamager();
@@ -79,16 +79,14 @@ public class PVP implements Listener, CommandExecutor {
 		}
 		if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
 		    if (projectile instanceof Arrow || projectile instanceof Egg || projectile instanceof FishHook
-			    || projectile instanceof Snowball) {
+			    || projectile instanceof Snowball || projectile instanceof EnderPearl) {
 			e.setCancelled(true);
 		    }
-		} else {
-		    Cooldown.reset((Player) victim, "pvp", 5000);
 		}
 	    }
-	    if (attacker instanceof AreaEffectCloud) {
+	    if (attacker instanceof AreaEffectCloud)
 		e.setCancelled(true);
-	    }
+	    Cooldown.reset((Player) victim, "pvp", 5000);
 	}
     }
 
