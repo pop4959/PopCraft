@@ -116,7 +116,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String lol, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	if (cmd.getName().equalsIgnoreCase("magicmessage")) {
 	    commandMagicMessage((Player) sender, args);
 	}
