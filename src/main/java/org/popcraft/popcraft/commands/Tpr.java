@@ -14,14 +14,15 @@ import org.popcraft.popcraft.utils.Message;
 
 public class Tpr implements CommandExecutor {
 
-    private static final int RANGE = PopCraft.config.getInt("commands.tpr.range");
-    private static final int EXTENDED_RANGE = PopCraft.config.getInt("commands.tpr.extendedrange");
+    private static final int COOLDOWN = PopCraft.config.getInt("commands.tpr.cooldown"),
+	    RANGE = PopCraft.config.getInt("commands.tpr.range"),
+	    EXTENDED_RANGE = PopCraft.config.getInt("commands.tpr.extendedrange");
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	final Player player = (Player) sender;
 	if (cmd.getName().equalsIgnoreCase("tpr")) {
-	    if (Cooldown.check(player, "tpr", PopCraft.config.getInt("commands.tpr.cooldown"))) {
+	    if (Cooldown.check(player, "tpr", COOLDOWN)) {
 		Bukkit.getScheduler().runTask(PopCraft.getPlugin(), new Runnable() {
 		    public void run() {
 			boolean notSafe = true;
@@ -43,7 +44,7 @@ public class Tpr implements CommandExecutor {
 		    }
 		});
 	    } else {
-		Message.cooldown(player, "tpr", PopCraft.config.getInt("commands.tpr.cooldown"));
+		Message.cooldown(player, "tpr", COOLDOWN);
 	    }
 	    return true;
 	}
