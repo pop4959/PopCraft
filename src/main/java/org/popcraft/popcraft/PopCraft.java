@@ -59,7 +59,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-	getLogger().info("PopCraft plugin initializing...");
 	plugin = this;
 	config = getConfig();
 	config.options().copyDefaults(true);
