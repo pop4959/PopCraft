@@ -122,13 +122,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	if (cmd.getName().equalsIgnoreCase("worldspawn")) {
 	    commandWorldSpawn(sender);
 	}
-	if (cmd.getName().equalsIgnoreCase("test")) {
-	    sender.sendMessage("testing");
-	    
 	return true;
-	
     }
-    
 
     @EventHandler
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent e) {
