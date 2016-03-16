@@ -3,7 +3,7 @@ main: org.popcraft.popcraft.PopCraft
 version: 1.5.2.0
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
-authors: [waffelmonster]
+authors: [waffelmonster, EpicRhox]
 website: popcraft.enjin.com
 
 commands:
@@ -174,11 +174,11 @@ commands:
       permission: popcraft.aura
       permission-message: You can't use this.
       usage: /aura <type>
-   bar:
-      description: test
-      permission: popcraft.bar
+   test:
+      description: EpicRhox testing script
+      permission: popcraft.test
       permission-message: You can't use this.
-      usage: /bar
+      usage: /test
 
 permissions:
   popcraft.magicmessage:
