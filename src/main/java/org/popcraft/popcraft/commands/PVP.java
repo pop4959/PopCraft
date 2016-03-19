@@ -27,6 +27,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftAreaEffectCloud;
+import net.minecraft.server.v1_9_R1.EntityAreaEffectCloud;
 
 public class PVP implements Listener, CommandExecutor {
 
@@ -84,8 +86,19 @@ public class PVP implements Listener, CommandExecutor {
 		    }
 		}
 	    }
-	    if (attacker instanceof AreaEffectCloud)
-		e.setCancelled(true);
+	    if (attacker instanceof AreaEffectCloud) {
+		EntityAreaEffectCloud nmsEffectCloud = ((CraftAreaEffectCloud) ((AreaEffectCloud) attacker))
+			.getHandle();
+		if (nmsEffectCloud.w() != null) {
+		    attacker = nmsEffectCloud.w().getBukkitEntity();
+		    if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
+			PotionEffectType potionType = ((AreaEffectCloud) nmsEffectCloud.getBukkitEntity())
+				.getBasePotionData().getType().getEffectType();
+			if (potionType == PotionEffectType.HARM || potionType == PotionEffectType.POISON)
+			    e.setCancelled(true);
+		    }
+		}
+	    }
 	    Cooldown.reset((Player) victim, "pvp", 5000);
 	}
     }
@@ -117,12 +130,12 @@ public class PVP implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-	if (event.getEntity().getKiller() instanceof Player) {
-	    event.setKeepInventory(true);
-	    event.getDrops().clear();
-	    event.setDroppedExp(0);
-	    event.setKeepLevel(true);
+    public void onPlayerDeath(PlayerDeathEvent e) {
+	if (e.getEntity().getKiller() instanceof Player) {
+	    e.setKeepInventory(true);
+	    e.getDrops().clear();
+	    e.setDroppedExp(0);
+	    e.setKeepLevel(true);
 	}
     }
 
