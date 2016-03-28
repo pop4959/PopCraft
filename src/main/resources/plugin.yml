@@ -1,6 +1,6 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
-version: 1.5.3.0
+version: 1.5.4.1
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
 authors: [waffelmonster]
