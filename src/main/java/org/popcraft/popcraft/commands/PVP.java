@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,8 +22,10 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.LingeringPotionSplashEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.popcraft.popcraft.utils.Cooldown;
@@ -65,7 +68,7 @@ public class PVP implements Listener, CommandExecutor {
 	if (victim instanceof Player) {
 	    try {
 		if (victim.getLocation().distance(
-			Bukkit.getWorld(Bukkit.getServer().getWorlds().get(0).getName()).getSpawnLocation()) < 8)
+			Bukkit.getWorld(Bukkit.getServer().getWorlds().get(0).getName()).getSpawnLocation()) < 16)
 		    e.setCancelled(true);
 	    } catch (IllegalArgumentException ex) {
 	    }
@@ -105,6 +108,7 @@ public class PVP implements Listener, CommandExecutor {
 
     @EventHandler
     public static void onPotionSplash(PotionSplashEvent e) {
+	Bukkit.getServer().broadcastMessage(e.getEntity().toString());
 	if (e.getEntity().getShooter() instanceof Player) {
 	    for (LivingEntity entity : e.getAffectedEntities()) {
 		if (!(entity instanceof Player)) {
@@ -124,6 +128,27 @@ public class PVP implements Listener, CommandExecutor {
 			for (PotionEffect p : e.getPotion().getEffects())
 			    if (p.getType().equals(t))
 				e.setCancelled(true);
+		}
+	    }
+	}
+    }
+
+    @EventHandler
+    public static void onLingeringPotionSplash(LingeringPotionSplashEvent e) {
+	// TODO: Replace NMS
+    }
+
+    @EventHandler
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent e) {
+	Material bucket = e.getBucket();
+	if (bucket.toString().contains("LAVA_BUCKET")) {
+	    for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
+		if (en instanceof Player) {
+		    if (!PVP.getPvp(((Player) en)))
+		    {
+			e.setCancelled(true);
+			e.getPlayer().updateInventory();
+		    }
 		}
 	    }
 	}

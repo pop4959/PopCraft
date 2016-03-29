@@ -11,10 +11,6 @@ import org.popcraft.popcraft.utils.Cooldown;
 
 public class Message {
 
-    public static void normal(Player player, String message) {
-	player.sendMessage(ChatColor.GOLD + message);
-    }
-
     public static void normal(CommandSender sender, String message) {
 	sender.sendMessage(ChatColor.GOLD + message);
     }
@@ -23,16 +19,16 @@ public class Message {
 	System.out.print(message);
     }
 
-    public static void whisper(Player player, String message) {
-	player.sendMessage(ChatColor.GRAY + message);
+    public static void whisper(CommandSender sender, String message) {
+	sender.sendMessage(ChatColor.GRAY + message);
     }
 
-    public static void error(Player player, String message) {
-	player.sendMessage(ChatColor.RED + "Error: " + ChatColor.DARK_RED + message);
+    public static void error(CommandSender sender, String message) {
+	sender.sendMessage(ChatColor.RED + "Error: " + ChatColor.DARK_RED + message);
     }
 
-    public static void usage(Player player, String message) {
-	player.sendMessage(ChatColor.RED + "Usage: /" + message);
+    public static void usage(CommandSender sender, String message) {
+	sender.sendMessage(ChatColor.RED + "Usage: /" + message);
     }
 
     public static void kick(Player player, String message) {

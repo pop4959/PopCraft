@@ -1,6 +1,6 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
-version: 1.5.2.1
+version: 1.5.4.1
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
 authors: [waffelmonster]
@@ -24,7 +24,7 @@ commands:
       aliases: id
       permission: popcraft.uuid
       permission-message: You can't use this.
-      usage: /uuid
+      usage: /uuid <username>
    fireworks:
       description: Spawns fireworks.
       aliases: [fw, flare]
@@ -45,7 +45,6 @@ commands:
       usage: /listgen
    me:
       description: Describes an action in the context of the player.
-      aliases: 
       permission: popcraft.me
       permission-message: You can't use this.
       usage: /me <action>
@@ -174,34 +173,19 @@ commands:
       permission: popcraft.aura
       permission-message: You can't use this.
       usage: /aura <type>
-   bar:
-      description: test
-      permission: popcraft.bar
+   history:
+      description: Gets the username history of a player.
+      aliases: hist
+      permission: popcraft.history
       permission-message: You can't use this.
-      usage: /bar
+      usage: /history <username>
+   name:
+      description: Gets the UUID of a player.
+      permission: popcraft.name
+      permission-message: You can't use this.
+      usage: /name <UUID>
 
 permissions:
-  popcraft.magicmessage:
-    description: Allows you to set automatic global broadcasts.
-    default: op
-  popcraft.magicmessage.receive:
-    description: Allows a player to receive MagicMessage broadcasts.
-    default: op
-  popcraft.uuid:
-    description: Allows you to view others' UUIDs.
-    default: op
-  popcraft.fireworks:
-    description: Allows you to spawn fireworks.
-    default: op
-  popcraft.fireworks.others:
-    description: Allows you to spawn more fireworks.
-    default: op
-  popcraft.tpr:
-    description: Allows you to teleport to a random location.
-    default: op
-  popcraft.listgen:
-    description: Allows you to generate a player list.
-    default: op
   popcraft.me:
     description: Allows you to write a message in third person.
     default: true
@@ -213,15 +197,6 @@ permissions:
     children:
       popcraft.trail: true
       popcraft.trail.custom: true
-  popcraft.trail:
-    description: Allows you to set a preset trail.
-    default: op
-  popcraft.trail.custom:
-    description: Allows you to set a custom trail.
-    default: op
-  popcraft.staff:
-    description: Allows you to send staff messages.
-    default: op
   popcraft.tab.donator:
     description: Allows you to automatically receive a purple tab color upon joining as a donator.
     default: false
@@ -231,18 +206,3 @@ permissions:
   popcraft.jumper:
     description: Allows you to jump high with a feather.
     default: false
-  popcraft.flames:
-    description: Allows you to toggle flames that follow you.
-    default: op
-  popcraft.generateworld:
-    description: Allows you to generate the world.
-    default: op
-  popcraft.music:
-    description: Allows you to play a music discs.
-    default: op
-  popcraft.pvp:
-    description: Allows you to toggle PvP.
-    default: op
-  popcraft.worldspawn:
-    description: Allows you to change the world's spawnpoint.
-    default: op

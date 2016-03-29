@@ -96,6 +96,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("trail").setExecutor(new Trail());
 	getCommand("flames").setExecutor(new Trail());
 	getCommand("hearts").setExecutor(new Trail());
+	getCommand("history").setExecutor(new History());
+	getCommand("name").setExecutor(new Name());
     }
 
     @Override

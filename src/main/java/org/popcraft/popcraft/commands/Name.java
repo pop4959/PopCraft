@@ -7,19 +7,19 @@ import org.bukkit.command.CommandSender;
 import org.popcraft.popcraft.utils.MCAPI;
 import org.popcraft.popcraft.utils.Message;
 
-public class Uuid implements CommandExecutor {
+public class Name implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("uuid")) {
+	if (cmd.getName().equalsIgnoreCase("name")) {
 	    if (args.length == 1) {
-		String uuid = MCAPI.getUUID(args[0]);
-		if (uuid != null)
-		    Message.normal(sender, args[0] + "'s UUID: " + ChatColor.RED + uuid);
+		String name = MCAPI.getName(args[0]);
+		if (name != null)
+		    Message.normal(sender, args[0] + " is: " + ChatColor.RED + name);
 		else
-		    Message.error(sender, "Cannot get UUID for that user.");
+		    Message.error(sender, "Cannot get that user's name.");
 	    } else {
-		Message.usage(sender, "uuid <username>");
+		Message.usage(sender, "name <UUID>");
 	    }
 	    return true;
 	}
