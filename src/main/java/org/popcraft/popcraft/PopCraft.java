@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
+import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect.Type;
@@ -21,6 +22,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventException;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -28,6 +30,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
@@ -38,6 +41,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import java.util.List;
 import java.io.BufferedWriter;
@@ -98,6 +102,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("hearts").setExecutor(new Trail());
 	getCommand("history").setExecutor(new History());
 	getCommand("name").setExecutor(new Name());
+        ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f").setIngredient('c',  Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
+        getServer().addRecipe(recipeElytra);
     }
 
     @Override
@@ -325,6 +331,21 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
 	if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
 	    e.setCancelled(true);
+    }
+    
+    @EventHandler
+    public void onCraftItem(CraftItemEvent e) {
+	if (e.getInventory().getResult().equals(new ItemStack(Material.ELYTRA)))
+	{
+	    HumanEntity h = e.getWhoClicked();
+	    boolean defeatEnd = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.THE_END), defeatWither = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.KILL_WITHER);
+	    if(!(defeatEnd && defeatWither))
+	    {
+		h.sendMessage(ChatColor.DARK_RED + "Defeat the Ender Dragon and Wither before crafting an Elytra.");
+		h.closeInventory();
+		e.setCancelled(true);
+	    }
+	}
     }
 
     private void onPlayerJoinFirework(final Player PLAYER) {

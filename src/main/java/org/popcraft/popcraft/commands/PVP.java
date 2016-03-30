@@ -108,7 +108,6 @@ public class PVP implements Listener, CommandExecutor {
 
     @EventHandler
     public static void onPotionSplash(PotionSplashEvent e) {
-	Bukkit.getServer().broadcastMessage(e.getEntity().toString());
 	if (e.getEntity().getShooter() instanceof Player) {
 	    for (LivingEntity entity : e.getAffectedEntities()) {
 		if (!(entity instanceof Player)) {
