@@ -20,9 +20,13 @@ magicmessage:
 antispam:
   enabled: false
   cooldown: 300
-playerheads:
-  enabled: false
-  chance: 0.0
+heads:
+  player:
+    enabled: false
+    chance: 0.0
+  dragon:
+    enabled: false
+    chance: 0.0
 profanityprotect:
 - item1
 - item2 etc

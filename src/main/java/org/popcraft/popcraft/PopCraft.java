@@ -16,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -102,8 +104,10 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("hearts").setExecutor(new Trail());
 	getCommand("history").setExecutor(new History());
 	getCommand("name").setExecutor(new Name());
-        ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f").setIngredient('c',  Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
-        getServer().addRecipe(recipeElytra);
+	ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
+		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)
+		.setIngredient('s', Material.NETHER_STAR);
+	getServer().addRecipe(recipeElytra);
     }
 
     @Override
@@ -312,10 +316,23 @@ public final class PopCraft extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-	if (config.getBoolean("playerheads.enabled")) {
-	    if (config.getDouble("playerheads.chance") > Math.random()) {
+	if (config.getBoolean("heads.player.enabled")) {
+	    if (config.getDouble("heads.player.chance") > Math.random()) {
 		Bukkit.getPlayer(event.getEntity().getUniqueId()).getWorld()
 			.dropItemNaturally(event.getEntity().getLocation(), getPlayerHead(event.getEntity().getName()));
+	    }
+	}
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent e) {
+	if (config.getBoolean("heads.dragon.enabled")) {
+	    if (e.getEntityType().equals(EntityType.ENDER_DRAGON)) {
+		World w = e.getEntity().getWorld();
+		w.getBlockAt(0, w.getHighestBlockYAt(0, 0), 0).setType(Material.DRAGON_EGG);
+		if (config.getDouble("heads.dragon.chance") > Math.random()) {
+		    w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.SKULL_ITEM, 1, (short) 5));
+		}
 	    }
 	}
     }
@@ -332,15 +349,14 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
 	    e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onCraftItem(CraftItemEvent e) {
-	if (e.getInventory().getResult().equals(new ItemStack(Material.ELYTRA)))
-	{
+	if (e.getInventory().getResult().equals(new ItemStack(Material.ELYTRA))) {
 	    HumanEntity h = e.getWhoClicked();
-	    boolean defeatEnd = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.THE_END), defeatWither = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.KILL_WITHER);
-	    if(!(defeatEnd && defeatWither))
-	    {
+	    boolean defeatEnd = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.THE_END),
+		    defeatWither = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.KILL_WITHER);
+	    if (!(defeatEnd && defeatWither)) {
 		h.sendMessage(ChatColor.DARK_RED + "Defeat the Ender Dragon and Wither before crafting an Elytra.");
 		h.closeInventory();
 		e.setCancelled(true);

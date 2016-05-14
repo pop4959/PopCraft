@@ -30,8 +30,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftAreaEffectCloud;
-import net.minecraft.server.v1_9_R1.EntityAreaEffectCloud;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftAreaEffectCloud;
+import net.minecraft.server.v1_9_R2.EntityAreaEffectCloud;
 
 public class PVP implements Listener, CommandExecutor {
 
