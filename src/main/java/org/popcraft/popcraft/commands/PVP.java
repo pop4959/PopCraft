@@ -30,8 +30,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftAreaEffectCloud;
-import net.minecraft.server.v1_9_R2.EntityAreaEffectCloud;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftAreaEffectCloud;
+import net.minecraft.server.v1_10_R1.EntityAreaEffectCloud;
 
 public class PVP implements Listener, CommandExecutor {
 
@@ -92,8 +92,8 @@ public class PVP implements Listener, CommandExecutor {
 	    if (attacker instanceof AreaEffectCloud) {
 		EntityAreaEffectCloud nmsEffectCloud = ((CraftAreaEffectCloud) ((AreaEffectCloud) attacker))
 			.getHandle();
-		if (nmsEffectCloud.w() != null) {
-		    attacker = nmsEffectCloud.w().getBukkitEntity();
+		if (nmsEffectCloud.y() != null) {
+		    attacker = nmsEffectCloud.y().getBukkitEntity();
 		    if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
 			PotionEffectType potionType = ((AreaEffectCloud) nmsEffectCloud.getBukkitEntity())
 				.getBasePotionData().getType().getEffectType();
