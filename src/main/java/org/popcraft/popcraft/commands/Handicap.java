@@ -15,17 +15,17 @@ public class Handicap implements CommandExecutor {
 	if (cmd.getName().equalsIgnoreCase("handicap")) {
 	    try {
 		if (args.length == 0 || args[0].equalsIgnoreCase("off")) {
-		    player.setMaxHealth(20);
+		    player.setHealthScale(20);
 		    Message.normal(player, "Handicap set to " + ChatColor.RED + 100 + ChatColor.GOLD + "%.");
 		} else if (args.length == 1) {
 		    int hp = Integer.parseInt(args[0]);
 		    if (hp >= 0 && hp <= 20 || player.hasPermission("popcraft.handicap.bypass")) {
 			if (hp == 0)
-			    player.setMaxHealth(0.001);
+			    player.setHealthScale(0.001);
 			else if (player.hasPermission("popcraft.handicap.bypass")) {
-			    player.setMaxHealth(hp);
+			    player.setHealthScale(hp);
 			} else if (hp <= 20) {
-			    player.setMaxHealth(hp);
+			    player.setHealthScale(hp);
 			}
 			Message.normal(player, "Handicap set to " + ChatColor.RED + hp * 5 + ChatColor.GOLD + "%");
 		    } else
