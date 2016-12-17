@@ -329,7 +329,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	if (config.getBoolean("heads.dragon.enabled")) {
 	    if (e.getEntityType().equals(EntityType.ENDER_DRAGON)) {
 		World w = e.getEntity().getWorld();
-		w.getBlockAt(0, w.getHighestBlockYAt(0, 0), 0).setType(Material.DRAGON_EGG);
+		w.getBlockAt(0, w.getHighestBlockYAt(0, 0) + 1, 0).setType(Material.DRAGON_EGG);
 		if (config.getDouble("heads.dragon.chance") > Math.random()) {
 		    w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.SKULL_ITEM, 1, (short) 5));
 		}
