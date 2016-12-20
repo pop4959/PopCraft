@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,12 +46,12 @@ public class PVP implements Listener, CommandExecutor {
 		    PVP.setPvp(player, true);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
 		    for (int i = 0; i < 50; i++)
-			player.getWorld().playEffect(player.getLocation(), Effect.LAVA_POP, 32);
+			player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 1);
 		} else {
 		    PVP.setPvp(player, false);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "disabled" + ChatColor.GOLD + "!");
 		    for (int i = 0; i < 50; i++)
-			player.getWorld().playEffect(player.getLocation(), Effect.LAVA_POP, 32);
+			player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 1);
 		}
 	    } else {
 		Message.cooldown(player, "pvp", 5000);

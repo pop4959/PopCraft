@@ -68,7 +68,6 @@ public class Aura implements Listener, CommandExecutor {
 	Player player = event.getPlayer();
 	if (playeraura.containsKey(player.getUniqueId())) {
 	    Particle aura = playeraura.get(player.getUniqueId());
-	    //player.getWorld().spigot().playEffect(player.getLocation(), aura, 0, 0, 0, 0, 0, 1, 5, 32);
 	    player.getWorld().spawnParticle(aura, player.getLocation(), 5, 0, 0, 0, 1, null);
 	}
     }
