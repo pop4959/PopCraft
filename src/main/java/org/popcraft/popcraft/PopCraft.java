@@ -145,7 +145,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	}
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws EventException {
 	final Player player = event.getPlayer();
@@ -165,16 +164,16 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	    }, 15L);
 	    onPlayerJoinFirework(player);
 	}
-	if (Bukkit.getScoreboardManager().getMainScoreboard().getPlayerTeam(player) == null) {
+	if (Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()) == null) {
 	    setTabColor(player, "f");
 	}
 	if (player.hasPermission("popcraft.tab.donator")
-		&& Bukkit.getScoreboardManager().getMainScoreboard().getPlayerTeam(player).getName().equals("f")) {
+		&& Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()).getName().equals("f")) {
 	    removeTabColor(player, "f");
 	    setTabColor(player, "6");
 	}
 	if (!player.hasPermission("popcraft.tab.donator")
-		&& Bukkit.getScoreboardManager().getMainScoreboard().getPlayerTeam(player).getName().equals("6")) {
+		&& Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()).getName().equals("6")) {
 	    removeTabColor(player, "6");
 	    setTabColor(player, "f");
 	}
@@ -398,18 +397,16 @@ public final class PopCraft extends JavaPlugin implements Listener {
 
     }
 
-    @SuppressWarnings("deprecation")
     public void setTabColor(Player player, String teamname) {
 	Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 	Team team = scoreboard.getTeam(teamname);
-	team.addPlayer(player);
+	team.addEntry(player.getName());
     }
 
-    @SuppressWarnings({ "deprecation" })
     public void removeTabColor(Player player, String teamname) {
 	Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 	Team team = scoreboard.getTeam(teamname);
-	team.removePlayer(player);
+	team.removeEntry(player.getName());
     }
 
     public ItemStack getPlayerHead(String playername) {
