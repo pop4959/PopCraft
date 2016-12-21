@@ -16,7 +16,15 @@ import org.popcraft.popcraft.utils.Message;
 
 public class Aura implements Listener, CommandExecutor {
 
+    public static HashMap<String, Particle> auratypes = new HashMap<String, Particle>();
     public static HashMap<UUID, Particle> playeraura = new HashMap<UUID, Particle>();
+    
+    static {
+	auratypes.put("clouds", Particle.CLOUD);
+	auratypes.put("flames", Particle.FLAME);
+	auratypes.put("smoke", Particle.SMOKE_LARGE);
+	auratypes.put("sparks", Particle.FIREWORKS_SPARK);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -37,22 +45,11 @@ public class Aura implements Listener, CommandExecutor {
 		    } else {
 			Message.error(player, "You don't have an aura enabled!");
 		    }
-		} else if (args[0].equalsIgnoreCase("list")) {
-		    Message.normal(player, "Auras: " + ChatColor.RESET + "clouds, flames, smoke, sparks");
-		} else if (args[0].equalsIgnoreCase("type")) {
-		    Message.normal(player, "Auras: " + ChatColor.RESET + "clouds, flames, smoke, sparks");
-		} else if (args[0].equals("sparks")) {
-		    playeraura.put(player.getUniqueId(), Particle.FIREWORKS_SPARK);
-		    Message.normal(player, "Aura effect set to " + ChatColor.RED + "sparks" + ChatColor.GOLD + ".");
-		} else if (args[0].equals("smoke")) {
-		    playeraura.put(player.getUniqueId(), Particle.SMOKE_LARGE);
-		    Message.normal(player, "Aura effect set to " + ChatColor.RED + "smoke" + ChatColor.GOLD + ".");
-		} else if (args[0].equals("flames")) {
-		    playeraura.put(player.getUniqueId(), Particle.FLAME);
-		    Message.normal(player, "Aura effect set to " + ChatColor.RED + "flames" + ChatColor.GOLD + ".");
-		} else if (args[0].equals("clouds")) {
-		    playeraura.put(player.getUniqueId(), Particle.CLOUD);
-		    Message.normal(player, "Aura effect set to " + ChatColor.RED + "clouds" + ChatColor.GOLD + ".");
+		} else if (args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("type")) {
+		    Message.normal(player, "Auras: " + ChatColor.RESET + auratypes.keySet().toString().replace("[", "").replace("]", ""));
+		} else if (auratypes.containsKey(args[0])) {
+		    playeraura.put(player.getUniqueId(), auratypes.get(args[0]));
+		    Message.normal(player, "Aura effect set to " + ChatColor.RED + args[0].toLowerCase() + ChatColor.GOLD + ".");
 		} else {
 		    Message.usage(player, "aura <clear/list/type>");
 		}
