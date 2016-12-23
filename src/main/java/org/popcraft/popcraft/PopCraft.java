@@ -167,13 +167,13 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	if (Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()) == null) {
 	    setTabColor(player, "f");
 	}
-	if (player.hasPermission("popcraft.tab.donator")
-		&& Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()).getName().equals("f")) {
+	if (player.hasPermission("popcraft.tab.donator") && Bukkit.getScoreboardManager().getMainScoreboard()
+		.getEntryTeam(player.getName()).getName().equals("f")) {
 	    removeTabColor(player, "f");
 	    setTabColor(player, "6");
 	}
-	if (!player.hasPermission("popcraft.tab.donator")
-		&& Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()).getName().equals("6")) {
+	if (!player.hasPermission("popcraft.tab.donator") && Bukkit.getScoreboardManager().getMainScoreboard()
+		.getEntryTeam(player.getName()).getName().equals("6")) {
 	    removeTabColor(player, "6");
 	    setTabColor(player, "f");
 	}
