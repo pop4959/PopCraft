@@ -42,11 +42,11 @@ public class Trail implements Listener, CommandExecutor {
 	}
 	for (Effect e : Effect.values()) {
 	    if (e.getType() != Effect.Type.SOUND)
-		trailtypes.put(e.name() + "_DEBUG_EFFECT",
+		trailtypes.put(e.name().toLowerCase() + "_debug_effect",
 			new TrailMeta(e, null, TrailType.EFFECT, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
 	}
 	for (Particle p : Particle.values()) {
-	    trailtypes.put(p.name() + "_DEBUG_PARTICLE",
+	    trailtypes.put(p.name().toLowerCase() + "_debug_particle",
 		    new TrailMeta(p, null, TrailType.PARTICLE, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
 	}
 	trailtypes.put("bubbles", new TrailMeta(Particle.CRIT_MAGIC, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0,
@@ -117,7 +117,7 @@ public class Trail implements Listener, CommandExecutor {
 			    playertrail.remove(player.getUniqueId());
 			    Message.normal(player, "Cleared trail.");
 			} else {
-			    Message.usage(player, "trail <clear/list/type>");
+			    Message.usage(player, "trail <trail/list/clear>");
 			}
 		    } else if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("clear")) {
@@ -127,20 +127,22 @@ public class Trail implements Listener, CommandExecutor {
 			    } else {
 				Message.error(player, "You don't have a trail enabled!");
 			    }
-			} else if (args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("type")) {
+			} else if (args[0].equalsIgnoreCase("list")) {
 			    Message.normal(player, "Trails: " + ChatColor.RESET
 				    + "bubbles, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, music, party, rainbow, raindrops, redstone, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops");
-			} else if (trailtypes.containsKey(args[0])) {
-			    TrailMeta trail = new TrailMeta(trailtypes.get(args[0]));
+			} else if (args[0].equalsIgnoreCase("trail")) {
+			    Message.error(player, "Invalid trail. Type \"/trail list\" to see available trails.");
+			} else if (trailtypes.containsKey(args[0].toLowerCase())) {
+			    TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
 			    playertrail.put(player.getUniqueId(), trail);
 			    String trailname = args[0].toLowerCase().replace("_", " ");
 			    Message.normal(player, "Trail set to " + ChatColor.RED + trailname + ChatColor.GOLD + ".");
 			} else {
-			    playertrail.remove(player.getUniqueId());
+			    Message.usage(player, "trail <trail/list/clear>");
 			}
 		    } else if (args.length == 2) {
-			if (trailtypes.containsKey(args[0])) {
-			    TrailMeta trail = new TrailMeta(trailtypes.get(args[0]));
+			if (trailtypes.containsKey(args[0].toLowerCase())) {
+			    TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
 			    if (NumberUtils.isNumber(args[1])) {
 				if (trail.getType() == TrailType.BLOCK) {
 				    ItemStack i = ((MaterialData) trail.getData()).toItemStack();
@@ -161,9 +163,11 @@ public class Trail implements Listener, CommandExecutor {
 					    + (trail.getStyle() != TrailStyle.NORMAL
 						    ? " " + trail.getStyle().toString().toLowerCase() : "")
 				    + ChatColor.GOLD + ".");
+			} else {
+			    Message.usage(player, "trail <trail/list/clear>");
 			}
 		    } else if (args.length == 3) {
-			TrailMeta trail = new TrailMeta(trailtypes.get(args[0]));
+			TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
 			if (trail.getType() == TrailType.BLOCK) {
 			    ItemStack i = ((MaterialData) trail.getData()).toItemStack();
 			    i.setDurability(Short.parseShort(args[1]));
@@ -181,10 +185,10 @@ public class Trail implements Listener, CommandExecutor {
 						? " " + trail.getStyle().toString().toLowerCase() : "")
 					+ ChatColor.GOLD + ".");
 		    } else {
-			Message.usage(player, "trail <clear/list/type>");
+			Message.usage(player, "trail <trail/list/clear>");
 		    }
 		} catch (Exception e) {
-		    Message.usage(player, "trail <clear/list/type>");
+		    Message.usage(player, "trail <trail/list/clear>");
 		}
 	    }
 	    if (cmd.getName().equalsIgnoreCase("flames")) {
