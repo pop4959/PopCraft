@@ -21,6 +21,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.LingeringPotionSplashEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -28,6 +29,7 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftAreaEffectCloud;
@@ -45,13 +47,11 @@ public class PVP implements Listener, CommandExecutor {
 		if (!PVP.getPvp(player)) {
 		    PVP.setPvp(player, true);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
-		    for (int i = 0; i < 50; i++)
-			player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 1);
+		    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
 		} else {
 		    PVP.setPvp(player, false);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "disabled" + ChatColor.GOLD + "!");
-		    for (int i = 0; i < 50; i++)
-			player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 1);
+		    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
 		}
 	    } else {
 		Message.cooldown(player, "pvp", 5000);
@@ -107,6 +107,20 @@ public class PVP implements Listener, CommandExecutor {
     }
 
     @EventHandler
+    public static void onEntityCombustByEntity(EntityCombustByEntityEvent e) {
+	Entity victim = e.getEntity();
+	if (victim instanceof Player) {
+	    if (e.getCombuster() instanceof Arrow) {
+		ProjectileSource source = ((Arrow) e.getCombuster()).getShooter();
+		if (source instanceof Player) {
+		    if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) source)))
+			e.setCancelled(true);
+		}
+	    }
+	}
+    }
+
+    @EventHandler
     public static void onPotionSplash(PotionSplashEvent e) {
 	if (e.getEntity().getShooter() instanceof Player) {
 	    for (LivingEntity entity : e.getAffectedEntities()) {
@@ -143,8 +157,7 @@ public class PVP implements Listener, CommandExecutor {
 	if (bucket.toString().contains("LAVA_BUCKET")) {
 	    for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
 		if (en instanceof Player) {
-		    if (!PVP.getPvp(((Player) en)))
-		    {
+		    if (!PVP.getPvp(((Player) en))) {
 			e.setCancelled(true);
 			e.getPlayer().updateInventory();
 		    }
