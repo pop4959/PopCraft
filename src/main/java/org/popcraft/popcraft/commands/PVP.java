@@ -21,6 +21,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.LingeringPotionSplashEvent;
@@ -160,6 +161,19 @@ public class PVP implements Listener, CommandExecutor {
 		    if (!PVP.getPvp(((Player) en))) {
 			e.setCancelled(true);
 			e.getPlayer().updateInventory();
+		    }
+		}
+	    }
+	}
+    }
+
+    @EventHandler
+    public void onBlockIgniteEvent(BlockIgniteEvent e) {
+	if (e.getIgnitingEntity() instanceof Player) {
+	    for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
+		if (en instanceof Player) {
+		    if (!PVP.getPvp(((Player) en))) {
+			e.setCancelled(true);
 		    }
 		}
 	    }
