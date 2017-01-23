@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,10 +50,11 @@ public class PVP implements Listener, CommandExecutor {
 		    PVP.setPvp(player, true);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
 		    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
+		    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO, 2, 1);
 		} else {
 		    PVP.setPvp(player, false);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "disabled" + ChatColor.GOLD + "!");
-		    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
+		    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CHICKEN_AMBIENT, 2, 1);
 		}
 	    } else {
 		Message.cooldown(player, "pvp", 5000);
