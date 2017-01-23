@@ -1,6 +1,6 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
-version: 1.7.3.2
+version: 1.7.5.0
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
 authors: [waffelmonster]
@@ -184,6 +184,16 @@ commands:
       permission: popcraft.name
       permission-message: You can't use this.
       usage: /name <UUID>
+   glow:
+      description: Toggles player glow effect.
+      permission: popcraft.glow
+      permission-message: You can't use this.
+      usage: /glow
+   spoof:
+      description: Emulates real chat and status messages.
+      permission: popcraft.spoof
+      permission-message: You can't use this.
+      usage: /spoof <join/quit/afk/no-afk>
 
 permissions:
   popcraft.me:

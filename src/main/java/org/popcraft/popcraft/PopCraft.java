@@ -76,7 +76,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 		    config.getLong("magicmessage.defaultinterval"), config.getLong("magicmessage.defaultinterval")));
 	}
 	registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
-		new Aura(), new Trail());
+		new Aura(), new Trail(), new Fireworks());
 	getCommand("textures").setExecutor(new Textures());
 	getCommand("getscore").setExecutor(new GetScore());
 	getCommand("music").setExecutor(new Music());
@@ -104,6 +104,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("hearts").setExecutor(new Trail());
 	getCommand("history").setExecutor(new History());
 	getCommand("name").setExecutor(new Name());
+	getCommand("glow").setExecutor(new Glow());
+	getCommand("spoof").setExecutor(new Spoof());
 	ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
 		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)
 		.setIngredient('s', Material.NETHER_STAR);
