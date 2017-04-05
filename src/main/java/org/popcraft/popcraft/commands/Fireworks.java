@@ -13,12 +13,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.popcraft.popcraft.PopCraft;
 import org.popcraft.popcraft.utils.Message;
 
-public class Fireworks implements CommandExecutor {
+public class Fireworks implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -258,6 +262,7 @@ public class Fireworks implements CommandExecutor {
 	meta.addEffect(effect);
 	meta.setPower(POWER);
 	firework.setFireworkMeta(meta);
+	firework.setMetadata("no-damage", new FixedMetadataValue(PopCraft.getPlugin(), new Boolean(true)));
     }
 
     public void spawnFirework(Player PLAYER, Location LOCATION, Color COLOR, Type TYPE, boolean FLICKER, boolean TRAIL,
@@ -269,6 +274,7 @@ public class Fireworks implements CommandExecutor {
 	meta.addEffect(effect);
 	meta.setPower(POWER);
 	firework.setFireworkMeta(meta);
+	firework.setMetadata("no-damage", new FixedMetadataValue(PopCraft.getPlugin(), new Boolean(true)));
     }
 
     public static Location spawnLocationFirework(Player PLAYER) {
@@ -638,5 +644,15 @@ public class Fireworks implements CommandExecutor {
 	    return f;
 	}
 	return null;
+    }
+    
+    @EventHandler
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
+	if (e.getEntity() instanceof Firework) {
+	    Firework f = (Firework) e.getDamager();
+	    if (f.hasMetadata("no-damage")) {
+		e.setCancelled(true);
+	    }
+	}
     }
 }
