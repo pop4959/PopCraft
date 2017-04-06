@@ -105,6 +105,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("history").setExecutor(new History());
 	getCommand("name").setExecutor(new Name());
 	getCommand("spoof").setExecutor(new Spoof());
+	getCommand("glow").setExecutor(new Glow());
 	getCommand("teamspeak").setExecutor(new TeamSpeak());
 	ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
 		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)

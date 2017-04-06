@@ -18,7 +18,9 @@ public class Version implements CommandExecutor {
 		    + ChatColor.GREEN + p.getWebsite() + ChatColor.RESET + "\n" + "Authors: " + p.getAuthors())
 			    .replace("pop4959", ChatColor.GREEN + "pop4959" + ChatColor.RESET).replace("[", "")
 			    .replace("]", "")
-			    .replace("waffelmonster", ChatColor.GREEN + "waffelmonster" + ChatColor.WHITE + ", " + ChatColor.GREEN + "2coolGaming" + ChatColor.RESET));
+			    .replace("waffelmonster", ChatColor.GREEN + "waffelmonster" + ChatColor.RESET)
+	            .replace("2coolGaming", ChatColor.GREEN + "2coolGaming" + ChatColor.RESET));
+	    
 	    return true;
 	}
 	return false;
