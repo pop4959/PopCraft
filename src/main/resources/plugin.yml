@@ -3,7 +3,7 @@ main: org.popcraft.popcraft.PopCraft
 version: 1.7.5.0
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
-authors: [waffelmonster]
+authors: [waffelmonster, 2coolGaming]
 website: popcraft.enjin.com
 
 commands:
@@ -194,7 +194,21 @@ commands:
       permission: popcraft.spoof
       permission-message: You can't use this.
       usage: /spoof <join/quit/afk/no-afk>
-
+   glow:
+      description: Toggles player glow effect.
+      permission: popcraft.glow
+      permission-message: You can't use this.
+      usage: /glow
+   discord:
+      description: Displays discord link.
+      permission: popcraft.discord
+      permission-message: You can't use this.
+      usage: /discord
+   teamspeak:
+      description: Displays teamspeak ip.
+      permission: popcraft.teamspeak
+      permission-message: You can't use this.
+      usage: /teamspeak
 permissions:
   popcraft.me:
     description: Allows you to write a message in third person.

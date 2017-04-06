@@ -51,7 +51,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.popcraft.popcraft.commands.*;
-import org.popcraft.popcraft.commands.Trail;
 import org.popcraft.popcraft.tasks.*;
 import org.popcraft.popcraft.utils.*;
 
@@ -83,6 +82,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("listgen").setExecutor(new Listgen());
 	getCommand("me").setExecutor(new Me());
 	getCommand("donate").setExecutor(new Donate());
+	getCommand("discord").setExecutor(new Discord());
 	getCommand("uuid").setExecutor(new Uuid());
 	getCommand("staff").setExecutor(new Staff());
 	getCommand("fireworks").setExecutor(new Fireworks());
@@ -104,15 +104,25 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("hearts").setExecutor(new Trail());
 	getCommand("history").setExecutor(new History());
 	getCommand("name").setExecutor(new Name());
-	getCommand("glow").setExecutor(new Glow());
 	getCommand("spoof").setExecutor(new Spoof());
+	getCommand("glow").setExecutor(new Glow());
+	getCommand("teamspeak").setExecutor(new TeamSpeak());
 	ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
 		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)
 		.setIngredient('s', Material.NETHER_STAR);
 	getServer().addRecipe(recipeElytra);
+	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
+			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
+	getServer().addRecipe(recipeSkulkerShell);
+	
     }
 
-    @Override
+    private void registerEvents(PopCraft popCraft, PopCraft popCraft2, PVP pvp, AnvilColor anvilColor,
+			AnvilLogger anvilLogger, JonsLogger jonslogger2, Piggyback piggyback, Aura aura, Trail trail,
+			Fireworks fireworks) {
+	}
+
+	@Override
     public void onDisable() {
 	plugin = null;
 	getLogger().info("PopCraft plugin shutting down...");
