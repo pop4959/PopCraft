@@ -111,18 +111,14 @@ public final class PopCraft extends JavaPlugin implements Listener {
 		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)
 		.setIngredient('s', Material.NETHER_STAR);
 	getServer().addRecipe(recipeElytra);
-	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
-			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
+	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new ItemStack(Material.SHULKER_SHELL))
+		.shape("ccc", "cfc", "c c").setIngredient('c', Material.CHORUS_FRUIT)
+		.setIngredient('f', Material.END_CRYSTAL);
 	getServer().addRecipe(recipeSkulkerShell);
-	
+
     }
 
-    private void registerEvents(PopCraft popCraft, PopCraft popCraft2, PVP pvp, AnvilColor anvilColor,
-			AnvilLogger anvilLogger, JonsLogger jonslogger2, Piggyback piggyback, Aura aura, Trail trail,
-			Fireworks fireworks) {
-	}
-
-	@Override
+    @Override
     public void onDisable() {
 	plugin = null;
 	getLogger().info("PopCraft plugin shutting down...");

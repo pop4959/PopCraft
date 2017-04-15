@@ -645,7 +645,7 @@ public class Fireworks implements Listener, CommandExecutor {
 	}
 	return null;
     }
-    
+
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
 	if (e.getEntity() instanceof Firework) {

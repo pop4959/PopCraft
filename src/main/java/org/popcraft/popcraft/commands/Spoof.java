@@ -20,9 +20,11 @@ public class Spoof implements CommandExecutor {
 		else if (args[0].equalsIgnoreCase("quit"))
 		    Bukkit.broadcastMessage(ChatColor.GREEN + "\u2715 " + player.getName());
 		else if (args[0].equalsIgnoreCase("afk"))
-		    Bukkit.broadcastMessage(ChatColor.GRAY + "* " + player.getDisplayName() + ChatColor.GRAY + " is now AFK.");
+		    Bukkit.broadcastMessage(
+			    ChatColor.GRAY + "* " + player.getDisplayName() + ChatColor.GRAY + " is now AFK.");
 		else if (args[0].equalsIgnoreCase("no-afk"))
-		    Bukkit.broadcastMessage(ChatColor.GRAY + "* " + player.getDisplayName() + ChatColor.GRAY + " is no longer AFK.");
+		    Bukkit.broadcastMessage(
+			    ChatColor.GRAY + "* " + player.getDisplayName() + ChatColor.GRAY + " is no longer AFK.");
 		else
 		    Message.usage(player, "spoof <join/quit/afk/no-afk>");
 	    } else

@@ -14,16 +14,13 @@ public class History implements CommandExecutor {
 	if (cmd.getName().equalsIgnoreCase("history")) {
 	    if (args.length == 1) {
 		String[] history = MCAPI.getHistory(args[0]);
-		if (history != null)
-		{
+		if (history != null) {
 		    StringBuilder names = new StringBuilder();
-		    for(String name : history)
+		    for (String name : history)
 			names.append(name + ", ");
-		    names.delete(names.length()-2, names.length());
-		    Message.normal(sender,
-			    args[0] + "'s names: " + ChatColor.RED + names.toString());
-		}
-		else
+		    names.delete(names.length() - 2, names.length());
+		    Message.normal(sender, args[0] + "'s names: " + ChatColor.RED + names.toString());
+		} else
 		    Message.error(sender, "Cannot get name history for that user.");
 	    } else {
 		Message.usage(sender, "history <username>");

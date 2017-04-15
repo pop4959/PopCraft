@@ -13,8 +13,8 @@ public class TeamSpeak implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	Player player = (Player) sender;
 	if (cmd.getName().equalsIgnoreCase("teamspeak")) {
-			Message.normal(player,
-					"To join the TeamSpeak3 server using the ip here: " + ChatColor.GREEN + "ts3.popcraft.org");
+	    Message.normal(player,
+		    "To join the TeamSpeak3 server using the ip here: " + ChatColor.GREEN + "ts3.popcraft.org");
 	    return true;
 	}
 	return false;
