@@ -200,12 +200,12 @@ commands:
       permission-message: You can't use this.
       usage: /glow
    discord:
-      description: Displays discord link.
+      description: Displays the Discord join link.
       permission: popcraft.discord
       permission-message: You can't use this.
       usage: /discord
    teamspeak:
-      description: Displays teamspeak ip.
+      description: Displays the TeamSpeak server address.
       permission: popcraft.teamspeak
       permission-message: You can't use this.
       usage: /teamspeak

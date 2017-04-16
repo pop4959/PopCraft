@@ -14,7 +14,7 @@ public class Discord implements CommandExecutor {
 	Player player = (Player) sender;
 	if (cmd.getName().equalsIgnoreCase("discord")) {
 	    Message.normal(player,
-		    "Click the link to join the discord: " + ChatColor.GREEN + "https://discord.gg/98Cw8Mz");
+		    "Click the link to join us on Discord: " + ChatColor.GREEN + "https://discord.gg/98Cw8Mz");
 	    return true;
 	}
 	return false;

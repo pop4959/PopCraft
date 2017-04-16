@@ -14,7 +14,7 @@ public class TeamSpeak implements CommandExecutor {
 	Player player = (Player) sender;
 	if (cmd.getName().equalsIgnoreCase("teamspeak")) {
 	    Message.normal(player,
-		    "To join the TeamSpeak3 server using the ip here: " + ChatColor.GREEN + "ts3.popcraft.org");
+		    "TeamSpeak server address: " + ChatColor.GREEN + "ts3.popcraft.org");
 	    return true;
 	}
 	return false;
