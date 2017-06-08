@@ -8,7 +8,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
-import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect.Type;
@@ -355,20 +354,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
 	if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
 	    e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onCraftItem(CraftItemEvent e) {
-	if (e.getInventory().getResult().equals(new ItemStack(Material.ELYTRA))) {
-	    HumanEntity h = e.getWhoClicked();
-	    boolean defeatEnd = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.THE_END),
-		    defeatWither = (getServer().getPlayer(h.getUniqueId())).hasAchievement(Achievement.KILL_WITHER);
-	    if (!(defeatEnd && defeatWither)) {
-		h.sendMessage(ChatColor.DARK_RED + "Defeat the Ender Dragon and Wither before crafting an Elytra.");
-		h.closeInventory();
-		e.setCancelled(true);
-	    }
-	}
     }
 
     private void onPlayerJoinFirework(final Player PLAYER) {
