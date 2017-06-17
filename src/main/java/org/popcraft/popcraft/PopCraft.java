@@ -106,13 +106,13 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("glow").setExecutor(new Glow());
 	getCommand("teamspeak").setExecutor(new TeamSpeak());
 	getCommand("ticket").setExecutor(new TicketCommand());
-	ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
-		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)
-		.setIngredient('s', Material.NETHER_STAR);
+	ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA))
+		.shape("fcf", "fsf", "f f").setIngredient('c', Material.CHAINMAIL_CHESTPLATE)
+		.setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
 	getServer().addRecipe(recipeElytra);
-	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"), new ItemStack(Material.SHULKER_SHELL))
-		.shape("ccc", "cfc", "c c").setIngredient('c', Material.CHORUS_FRUIT)
-		.setIngredient('f', Material.END_CRYSTAL);
+	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"),
+		new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
+			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
 	getServer().addRecipe(recipeSkulkerShell);
 
     }
@@ -183,6 +183,12 @@ public final class PopCraft extends JavaPlugin implements Listener {
 		.getEntryTeam(player.getName()).getName().equals("6")) {
 	    removeTabColor(player, "6");
 	    setTabColor(player, "f");
+	}
+	if (player.hasPermission("popcraft.ticket.mod")) {
+	    int ticketCount = TicketCommand.getTicketManager().ticketCount(true);
+	    if (ticketCount > 0)
+		Message.normal(player, "There are " + ChatColor.RED + ticketCount + ChatColor.GOLD
+			+ " tickets open! Type " + ChatColor.RED + "/ticket list" + ChatColor.GOLD + " to view them.");
 	}
     }
 

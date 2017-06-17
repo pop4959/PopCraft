@@ -201,4 +201,8 @@ public class TicketCommand implements CommandExecutor {
 	}
 	return false;
     }
+
+    public static TicketManager getTicketManager() {
+	return tm;
+    }
 }
