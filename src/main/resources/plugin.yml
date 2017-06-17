@@ -1,6 +1,6 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
-version: 1.8.0.0
+version: 1.8.1.0
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
 authors: [waffelmonster, 2coolGaming]
@@ -209,6 +209,12 @@ commands:
       permission: popcraft.teamspeak
       permission-message: You can't use this.
       usage: /teamspeak
+   ticket:
+      description: Manage and send report tickets to staff.
+      aliases: [report, tickets]
+      permission: popcraft.ticket
+      permission-message: You can't use this.
+      usage: /ticket
 permissions:
   popcraft.me:
     description: Allows you to write a message in third person.

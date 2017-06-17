@@ -14,6 +14,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -22,7 +23,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventException;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -31,7 +31,6 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
@@ -106,11 +105,12 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("spoof").setExecutor(new Spoof());
 	getCommand("glow").setExecutor(new Glow());
 	getCommand("teamspeak").setExecutor(new TeamSpeak());
-	ShapedRecipe recipeElytra = new ShapedRecipe(new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
+	getCommand("ticket").setExecutor(new TicketCommand());
+	ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA)).shape("fcf", "fsf", "f f")
 		.setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('f', Material.FEATHER)
 		.setIngredient('s', Material.NETHER_STAR);
 	getServer().addRecipe(recipeElytra);
-	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new ItemStack(Material.SHULKER_SHELL))
+	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"), new ItemStack(Material.SHULKER_SHELL))
 		.shape("ccc", "cfc", "c c").setIngredient('c', Material.CHORUS_FRUIT)
 		.setIngredient('f', Material.END_CRYSTAL);
 	getServer().addRecipe(recipeSkulkerShell);
