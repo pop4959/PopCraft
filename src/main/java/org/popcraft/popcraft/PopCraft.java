@@ -5,8 +5,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -26,7 +24,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -72,6 +69,14 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	    MagicMessage.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, MagicMessage,
 		    config.getLong("magicmessage.defaultinterval"), config.getLong("magicmessage.defaultinterval")));
 	}
+	ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA))
+		.shape("fcf", "fsf", "f f").setIngredient('c', Material.CHAINMAIL_CHESTPLATE)
+		.setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
+	getServer().addRecipe(recipeElytra);
+	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"),
+		new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
+			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
+	getServer().addRecipe(recipeSkulkerShell);
 	registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
 		new Aura(), new Trail(), new Fireworks());
 	getCommand("textures").setExecutor(new Textures());
@@ -106,15 +111,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	getCommand("glow").setExecutor(new Glow());
 	getCommand("teamspeak").setExecutor(new TeamSpeak());
 	getCommand("ticket").setExecutor(new TicketCommand());
-	ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA))
-		.shape("fcf", "fsf", "f f").setIngredient('c', Material.CHAINMAIL_CHESTPLATE)
-		.setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
-	getServer().addRecipe(recipeElytra);
-	ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"),
-		new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
-			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
-	getServer().addRecipe(recipeSkulkerShell);
-
     }
 
     @Override
@@ -127,7 +123,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	return plugin;
     }
 
-    public static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
+    public static void registerEvents(Plugin plugin, Listener... listeners) {
 	for (Listener listener : listeners) {
 	    Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
 	}
@@ -206,8 +202,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
 		if ((player.getInventory().getItemInMainHand().getType() == Material.FEATHER)
 			|| (player.getInventory().getItemInOffHand().getType() == Material.FEATHER)) {
 		    if (Cooldown.check(player, "jumper", 5100)) {
-			invincibilityEffect(100, 4).apply(player);
-			player.setVelocity(playerJump(player, 3, 3, 3));
+			(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 100, 4)).apply(player);
+			player.setVelocity(player.getLocation().getDirection().multiply(new Vector(3, 3, 3)));
 		    }
 		}
 	    }
@@ -350,13 +346,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onBlockDispense(BlockDispenseEvent e) {
-	if (e.getItem().equals(new ItemStack(Material.HOPPER_MINECART))) {
-	    e.setCancelled(true);
-	}
-    }
-
-    @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
 	if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
 	    e.setCancelled(true);
@@ -378,34 +367,12 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	}, 30L);
     }
 
-    private PotionEffect invincibilityEffect(int time, int strength) {
-	int duration = time;
-	int amplifier = strength;
-	PotionEffect PotionEffect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration, amplifier);
-	return PotionEffect;
-    }
-
-    public Vector playerJump(Player player, int xval, int yval, int zval) {
-	Vector direction = player.getLocation().getDirection();
-	int x = xval;
-	int y = yval;
-	int z = zval;
-	Vector multiplier = new Vector(x, y, z);
-	Vector newdirection = direction.multiply(multiplier);
-	return newdirection;
-
-    }
-
     public void setTabColor(Player player, String teamname) {
-	Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-	Team team = scoreboard.getTeam(teamname);
-	team.addEntry(player.getName());
+	Bukkit.getScoreboardManager().getMainScoreboard().getTeam(teamname).addEntry(player.getName());
     }
 
     public void removeTabColor(Player player, String teamname) {
-	Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-	Team team = scoreboard.getTeam(teamname);
-	team.removeEntry(player.getName());
+	Bukkit.getScoreboardManager().getMainScoreboard().getTeam(teamname).removeEntry(player.getName());
     }
 
     public ItemStack getPlayerHead(String playername) {
