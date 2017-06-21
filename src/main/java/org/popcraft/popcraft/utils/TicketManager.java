@@ -122,7 +122,7 @@ public class TicketManager {
 	Ticket t = tickets.get(id);
 	if (t == null)
 	    throw new NumberFormatException("Invalid ticket ID");
-	Message.normal(player, "===== Ticket " + ChatColor.RED + "#" + t.getId() + ChatColor.GOLD + " =====");
+	Message.normal(player, "===== Ticket #" + ChatColor.RED + t.getId() + ChatColor.GOLD + " =====");
 	Message.normal(player, "Reporter: " + ChatColor.WHITE + t.getOwner());
 	if (t.getAssignee() != null)
 	    Message.normal(player, "Assignee: " + ChatColor.WHITE + t.getAssignee());

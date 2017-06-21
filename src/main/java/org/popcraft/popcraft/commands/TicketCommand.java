@@ -1,5 +1,6 @@
 package org.popcraft.popcraft.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -192,7 +193,13 @@ public class TicketCommand implements CommandExecutor {
 			text.append(args[i] + " ");
 		    text.append(args[args.length - 1]);
 		    int id = tm.createTicket(player, text.toString());
-		    Message.normal(player, "Successfully created ticket #" + id + ".");
+		    Message.normal(player, "Successfully created ticket #" + ChatColor.RED + id + ChatColor.GOLD + ".");
+		    for (Player p : Bukkit.getOnlinePlayers())
+			if (p.hasPermission("popcraft.ticket.mod"))
+			    Message.normal(player,
+				    "There are " + ChatColor.RED + tm.ticketCount(true) + ChatColor.GOLD
+					    + " tickets open! Type " + ChatColor.RED + "/ticket list" + ChatColor.GOLD
+					    + " to view them.");
 		} else {
 		    Message.usage(player, "ticket");
 		}
