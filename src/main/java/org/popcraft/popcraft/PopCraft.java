@@ -78,7 +78,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
 	getServer().addRecipe(recipeSkulkerShell);
 	registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
-		new Aura(), new Trail(), new Fireworks());
+		new Aura(), new Trail(), new Fireworks(), new Glow());
 	getCommand("textures").setExecutor(new Textures());
 	getCommand("getscore").setExecutor(new GetScore());
 	getCommand("music").setExecutor(new Music());
@@ -150,7 +150,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws EventException {
-	final Player player = event.getPlayer();
+	Player player = event.getPlayer();
 	if (Bukkit.getServer().getOfflinePlayer(player.getUniqueId()).hasPlayedBefore() == true) {
 	    event.setJoinMessage(ChatColor.GREEN + "\u2714 " + player.getName());
 	    Bukkit.getScoreboardManager().getMainScoreboard().getObjective("Minutes").getScore(player.getName())
@@ -159,27 +159,17 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	    event.setJoinMessage(ChatColor.GREEN + "Welcome to PopCraft, " + ChatColor.DARK_GREEN
 		    + player.getDisplayName() + ChatColor.GREEN + "!");
 	    BukkitScheduler scheduler = Bukkit.getScheduler();
+	    final Player finalPlayer = event.getPlayer();
 	    scheduler.runTaskLater(this, new Runnable() {
 		public void run() {
-		    Message.whisper(player, "Type /tpr if you would like to teleport away from spawn.");
-		    Message.whisper(player, "Server rules can be displayed with /rules.");
+		    Message.whisper(finalPlayer, "Type /tpr if you would like to teleport away from spawn.");
+		    Message.whisper(finalPlayer, "Server rules can be displayed with /rules.");
 		}
 	    }, 15L);
-	    onPlayerJoinFirework(player);
+	    onPlayerJoinFirework(finalPlayer);
 	}
-	if (Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()) == null) {
-	    setTabColor(player, "f");
-	}
-	if (player.hasPermission("popcraft.tab.donator") && Bukkit.getScoreboardManager().getMainScoreboard()
-		.getEntryTeam(player.getName()).getName().equals("f")) {
-	    removeTabColor(player, "f");
-	    setTabColor(player, "6");
-	}
-	if (!player.hasPermission("popcraft.tab.donator") && Bukkit.getScoreboardManager().getMainScoreboard()
-		.getEntryTeam(player.getName()).getName().equals("6")) {
-	    removeTabColor(player, "6");
-	    setTabColor(player, "f");
-	}
+	Glow.disableGlow(player);
+	TeamManager.assignTeam(player);
 	if (player.hasPermission("popcraft.ticket.mod")) {
 	    int ticketCount = TicketCommand.getTicketManager().ticketCount(true);
 	    if (ticketCount > 0)
@@ -365,14 +355,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
 		}
 	    }
 	}, 30L);
-    }
-
-    public void setTabColor(Player player, String teamname) {
-	Bukkit.getScoreboardManager().getMainScoreboard().getTeam(teamname).addEntry(player.getName());
-    }
-
-    public void removeTabColor(Player player, String teamname) {
-	Bukkit.getScoreboardManager().getMainScoreboard().getTeam(teamname).removeEntry(player.getName());
     }
 
     public ItemStack getPlayerHead(String playername) {
