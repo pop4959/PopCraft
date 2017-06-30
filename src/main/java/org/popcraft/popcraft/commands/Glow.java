@@ -74,7 +74,7 @@ public class Glow implements Listener, CommandExecutor {
 			    .getTeam((String) task.get(killed.getUniqueId())[1]).getPrefix() + killed.getName()
 			    + ChatColor.RESET));
 	}
-	if (task.containsKey(killer.getUniqueId())) {
+	if (killer != null && task.containsKey(killer.getUniqueId())) {
 	    e.setDeathMessage(e.getDeathMessage().replace(killer.getName(),
 		    Bukkit.getScoreboardManager().getMainScoreboard()
 			    .getTeam((String) task.get(killer.getUniqueId())[1]).getPrefix() + killer.getName()
