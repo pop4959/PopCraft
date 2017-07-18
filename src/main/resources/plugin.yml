@@ -1,6 +1,6 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
-version: 1.8.2.0
+version: 1.8.2.1
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
 authors: [waffelmonster, 2coolGaming]
@@ -33,7 +33,7 @@ commands:
       usage: /fireworks
    tpr:
       description: Teleport to a random location.
-      aliases: wild
+      aliases: [wild, rtp]
       permission: popcraft.tpr
       permission-message: You can't use this.
       usage: /tpr

@@ -196,7 +196,7 @@ public class TicketCommand implements CommandExecutor {
 		    Message.normal(player, "Successfully created ticket #" + ChatColor.RED + id + ChatColor.GOLD + ".");
 		    for (Player p : Bukkit.getOnlinePlayers())
 			if (p.hasPermission("popcraft.ticket.mod"))
-			    Message.normal(player,
+			    Message.normal(p,
 				    "There are " + ChatColor.RED + tm.ticketCount(true) + ChatColor.GOLD
 					    + " tickets open! Type " + ChatColor.RED + "/ticket list" + ChatColor.GOLD
 					    + " to view them.");
