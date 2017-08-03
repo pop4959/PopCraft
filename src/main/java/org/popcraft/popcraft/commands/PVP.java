@@ -96,8 +96,8 @@ public class PVP implements Listener, CommandExecutor {
 	    if (attacker instanceof AreaEffectCloud) {
 		EntityAreaEffectCloud nmsEffectCloud = ((CraftAreaEffectCloud) ((AreaEffectCloud) attacker))
 			.getHandle();
-		if (nmsEffectCloud.y() != null) {
-		    attacker = nmsEffectCloud.y().getBukkitEntity();
+		if (nmsEffectCloud.getSource() != null) {
+		    attacker = nmsEffectCloud.getSource().getBukkitEntity();
 		    if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
 			PotionEffectType potionType = ((AreaEffectCloud) nmsEffectCloud.getBukkitEntity())
 				.getBasePotionData().getType().getEffectType();
