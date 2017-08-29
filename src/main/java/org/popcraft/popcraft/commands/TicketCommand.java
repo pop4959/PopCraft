@@ -30,7 +30,7 @@ public class TicketCommand implements CommandExecutor {
 		    Message.normal(sender,
 			    "/ticket list/archive [page]" + ChatColor.WHITE + ": View current or archived tickets.");
 		    Message.normal(sender,
-			    "/ticket view <id>" + ChatColor.WHITE + ": View detailed ticket information.");
+			    "/ticket read/view <id>" + ChatColor.WHITE + ": View detailed ticket information.");
 		    Message.normal(sender,
 			    "/ticket claim/unclaim <id>" + ChatColor.WHITE + ": Update responsibility for a ticket.");
 		    Message.normal(sender,
@@ -63,7 +63,7 @@ public class TicketCommand implements CommandExecutor {
 			    Message.error(player, "Invalid page number.");
 			}
 		    }
-		} else if (args[0].equalsIgnoreCase("view") && args.length > 1) {
+		} else if ((args[0].equalsIgnoreCase("read") || args[0].equalsIgnoreCase("view")) && args.length > 1) {
 		    if (player.hasPermission("popcraft.ticket.mod")) {
 			try {
 			    tm.view(Integer.parseInt(args[1]), player);
