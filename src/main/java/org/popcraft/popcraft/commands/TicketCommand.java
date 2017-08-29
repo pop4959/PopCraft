@@ -47,7 +47,7 @@ public class TicketCommand implements CommandExecutor {
 			    Message.error(player, "There are no open tickets.");
 			    return true;
 			}
-			tm.list(args.length == 1 ? 1 : Integer.parseInt(args[1]), player, true);
+			tm.list(args.length == 1 ? 0 : Integer.parseInt(args[1]), player, true);
 		    } catch (NumberFormatException e) {
 			Message.error(player, "Invalid page number.");
 		    }

@@ -149,7 +149,7 @@ public class TicketManager {
 	}
 	int pages = (int) Math.ceil((double) listing.size() / LIST_LENGTH);
 	if (page < 1 || page > pages)
-	    throw new NumberFormatException("Invalid page number");
+	    page = pages;
 	Collections.sort(listing);
 	Message.normal(player,
 		ChatColor.YELLOW + "----- " + ChatColor.GOLD + "Tickets" + ChatColor.YELLOW + " -- " + ChatColor.GOLD
