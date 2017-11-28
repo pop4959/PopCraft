@@ -11,13 +11,13 @@ public class GetScore implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("getscore")) {
-	    Scoreboard s = Bukkit.getScoreboardManager().getMainScoreboard();
-	    if (args.length == 1)
-		for (Objective o : s.getObjectives())
-		    sender.sendMessage(o.getName() + " " + o.getScore(args[0]).getScore());
-	    return true;
-	}
-	return false;
+        if (cmd.getName().equalsIgnoreCase("getscore")) {
+            Scoreboard s = Bukkit.getScoreboardManager().getMainScoreboard();
+            if (args.length == 1)
+                for (Objective o : s.getObjectives())
+                    sender.sendMessage(o.getName() + " " + o.getScore(args[0]).getScore());
+            return true;
+        }
+        return false;
     }
 }

@@ -11,12 +11,12 @@ public class Discord implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	Player player = (Player) sender;
-	if (cmd.getName().equalsIgnoreCase("discord")) {
-	    Message.normal(player,
-		    "Click the link to join us on Discord: " + ChatColor.GREEN + "https://discord.gg/98Cw8Mz");
-	    return true;
-	}
-	return false;
+        Player player = (Player) sender;
+        if (cmd.getName().equalsIgnoreCase("discord")) {
+            Message.normal(player,
+                    "Click the link to join us on Discord: " + ChatColor.GREEN + "https://discord.gg/98Cw8Mz");
+            return true;
+        }
+        return false;
     }
 }
