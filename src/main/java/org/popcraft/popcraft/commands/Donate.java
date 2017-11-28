@@ -11,11 +11,11 @@ public class Donate implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	Player player = (Player) sender;
-	if (cmd.getName().equalsIgnoreCase("donate")) {
-	    Message.normal(player, "You may donate at this site: " + ChatColor.GREEN + "popcraft.enjin.com/donate");
-	    return true;
-	}
-	return false;
+        Player player = (Player) sender;
+        if (cmd.getName().equalsIgnoreCase("donate")) {
+            Message.normal(player, "You may donate at this site: " + ChatColor.GREEN + "popcraft.enjin.com/donate");
+            return true;
+        }
+        return false;
     }
 }

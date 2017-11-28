@@ -11,12 +11,12 @@ public class TeamSpeak implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	Player player = (Player) sender;
-	if (cmd.getName().equalsIgnoreCase("teamspeak")) {
-	    Message.normal(player,
-		    "TeamSpeak server address: " + ChatColor.GREEN + "ts3.popcraft.org");
-	    return true;
-	}
-	return false;
+        Player player = (Player) sender;
+        if (cmd.getName().equalsIgnoreCase("teamspeak")) {
+            Message.normal(player,
+                    "TeamSpeak server address: " + ChatColor.GREEN + "ts3.popcraft.org");
+            return true;
+        }
+        return false;
     }
 }
