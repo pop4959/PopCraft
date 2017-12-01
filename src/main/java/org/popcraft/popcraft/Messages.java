@@ -41,7 +41,7 @@ public enum Messages {
 
     VERSION(
             "version",
-            "<GREEN>%s<RESET> version <GREEN>%s<RESET>%n Website: <GREEN>%s<RESET>%n Authors: "
+            "<GREEN>%s<RESET> version <GREEN>%s<RESET>%n Website: <GREEN>%s<RESET>%n Authors: %s"
                     .replaceAll("<GREEN>", GREEN.toString())
                     .replaceAll("<RESET>", RESET.toString()),
             getPlugin().getDescription().getName(),
