@@ -7,3 +7,6 @@ For Mac/Linux
 ``` ./gradlew startDevServer ```
 For Windows
 ``` ./gradlew.bat startDevServer ```
+
+## TODO
+* Possible Revive `History`, `Name`, and `UUID`

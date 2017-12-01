@@ -69,24 +69,19 @@ public final class PopCraft extends JavaPlugin implements Listener {
         getServer().addRecipe(recipeSkulkerShell);
         registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
                 new Aura(), new Trail(), new Fireworks(), new Glow(), new WitchTrap());
+
         getCommand("textures").setExecutor(new Textures());
         getCommand("getscore").setExecutor(new GetScore());
         getCommand("music").setExecutor(new Music());
         getCommand("listgen").setExecutor(new Listgen());
         getCommand("me").setExecutor(new Me());
-        getCommand("donate").setExecutor(new Donate());
-        getCommand("discord").setExecutor(new Discord());
-        getCommand("uuid").setExecutor(new Uuid());
         getCommand("staff").setExecutor(new Staff());
         getCommand("fireworks").setExecutor(new Fireworks());
-        getCommand("tpr").setExecutor(new Tpr());
+        getCommand("tpr").setExecutor(new Tpr(config));
         getCommand("supersay").setExecutor(new SuperSay());
         getCommand("pop").setExecutor(new Pop());
         getCommand("lockdown").setExecutor(new Lockdown());
-        getCommand("plugins").setExecutor(new Plugins());
-        getCommand("version").setExecutor(new Version());
         getCommand("handicap").setExecutor(new Handicap());
-        getCommand("vote").setExecutor(new Vote());
         getCommand("piggyback").setExecutor(new Piggyback());
         getCommand("lol").setExecutor(jonslogger);
         getCommand("lolreload").setExecutor(jonslogger);
@@ -95,12 +90,10 @@ public final class PopCraft extends JavaPlugin implements Listener {
         getCommand("trail").setExecutor(new Trail());
         getCommand("flames").setExecutor(new Trail());
         getCommand("hearts").setExecutor(new Trail());
-        getCommand("history").setExecutor(new History());
-        getCommand("name").setExecutor(new Name());
         getCommand("spoof").setExecutor(new Spoof());
         getCommand("glow").setExecutor(new Glow());
-        getCommand("teamspeak").setExecutor(new TeamSpeak());
         getCommand("ticket").setExecutor(new TicketCommand());
+        Messages.registerCommands(this);
     }
 
     @Override

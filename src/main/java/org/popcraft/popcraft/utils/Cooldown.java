@@ -3,10 +3,11 @@ package org.popcraft.popcraft.utils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Cooldown {
 
-    private static HashMap<String, Long> cooldown = new HashMap<String, Long>();
+    private static Map<String, Long> cooldown = new HashMap<String, Long>();
 
     public static boolean check(Player player, String type, int cooldownMillis) {
         if (cooldown.containsKey(player.getName() + "-" + type)) {
