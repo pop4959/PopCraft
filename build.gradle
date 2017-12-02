@@ -49,6 +49,15 @@ dependencies {
     compile group: 'org.spigotmc', name: 'spigot-api', version: project.property("apiversion")
     compile group: 'org.spigotmc', name: 'spigot', version: project.property("apiversion")
 
+    compile "com.beust:jcommander:1.71"
+    compile 'com.github.davidmoten:rxjava2-jdbc:0.1-RC19'
+    compile 'com.google.inject:guice:4.1.0'
+    compile 'io.vavr:vavr:0.9.2'
+    compile 'org.reflections:reflections:0.9.11'
+    compile 'org.xerial:sqlite-jdbc:3.21.0'
+
+    compileOnly 'org.projectlombok:lombok:1.16.16'
+
     // dependencies go here
     // Example:
     // compile group: 'com.google.guava', name: 'guava', version: '19.0'
