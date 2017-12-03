@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TicketManager;
 
+@Deprecated
 public class TicketCommand implements CommandExecutor {
 
     private static TicketManager tm = new TicketManager();

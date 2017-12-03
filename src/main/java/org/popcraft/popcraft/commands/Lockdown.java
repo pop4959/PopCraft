@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.popcraft.popcraft.utils.Message;
 
+@Deprecated
 public class Lockdown implements CommandExecutor {
 
     static boolean lockdown = false;

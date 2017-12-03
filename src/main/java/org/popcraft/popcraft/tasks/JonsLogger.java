@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Deprecated
 public class JonsLogger implements Listener, CommandExecutor {
 
     private String fileLocation = "flag.txt";

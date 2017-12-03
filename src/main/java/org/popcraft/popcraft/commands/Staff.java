@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.utils.Message;
 
+@Deprecated
 public class Staff implements CommandExecutor {
 
     @Override

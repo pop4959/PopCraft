@@ -10,6 +10,7 @@ import org.popcraft.popcraft.utils.Message;
 
 import java.io.File;
 
+@Deprecated
 public class Me implements CommandExecutor {
 
     @Override

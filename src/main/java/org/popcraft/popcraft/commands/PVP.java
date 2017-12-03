@@ -21,6 +21,7 @@ import org.popcraft.popcraft.utils.Message;
 import java.util.Collection;
 import java.util.HashMap;
 
+@Deprecated
 public class PVP implements Listener, CommandExecutor {
 
     public static HashMap<String, Boolean> pvp = new HashMap<String, Boolean>();

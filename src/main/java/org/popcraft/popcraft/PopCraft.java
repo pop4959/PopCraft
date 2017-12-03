@@ -1,9 +1,15 @@
 package org.popcraft.popcraft;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import io.vavr.collection.Map;
+import io.vavr.collection.Set;
 import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -19,6 +25,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
@@ -28,7 +35,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.popcraft.popcraft.commands.*;
-import org.popcraft.popcraft.tasks.*;
+import org.popcraft.popcraft.newCode.PopCraftModule;
+import org.popcraft.popcraft.tasks.AnvilColor;
+import org.popcraft.popcraft.tasks.AnvilLogger;
+import org.popcraft.popcraft.tasks.MagicMessage;
+import org.popcraft.popcraft.tasks.WitchTrap;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TeamManager;
@@ -39,61 +50,49 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import static java.lang.String.format;
+import static org.popcraft.popcraft.newCode.PopCraftModule.*;
+
+//TODO Figure out this MagicMessage business
+@Deprecated
 public final class PopCraft extends JavaPlugin implements Listener {
 
     private static Plugin plugin;
     public static FileConfiguration config;
-    MagicMessage MagicMessage = new MagicMessage();
-    JonsLogger jonslogger = new JonsLogger(this, getConfig().getString("jonslogger.flag").split(","),
-            getConfig().getString("jonslogger.commands").split(","));
+    private MagicMessage MagicMessage = new MagicMessage();
 
     @Override
     public void onEnable() {
+        //TODO Deprecate this
         plugin = this;
         config = getConfig();
-        config.options().copyDefaults(true);
-        saveConfig();
-        if (config.getBoolean("magicmessage.enableonstartup")) {
-            MagicMessage.setMessage(config.getString("magicmessage.defaultmessage"));
-            MagicMessage.setEnabled(true);
-            MagicMessage.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, MagicMessage,
-                    config.getLong("magicmessage.defaultinterval"), config.getLong("magicmessage.defaultinterval")));
-        }
-        ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA))
-                .shape("fcf", "fsf", "f f").setIngredient('c', Material.CHAINMAIL_CHESTPLATE)
-                .setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
-        getServer().addRecipe(recipeElytra);
-        ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"),
-                new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
-                .setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
-        getServer().addRecipe(recipeSkulkerShell);
-        registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
-                new Aura(), new Trail(), new Fireworks(), new Glow(), new WitchTrap());
 
-        getCommand("textures").setExecutor(new Textures());
-        getCommand("getscore").setExecutor(new GetScore());
-        getCommand("music").setExecutor(new Music());
-        getCommand("listgen").setExecutor(new Listgen());
-        getCommand("me").setExecutor(new Me());
-        getCommand("staff").setExecutor(new Staff());
-        getCommand("fireworks").setExecutor(new Fireworks());
-        getCommand("tpr").setExecutor(new Tpr(config));
-        getCommand("supersay").setExecutor(new SuperSay());
-        getCommand("pop").setExecutor(new Pop());
-        getCommand("lockdown").setExecutor(new Lockdown());
-        getCommand("handicap").setExecutor(new Handicap());
-        getCommand("piggyback").setExecutor(new Piggyback());
-        getCommand("lol").setExecutor(jonslogger);
-        getCommand("lolreload").setExecutor(jonslogger);
-        getCommand("aura").setExecutor(new Aura());
-        getCommand("pvp").setExecutor(new PVP());
-        getCommand("trail").setExecutor(new Trail());
-        getCommand("flames").setExecutor(new Trail());
-        getCommand("hearts").setExecutor(new Trail());
-        getCommand("spoof").setExecutor(new Spoof());
-        getCommand("glow").setExecutor(new Glow());
-        getCommand("ticket").setExecutor(new TicketCommand());
+        getLogger().info("Popcraft plugin starting up...");
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        final Injector injector = Guice.createInjector(new PopCraftModule(this));
+
+        //Register Commands
+        getLogger().info("Registering Commands");
+        final Map<String, CommandExecutor> commands = injector.getInstance(COMMAND_KEY);
+        commands.map(pair -> format("Registering /%s with %s", pair._1, pair._2)).forEach(getLogger()::info);
+        commands.mapKeys(this::getCommand).forEach(PluginCommand::setExecutor);
+
         Messages.registerCommands(this);
+
+        //Register Listeners
+        getLogger().info("Registering Listeners");
+        final Set<Listener> listeners = injector.getInstance(LISTENERS_KEY);
+        listeners.map(listener -> format("Registering %s as a listener", listener)).forEach(getLogger()::info);
+        listeners.forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
+
+        //Register Recipes
+        getLogger().info("Registering Recipes");
+        final Set<Recipe> recipes = injector.getInstance(RECIPES_KEY);
+        getLogger().info(format("Registering %d recipes", recipes.size()));
+        recipes.forEach(getServer()::addRecipe);
+
+        getLogger().info("PopCraft is now completely enabled");
     }
 
     @Override
@@ -102,14 +101,9 @@ public final class PopCraft extends JavaPlugin implements Listener {
         getLogger().info("PopCraft plugin shutting down...");
     }
 
+    @Deprecated
     public static Plugin getPlugin() {
         return plugin;
-    }
-
-    public static void registerEvents(Plugin plugin, Listener... listeners) {
-        for (Listener listener : listeners) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-        }
     }
 
     @Override
@@ -134,7 +128,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws EventException {
         Player player = event.getPlayer();
-        if (Bukkit.getServer().getOfflinePlayer(player.getUniqueId()).hasPlayedBefore() == true) {
+        if (Bukkit.getServer().getOfflinePlayer(player.getUniqueId()).hasPlayedBefore()) {
             event.setJoinMessage(ChatColor.GREEN + "\u2714 " + player.getName());
             Bukkit.getScoreboardManager().getMainScoreboard().getObjective("Minutes").getScore(player.getName())
                     .setScore((int) (Math.round(player.getStatistic(Statistic.PLAY_ONE_TICK) / 1200)));

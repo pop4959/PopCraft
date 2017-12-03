@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Deprecated
 public class Music implements CommandExecutor {
 
     private static HashMap<UUID, Sound> playing = new HashMap<UUID, Sound>();

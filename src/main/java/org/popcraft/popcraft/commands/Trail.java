@@ -23,6 +23,7 @@ import org.popcraft.popcraft.utils.TrailMeta.TrailType;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Deprecated
 public class Trail implements Listener, CommandExecutor {
 
     private static HashMap<String, TrailMeta> trailtypes = new HashMap<String, TrailMeta>();

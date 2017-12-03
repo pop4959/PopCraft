@@ -1,6 +1,7 @@
 package org.popcraft.popcraft.commands;
 
 import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.PopCraft;
+import org.popcraft.popcraft.newCode.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
 import java.util.Set;
@@ -20,6 +22,7 @@ import static org.bukkit.Material.*;
 import static org.bukkit.block.Biome.*;
 import static org.popcraft.popcraft.utils.Cooldown.check;
 
+@PopCommand("tpr")
 public class Tpr implements CommandExecutor {
 
     private static final String EXTENDED_TPR_PERMISSION = "popcraft.tpr.extended";
@@ -42,12 +45,7 @@ public class Tpr implements CommandExecutor {
     private final int range;
     private final int extendedRange;
 
-    public Tpr(int cooldown, int range, int extendedRange) {
-        this.cooldown = cooldown;
-        this.range = range;
-        this.extendedRange = extendedRange;
-    }
-
+    @Inject
     public Tpr(FileConfiguration config) {
         this.cooldown = config.getInt("commands.tpr.cooldown");
         this.range = config.getInt("commands.tpr.range");

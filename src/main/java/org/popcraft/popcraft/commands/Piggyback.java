@@ -13,6 +13,7 @@ import org.popcraft.popcraft.utils.Message;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Deprecated
 public class Piggyback implements Listener, CommandExecutor {
     public static HashMap<UUID, Boolean> piggyback = new HashMap<UUID, Boolean>();
 

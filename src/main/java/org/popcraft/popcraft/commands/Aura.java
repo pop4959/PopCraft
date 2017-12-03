@@ -22,6 +22,7 @@ import org.popcraft.popcraft.utils.TrailMeta.TrailType;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Deprecated
 public class Aura implements Listener, CommandExecutor {
 
     public static HashMap<String, TrailMeta> auratypes = new HashMap<String, TrailMeta>();

@@ -17,6 +17,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.popcraft.popcraft.PopCraft;
 import org.popcraft.popcraft.utils.Message;
 
+@Deprecated
 public class Fireworks implements Listener, CommandExecutor {
 
     @Override

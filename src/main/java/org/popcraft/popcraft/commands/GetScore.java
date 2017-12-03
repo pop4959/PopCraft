@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+@Deprecated
 public class GetScore implements CommandExecutor {
 
     @Override
