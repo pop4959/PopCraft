@@ -118,14 +118,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent e) {
-        if (Lockdown.isLockdown()) {
-            e.disallow(Result.KICK_OTHER, ChatColor.GREEN + "PopCraft" + ChatColor.RESET
-                    + "\n\nServer temporarily unavailable. Please try again later!");
-        }
-    }
-
-    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws EventException {
         Player player = event.getPlayer();
         if (Bukkit.getServer().getOfflinePlayer(player.getUniqueId()).hasPlayedBefore()) {
@@ -204,14 +196,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
                 return;
             }
         }
-    }
-
-    @EventHandler
-    public void onServerListPing(ServerListPingEvent e) {
-        if (e.getMaxPlayers() > Bukkit.getMaxPlayers())
-            e.setMaxPlayers(e.getNumPlayers());
-        if (Lockdown.isLockdown())
-            e.setMaxPlayers(0);
     }
 
     @EventHandler

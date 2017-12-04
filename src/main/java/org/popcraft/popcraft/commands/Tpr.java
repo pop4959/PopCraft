@@ -2,7 +2,6 @@ package org.popcraft.popcraft.commands;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -12,7 +11,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.popcraft.popcraft.PopCraft;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.popcraft.popcraft.newCode.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
@@ -38,15 +37,20 @@ public class Tpr implements CommandExecutor {
     private static final Set<Material> UNSAFE_MATERIALS = Sets.immutableEnumSet(
             STATIONARY_LAVA,
             LAVA,
-            CACTUS
+            CACTUS,
+            STATIONARY_WATER,
+            WATER
     );
+
+    private final JavaPlugin plugin;
 
     private final int cooldown;
     private final int range;
     private final int extendedRange;
 
     @Inject
-    public Tpr(FileConfiguration config) {
+    public Tpr(final JavaPlugin plugin, final FileConfiguration config) {
+        this.plugin = plugin;
         this.cooldown = config.getInt("commands.tpr.cooldown");
         this.range = config.getInt("commands.tpr.range");
         this.extendedRange = config.getInt("commands.tpr.extendedrange");
@@ -60,7 +64,7 @@ public class Tpr implements CommandExecutor {
         }
         final Player player = (Player) sender;
         if (check(player, "tpr", cooldown)) {
-            Bukkit.getScheduler().runTask(PopCraft.getPlugin(), () -> {
+            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                 player.teleport(
                         getRandomCoordinate(
                                 player.hasPermission(EXTENDED_TPR_PERMISSION) ? this.extendedRange : this.range
@@ -83,13 +87,13 @@ public class Tpr implements CommandExecutor {
         Location location;
         do {
             location = new Location(
-                    Bukkit.getServer().getWorlds().get(0),
+                    this.plugin.getServer().getWorlds().get(0),
                     distance * randomDirection() * Math.random(),
                     0,
                     distance * randomDirection() * Math.random()
             );
             location.setY(location.getWorld().getHighestBlockYAt(location));
-        } while (!notSafe(location));
+        } while (notSafe(location));
         return location.add(0, 1, 0);
     }
 
