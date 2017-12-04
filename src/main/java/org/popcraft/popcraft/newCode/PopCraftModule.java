@@ -8,6 +8,7 @@ import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
@@ -53,6 +54,7 @@ public class PopCraftModule extends AbstractModule {
     @Override
     protected void configure() {
         this.bind(JavaPlugin.class).toInstance(this.plugin);
+        this.bind(Server.class).toInstance(this.plugin.getServer());
         this.bind(FileConfiguration.class).toInstance(this.plugin.getConfig());
     }
 
@@ -95,7 +97,7 @@ public class PopCraftModule extends AbstractModule {
 
         Set<Listener> defaultListeners = HashSet.ofAll(reflections.getSubTypesOf(Listener.class))
                 .filter(clazz -> !clazz.isAnnotationPresent(Deprecated.class))
-                .filter(element -> !commandListenerClasses.contains(element.getClass()))
+                .filter(element -> !commandListenerClasses.contains(element))
                 .map(type -> injector.getInstance(type.asSubclass(Listener.class)));
 
         return defaultListeners.addAll(commandListeners);

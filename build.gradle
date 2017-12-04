@@ -56,6 +56,9 @@ dependencies {
     compile 'org.reflections:reflections:0.9.11'
     compile 'org.xerial:sqlite-jdbc:3.21.0'
 
+    compile 'org.apache.commons:commons-collections4:4.0'
+    compile 'org.apache.commons:commons-lang3:3.7'
+
     compileOnly 'org.projectlombok:lombok:1.16.16'
 
     // dependencies go here
