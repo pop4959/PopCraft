@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class Cooldown {
 
@@ -51,6 +52,16 @@ public class Cooldown {
         } else {
             return "NaN";
         }
+    }
+
+    public static Function<Player, Boolean> defaultCooldown(final String command, final int cooldown) {
+        return (player) -> {
+            if (check(player, command, cooldown)) {
+                return true;
+            }
+            Message.cooldown(player, command, cooldown);
+            return false;
+        };
     }
 
 }

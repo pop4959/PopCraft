@@ -1,10 +1,11 @@
 package org.popcraft.popcraft.commands;
 
 import net.minecraft.server.v1_12_R1.EntityAreaEffectCloud;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftAreaEffectCloud;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -20,38 +21,48 @@ import org.popcraft.popcraft.utils.Message;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import static java.lang.String.format;
+import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.Sound.ENTITY_CHICKEN_AMBIENT;
+import static org.bukkit.Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO;
+import static org.popcraft.popcraft.utils.Cooldown.reset;
 
 @Deprecated
-public class PVP implements Listener, CommandExecutor {
+public class PVP extends PlayerCommand implements Listener {
 
-    public static HashMap<String, Boolean> pvp = new HashMap<String, Boolean>();
+    private Map<String, Boolean> pvp = new HashMap<>();
+
+    private static final Function<Player, Boolean> cooldownCheck = Cooldown.defaultCooldown("pvp", 5000);
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player = (Player) sender;
-        if (cmd.getName().equalsIgnoreCase("pvp")) {
-            if (Cooldown.check(player, "pvp", 5000)) {
-                if (!PVP.getPvp(player)) {
-                    PVP.setPvp(player, true);
-                    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
-                    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
-                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO, 2,
-                            1);
-                } else {
-                    PVP.setPvp(player, false);
-                    Message.normal(player, "Your PvP is now " + ChatColor.RED + "disabled" + ChatColor.GOLD + "!");
-                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CHICKEN_AMBIENT, 2, 1);
-                }
-            } else {
-                Message.cooldown(player, "pvp", 5000);
-            }
-            return true;
-        }
-        return false;
+    public boolean onPlayerCommand(Player player, Command command, String label, String[] args) {
+        final boolean newState = !this.getPvp(player);
+        this.pvp.put(player.getName(), newState);
+        Message.normal(player, format("Your PvP is now %s%s%s!", RED, newState ? "enabled" : "disabled", GOLD));
+
+        final World world = player.getWorld();
+
+        world.spawnParticle(newState ? Particle.LAVA : Particle.SPIT, player.getLocation(), 50);
+        world.playSound(
+                player.getLocation(),
+                newState ? ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO : ENTITY_CHICKEN_AMBIENT,
+                2,
+                1
+        );
+        return true;
+    }
+
+    @Override
+    public boolean playerCheck(Player player) {
+        return cooldownCheck.apply(player);
     }
 
     @EventHandler
-    public static void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         Entity victim = e.getEntity();
         Entity attacker = e.getDamager();
         if (victim instanceof Player) {
@@ -62,7 +73,7 @@ public class PVP implements Listener, CommandExecutor {
             } catch (IllegalArgumentException ex) {
             }
             if (attacker instanceof Player) {
-                if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker)))
+                if (!(this.getPvp((Player) victim) && this.getPvp((Player) attacker)))
                     e.setCancelled(true);
             }
             if (attacker instanceof Projectile) {
@@ -71,7 +82,7 @@ public class PVP implements Listener, CommandExecutor {
                     attacker = (Player) ((Projectile) e.getDamager()).getShooter();
                 } catch (ClassCastException ex) {
                 }
-                if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
+                if (attacker instanceof Player && !(this.getPvp((Player) victim) && this.getPvp((Player) attacker))) {
                     if (projectile instanceof Arrow || projectile instanceof Egg || projectile instanceof FishHook
                             || projectile instanceof Snowball || projectile instanceof EnderPearl) {
                         e.setCancelled(true);
@@ -83,7 +94,7 @@ public class PVP implements Listener, CommandExecutor {
                         .getHandle();
                 if (nmsEffectCloud.getSource() != null) {
                     attacker = nmsEffectCloud.getSource().getBukkitEntity();
-                    if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
+                    if (attacker instanceof Player && !(this.getPvp((Player) victim) && this.getPvp((Player) attacker))) {
                         PotionEffectType potionType = ((AreaEffectCloud) nmsEffectCloud.getBukkitEntity())
                                 .getBasePotionData().getType().getEffectType();
                         if (potionType == PotionEffectType.HARM || potionType == PotionEffectType.POISON)
@@ -91,18 +102,18 @@ public class PVP implements Listener, CommandExecutor {
                     }
                 }
             }
-            Cooldown.reset((Player) victim, "pvp", 5000);
+            reset((Player) victim, "pvp", 5000);
         }
     }
 
     @EventHandler
-    public static void onEntityCombustByEntity(EntityCombustByEntityEvent e) {
+    public void onEntityCombustByEntity(EntityCombustByEntityEvent e) {
         Entity victim = e.getEntity();
         if (victim instanceof Player) {
             if (e.getCombuster() instanceof Arrow) {
                 ProjectileSource source = ((Arrow) e.getCombuster()).getShooter();
                 if (source instanceof Player) {
-                    if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) source)))
+                    if (!(this.getPvp((Player) victim) && this.getPvp((Player) source)))
                         e.setCancelled(true);
                 }
             }
@@ -110,7 +121,7 @@ public class PVP implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public static void onPotionSplash(PotionSplashEvent e) {
+    public void onPotionSplash(PotionSplashEvent e) {
         if (e.getEntity().getShooter() instanceof Player) {
             for (LivingEntity entity : e.getAffectedEntities()) {
                 if (!(entity instanceof Player)) {
@@ -122,8 +133,8 @@ public class PVP implements Listener, CommandExecutor {
             }
             for (LivingEntity entity : e.getAffectedEntities()) {
                 if (entity instanceof Player
-                        && !(PVP.getPvp((Player) entity) && PVP.getPvp((Player) e.getEntity().getShooter()))) {
-                    Cooldown.reset((Player) entity, "pvp", 5000);
+                        && !(this.getPvp((Player) entity) && this.getPvp((Player) e.getEntity().getShooter()))) {
+                    reset((Player) entity, "pvp", 5000);
                     PotionEffectType[] pvpPotions = {PotionEffectType.HARM, PotionEffectType.POISON,
                             PotionEffectType.SLOW, PotionEffectType.WEAKNESS};
                     for (PotionEffectType t : pvpPotions)
@@ -136,7 +147,7 @@ public class PVP implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public static void onLingeringPotionSplash(LingeringPotionSplashEvent e) {
+    public void onLingeringPotionSplash(LingeringPotionSplashEvent e) {
         // TODO: Replace NMS
     }
 
@@ -146,7 +157,7 @@ public class PVP implements Listener, CommandExecutor {
         if (bucket.toString().contains("LAVA_BUCKET")) {
             for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
                 if (en instanceof Player) {
-                    if (!PVP.getPvp(((Player) en))) {
+                    if (!this.getPvp(((Player) en))) {
                         e.setCancelled(true);
                         e.getPlayer().updateInventory();
                     }
@@ -160,7 +171,7 @@ public class PVP implements Listener, CommandExecutor {
         if (e.getIgnitingEntity() instanceof Player) {
             for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
                 if (en instanceof Player) {
-                    if (!PVP.getPvp(((Player) en))) {
+                    if (!this.getPvp(((Player) en))) {
                         e.setCancelled(true);
                     }
                 }
@@ -178,15 +189,7 @@ public class PVP implements Listener, CommandExecutor {
         }
     }
 
-    private static void setPvp(Player player, Boolean state) {
-        pvp.put(player.getName(), state);
-    }
-
-    private static boolean getPvp(Player player) {
-        if (!pvp.containsKey(player.getName())) {
-            pvp.put(player.getName(), false);
-        }
-        Boolean state = pvp.get(player.getName());
-        return state;
+    private boolean getPvp(Player player) {
+        return pvp.getOrDefault(player.getName(), false);
     }
 }

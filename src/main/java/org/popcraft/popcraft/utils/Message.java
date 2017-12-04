@@ -1,5 +1,6 @@
 package org.popcraft.popcraft.utils;
 
+import io.vavr.collection.Array;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -7,6 +8,9 @@ import org.bukkit.entity.Player;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static java.lang.String.format;
+import static net.md_5.bungee.api.ChatColor.translateAlternateColorCodes;
 
 public class Message {
 

@@ -1,8 +1,7 @@
 package org.popcraft.popcraft.commands;
 
+import com.google.common.collect.Range;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,19 +20,15 @@ import static net.md_5.bungee.api.ChatColor.RED;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @PopCommand("piggyback")
-public class Piggyback implements Listener, CommandExecutor {
+public class Piggyback extends PlayerCommand implements Listener {
 
     private final Map<UUID, Boolean> piggyback = new HashMap<>();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return false;
-        }
-        final Player player = ((Player) sender);
+    public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
         final boolean rideable = !this.canPiggyBack(player);
         this.piggyback.put(player.getUniqueId(), rideable);
-        sender.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, rideable ? "enabled" : "disabled", GOLD));
+        player.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, rideable ? "enabled" : "disabled", GOLD));
         return true;
     }
 

@@ -1,41 +1,35 @@
 package org.popcraft.popcraft.commands;
 
+import com.google.common.collect.Range;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.popcraft.popcraft.newCode.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
-@Deprecated
-public class Textures implements CommandExecutor {
+@PopCommand("textures")
+public class Textures extends PlayerCommand {
+
+    private static final Map<String, String> resourceMap = HashMap.of(
+            "1", "http://files.popcraft.org:8080/bin/PopCraft1.zip",
+            "2", "http://files.popcraft.org:8080/bin/PopCraft2.zip"
+    );
+
+    public Textures() {
+        super(Range.closed(0, 1));
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player = (Player) sender;
-        if (cmd.getName().equalsIgnoreCase("textures")) {
-            if (args.length > 0) {
-                if (args[0].equals("1")) {
-                    try {
-                        player.setResourcePack("http://files.popcraft.org:8080/bin/PopCraft1.zip");
-                    } catch (NullPointerException e) {
-                        Message.error(player,
-                                "Cannot find texture pack. Please contact an administrator for assistance.");
-                    }
-                } else if (args[0].equals("2")) {
-                    try {
-                        player.setResourcePack("http://files.popcraft.org:8080/bin/PopCraft2.zip");
-                    } catch (NullPointerException e) {
-                        Message.error(player,
-                                "Cannot find texture pack. Please contact an administrator for assistance.");
-                    }
-                }
-            } else {
-                try {
-                    player.setResourcePack("http://files.popcraft.org:8080/bin/PopCraft.zip");
-                } catch (NullPointerException e) {
-                    Message.error(player, "Cannot find texture pack. Please contact an administrator for assistance.");
-                }
-            }
+    public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
+        String url = "http://files.popcraft.org:8080/bin/PopCraft.zip";
+        if (args.length == 1) {
+            url = resourceMap.getOrElse(args[0], url);
+        }
+        try {
+            player.setResourcePack(url);
+        } catch (NullPointerException e) {
+            Message.error(player, "Cannot find texture pack. Please contact an administrator for assistance.");
         }
         return true;
     }
