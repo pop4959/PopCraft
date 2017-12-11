@@ -1,67 +1,73 @@
 package org.popcraft.popcraft.commands;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.popcraft.popcraft.utils.Message;
+import org.popcraft.popcraft.newCode.PopCommand;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-@Deprecated
+import static java.lang.String.format;
+import static net.md_5.bungee.api.ChatColor.GOLD;
+import static net.md_5.bungee.api.ChatColor.RED;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+
+@PopCommand("piggyback")
 public class Piggyback implements Listener, CommandExecutor {
-    public static HashMap<UUID, Boolean> piggyback = new HashMap<UUID, Boolean>();
+
+    private final Map<UUID, Boolean> piggyback = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (cmd.getName().equalsIgnoreCase("piggyback")) {
-            if (getRideable(p.getUniqueId())) {
-                Message.normal(sender, "Piggyback " + ChatColor.RED + "disabled" + ChatColor.GOLD + ".");
-                setRideable(p.getUniqueId(), false);
-            } else {
-                Message.normal(sender, "Piggyback " + ChatColor.RED + "enabled" + ChatColor.GOLD + ".");
-                setRideable(p.getUniqueId(), true);
-            }
+        if (!(sender instanceof Player)) {
+            return false;
         }
+        final Player player = ((Player) sender);
+        final boolean rideable = !this.canPiggyBack(player);
+        this.piggyback.put(player.getUniqueId(), rideable);
+        sender.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, rideable ? "enabled" : "disabled", GOLD));
         return true;
+    }
+
+    private boolean canPiggyBack(final Entity player) {
+        return !(player instanceof Player) || this.piggyback.getOrDefault(player.getUniqueId(), false);
     }
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
-        if (e.getRightClicked() instanceof Player) {
-            Player rider = e.getPlayer();
-            Player target = (Player) e.getRightClicked();
-            {
-                if (rider.getVehicle() == null && rider.getPassenger() == null) {
-                    if (target.getPassenger() != null)
-                        do
-                            target = (Player) target.getPassenger();
-                        while (target.getPassenger() != null);
-                    if (getRideable(rider.getUniqueId()) && getRideable(target.getUniqueId()))
-                        target.setPassenger(rider);
-                } else {
-                    if (target == rider.getPassenger())
-                        rider.eject();
-                }
+        final Player rider = e.getPlayer();
+        if (this.canPiggyBack(rider)) {
+            final Entity target = e.getRightClicked();
+            rideTarget(rider, target);
+        }
+    }
+
+    private void rideTarget(Player rider, Entity target) {
+        if (rider.getVehicle() == null && isEmpty(rider.getPassengers())) {
+            final Entity topMostEntity = this.getTopMostEntity(target);
+            if (this.canPiggyBack(topMostEntity)) {
+                topMostEntity.addPassenger(rider);
             }
+        } else if (rider.getPassengers().contains(target)) {
+            rider.eject();
         }
     }
 
-    private static void setRideable(UUID uuid, Boolean state) {
-        piggyback.put(uuid, state);
+    private Entity getTopMostEntity(final Entity entity) {
+        final List<Entity> passengers = entity.getPassengers();
+        if (!isEmpty(passengers)) {
+            //TODO: How to address mutliple passengers
+            return this.getTopMostEntity(passengers.get(0));
+        }
+        return entity;
     }
 
-    private static boolean getRideable(UUID uuid) {
-        if (!piggyback.containsKey(uuid)) {
-            piggyback.put(uuid, false);
-        }
-        Boolean state = piggyback.get(uuid);
-        return state;
-    }
 }
