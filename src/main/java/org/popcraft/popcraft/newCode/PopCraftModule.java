@@ -8,6 +8,7 @@ import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
@@ -54,6 +55,7 @@ public class PopCraftModule extends AbstractModule {
     protected void configure() {
         this.bind(JavaPlugin.class).toInstance(this.plugin);
         this.bind(FileConfiguration.class).toInstance(this.plugin.getConfig());
+        this.bind(Server.class).toInstance(this.plugin.getServer());
     }
 
     @Provides
