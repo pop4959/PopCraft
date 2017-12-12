@@ -10,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.newCode.PopCommand;
-import org.popcraft.popcraft.utils.Message;
 
 import java.util.function.Function;
 
@@ -22,10 +21,10 @@ import static org.bukkit.ChatColor.GREEN;
 public class Spoof implements CommandExecutor {
 
     private static final Map<String, Function<Player, String>> spoofMapping = HashMap.of(
-            "join", p -> format("%s\u2714%s", GREEN, p.getName()),
-            "quit", p -> format("%s\u2715%s", GREEN, p.getName()),
+            "join", p -> format("%s\u2714 %s", GREEN, p.getName()),
+            "quit", p -> format("%s\u2715 %s", GREEN, p.getName()),
             "afk", p -> format("%s* %s%s is now AFK.", GRAY, p.getDisplayName(), GRAY),
-            "no-afk", p -> format("%s* %s%s is no longer AFK", GRAY, p.getDisplayName(), GRAY)
+            "no-afk", p -> format("%s* %s%s is no longer AFK.", GRAY, p.getDisplayName(), GRAY)
     );
     private final Server server;
 

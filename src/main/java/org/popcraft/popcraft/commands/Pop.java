@@ -2,8 +2,6 @@ package org.popcraft.popcraft.commands;
 
 import com.google.inject.Inject;
 import io.vavr.collection.Array;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
