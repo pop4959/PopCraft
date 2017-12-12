@@ -42,7 +42,7 @@ public class Listgen implements CommandExecutor {
         return true;
     }
 
-    public void generatePlayerList(OfflinePlayer[] playerList) throws IOException {
+    private void generatePlayerList(OfflinePlayer[] playerList) throws IOException {
         File players = new File("players.txt");
         if (!players.exists())
             players.createNewFile();
@@ -56,11 +56,11 @@ public class Listgen implements CommandExecutor {
         }
     }
 
-    public void generatePlayerCount(OfflinePlayer[] playerList) throws IOException {
+    private void generatePlayerCount(OfflinePlayer[] playerList) throws IOException {
         File count = new File("count.txt");
         if (!count.exists())
             count.createNewFile();
-        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(count.getAbsoluteFile()));) {
+        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(count.getAbsoluteFile()))) {
             writer.write(Integer.toString(playerList.length));
             writer.newLine();
             writer.close();
