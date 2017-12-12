@@ -6,61 +6,64 @@ import org.bukkit.material.MaterialData;
 public class TrailMeta {
 
     private Object trail;
-    private MaterialData data;
     private TrailType type;
-    private TrailStyle style;
-    private int count, extra;
-    private double offsetX, offsetY, offsetZ, shiftX, shiftY, shiftZ;
+    private MaterialData data = null;
+    private TrailStyle style = TrailStyle.NORMAL;
+    private int particleCount = 32, extraData = 0;
+    private double offsetX = 0, offsetY = 0, offsetZ = 0, shiftX = 0, shiftY = 0, shiftZ = 0;
 
     public enum TrailType {
-        EFFECT, PARTICLE, BLOCK, ITEM;
+        EFFECT, PARTICLE, BLOCK, ITEM
     }
 
     public enum TrailStyle {
-        NORMAL, DOTS, RAIN, DUST, SPREAD;
+        NORMAL, DOTS, RAIN, DUST, SPREAD
     }
 
-    public TrailMeta(Object trail, MaterialData data, TrailType type, TrailStyle style, int count, int extra,
-                     double offsetX, double offsetY, double offsetZ, double shiftX, double shiftY, double shiftZ) {
+    private TrailMeta(final Object trail, final TrailType type) {
         this.trail = trail;
-        this.data = data;
         this.type = type;
-        this.style = style;
-        this.count = count;
-        this.extra = extra;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.offsetZ = offsetZ;
-        this.shiftX = shiftX;
-        this.shiftY = shiftY;
-        this.shiftZ = shiftZ;
     }
 
     public TrailMeta(final TrailMeta other) {
-        this(other.trail, other.data, other.type, other.style, other.count, other.extra, other.offsetX, other.offsetY,
-                other.offsetZ, other.shiftX, other.shiftY, other.shiftZ);
+        this(other.trail, other.type);
+        this.data = other.data;
+        this.style = other.style;
+        this.particleCount = other.particleCount;
+        this.extraData = other.extraData;
+        this.offsetX = other.offsetX;
+        this.offsetY = other.offsetY;
+        this.offsetZ = other.offsetZ;
+        this.shiftX = other.shiftX;
+        this.shiftY = other.shiftY;
+        this.shiftZ = other.shiftZ;
+    }
+
+    public static TrailMeta of(Object trail, TrailType type) {
+        return new TrailMeta(trail, type);
     }
 
     public TrailMeta changeStyle(TrailStyle newStyle) {
+        TrailMeta newMeta = this;
         switch (newStyle) {
             case DOTS:
-                return new TrailMeta(this.trail, this.data, this.type, newStyle, 1, this.extra, 0, 0, 0, 0, 0, 0);
+                newMeta = newMeta.setStyle(TrailStyle.DOTS).setParticleCount(1).setOffset(0, 0, 0).setShift(0, 0, 0);
+                break;
             case RAIN:
-                return new TrailMeta(this.trail, this.data, this.type, newStyle, this.count, this.extra, 0.5, 0, 0.5, 0, 4,
-                        0);
+                newMeta = newMeta.setStyle(TrailStyle.RAIN).setOffset(0.5, 0, 0.5).setShiftY(4);
+                break;
             case DUST:
-                if (this.getType() == TrailType.BLOCK)
-                    return new TrailMeta(Particle.FALLING_DUST, this.data, this.type, newStyle, 4, this.extra, 0.5, 0.5,
-                            0.5, 0, 0, 0);
-                else
-                    return this;
+                if (this.getType().equals(TrailType.BLOCK))
+                    newMeta = newMeta.setStyle(TrailStyle.DUST).setTrail(Particle.FALLING_DUST).setParticleCount(4).setOffset(0.5, 0.5, 0.5).setShift(0, 0, 0);
+                break;
             case SPREAD:
-                return new TrailMeta(this.trail, this.data, this.type, newStyle, this.count, this.extra, 0.5, 0.5, 0.5, 0,
-                        0, 0);
+                newMeta = newMeta.setStyle(TrailStyle.SPREAD).setOffset(0.5, 0.5, 0.5).setShift(0, 0, 0);
+                break;
             case NORMAL:
             default:
-                return this;
+                break;
         }
+        return newMeta;
     }
 
     public Object getTrail() {
@@ -76,17 +79,17 @@ public class TrailMeta {
         return data;
     }
 
-    public TrailMeta setData(MaterialData data) {
-        this.data = data;
-        return this;
-    }
-
     public TrailType getType() {
         return type;
     }
 
     public TrailMeta setType(TrailType type) {
         this.type = type;
+        return this;
+    }
+
+    public TrailMeta setData(MaterialData data) {
+        this.data = data;
         return this;
     }
 
@@ -99,21 +102,28 @@ public class TrailMeta {
         return this;
     }
 
-    public int getCount() {
-        return count;
+    public int getParticleCount() {
+        return particleCount;
     }
 
-    public TrailMeta setCount(int count) {
-        this.count = count;
+    public TrailMeta setParticleCount(int particleCount) {
+        this.particleCount = particleCount;
         return this;
     }
 
-    public int getExtra() {
-        return extra;
+    public int getExtraData() {
+        return extraData;
     }
 
-    public TrailMeta setExtra(int extra) {
-        this.extra = extra;
+    public TrailMeta setExtraData(int extraData) {
+        this.extraData = extraData;
+        return this;
+    }
+
+    public TrailMeta setOffset(double offsetX, double offsetY, double offsetZ) {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.offsetZ = offsetZ;
         return this;
     }
 
@@ -141,6 +151,13 @@ public class TrailMeta {
 
     public TrailMeta setOffsetZ(double offsetZ) {
         this.offsetZ = offsetZ;
+        return this;
+    }
+
+    public TrailMeta setShift(double shiftX, double shiftY, double shiftZ) {
+        this.shiftX = shiftX;
+        this.shiftY = shiftY;
+        this.shiftZ = shiftZ;
         return this;
     }
 

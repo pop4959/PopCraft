@@ -53,25 +53,13 @@ commands:
       aliases: tr
       permission: popcraft.trail
       permission-message: You can't use this.
-      usage: "§cUsage: /trail <material> <damage>"
+      usage: "§cUsage: /trail <type/list/clear> [style/damage...]"
    staff:
       description: Broadcast, or privately message to all staff members on the server.
       aliases: [st, mods]
       permission: popcraft.staff
       permission-message: You can't use this.
       usage: "§cUsage: /staff <message>"
-   flames:
-      description: Wherever you step will burn.
-      aliases: f
-      permission: popcraft.flames
-      permission-message: You can't use this.
-      usage: "§cUsage: /flames"
-   hearts:
-      description: Spread love wherever you go!
-      aliases: h
-      permission: popcraft.hearts
-      permission-message: You can't use this.
-      usage: "§cUsage: /hearts"
    generateworld:
       description: Allows you to generate the world.
       permission: popcraft.generateworld
@@ -160,7 +148,7 @@ commands:
       description: Set an aura for your player!
       permission: popcraft.aura
       permission-message: You can't use this.
-      usage: "§cUsage: /aura <type>"
+      usage: "§cUsage: /aura <type/list/clear> [damage]"
    glow:
       description: Toggles player glow effect.
       permission: popcraft.glow
@@ -198,7 +186,7 @@ permissions:
     description: Allows you to set custom trails for any player.
     children:
       popcraft.trail: true
-      popcraft.trail.custom: true
+      popcraft.trail.extended: true
   popcraft.jumper:
     description: Allows you to jump high with a feather.
     default: false
