@@ -19,7 +19,7 @@ public class Me implements CommandExecutor {
     private final Server server;
 
     @Inject
-    public Me(Server server) {
+    public Me(final Server server) {
         this.server = server;
     }
 

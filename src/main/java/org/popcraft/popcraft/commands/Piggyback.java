@@ -23,22 +23,22 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @PopCommand("piggyback")
 public class Piggyback implements Listener, CommandExecutor {
 
-    private final Map<UUID, Boolean> piggyback = new HashMap<>();
+    private final Map<UUID, Boolean> rideable = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
             return false;
         }
-        final Player player = ((Player) sender);
-        final boolean rideable = !this.canPiggyBack(player);
-        this.piggyback.put(player.getUniqueId(), rideable);
-        sender.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, rideable ? "enabled" : "disabled", GOLD));
+        final Player player = (Player) sender;
+        final boolean canRide = !this.canPiggyBack(player);
+        this.rideable.put(player.getUniqueId(), canRide);
+        sender.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, canRide ? "enabled" : "disabled", GOLD));
         return true;
     }
 
     private boolean canPiggyBack(final Entity player) {
-        return !(player instanceof Player) || this.piggyback.getOrDefault(player.getUniqueId(), false);
+        return !(player instanceof Player) || this.rideable.getOrDefault(player.getUniqueId(), false);
     }
 
     @EventHandler

@@ -56,7 +56,6 @@ public class PopCraftModule extends AbstractModule {
         this.bind(JavaPlugin.class).toInstance(this.plugin);
         this.bind(Server.class).toInstance(this.plugin.getServer());
         this.bind(FileConfiguration.class).toInstance(this.plugin.getConfig());
-        this.bind(Server.class).toInstance(this.plugin.getServer());
     }
 
     @Provides
