@@ -1,10 +1,7 @@
 package org.popcraft.popcraft.commands;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import com.google.inject.Inject;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,238 +12,153 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.popcraft.popcraft.newCode.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TrailMeta;
-import org.popcraft.popcraft.utils.TrailMeta.TrailStyle;
-import org.popcraft.popcraft.utils.TrailMeta.TrailType;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
-@Deprecated
+import static org.popcraft.popcraft.utils.TrailMeta.TrailStyle;
+import static org.popcraft.popcraft.utils.TrailMeta.TrailType;
+
+@PopCommand("trail")
 public class Trail implements Listener, CommandExecutor {
 
-    private static HashMap<String, TrailMeta> trailtypes = new HashMap<String, TrailMeta>();
-    private static HashMap<UUID, TrailMeta> playertrail = new HashMap<UUID, TrailMeta>();
+    private final JavaPlugin plugin;
+    private static final String BASIC_TRAILS = "bubbles, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, music, party, rainbow, raindrops, redstone, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops";
+    private static final Map<String, TrailMeta> TRAIL_TYPES = new HashMap<>();
+    private static final Map<UUID, TrailMeta> PLAYER_TRAIL = new HashMap<>();
 
     static {
-        for (Material m : Material.values()) {
-            if (m.isBlock())
-                trailtypes.put(m.toString().toLowerCase(), new TrailMeta(Particle.BLOCK_CRACK,
-                        (new ItemStack(m)).getData(), TrailType.BLOCK, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
+        for (Material material : Material.values()) {
+            if (material.isBlock())
+                TRAIL_TYPES.put(material.toString().toLowerCase(), TrailMeta.of(Particle.BLOCK_CRACK, TrailType.BLOCK).setData((new ItemStack(material)).getData()));
             else
-                trailtypes.put(m.toString().toLowerCase(),
-                        new TrailMeta(Particle.ITEM_CRACK, (new ItemStack(m)).getData(), TrailType.ITEM,
-                                TrailStyle.NORMAL, 32, 0, 0.5, 0.5, 0.5, 0, 0, 0));
+                TRAIL_TYPES.put(material.toString().toLowerCase(), TrailMeta.of(Particle.ITEM_CRACK, TrailType.ITEM).setData((new ItemStack(material)).getData()).setOffset(0.5, 0.5, 0.5));
         }
-        for (Effect e : Effect.values()) {
-            if (e.getType() != Effect.Type.SOUND)
-                trailtypes.put(e.name().toLowerCase() + "_debug_effect",
-                        new TrailMeta(e, null, TrailType.EFFECT, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
+        for (Effect effect : Effect.values()) {
+            if (effect.getType() != Effect.Type.SOUND)
+                TRAIL_TYPES.put(effect.name().toLowerCase() + "_debug_effect", TrailMeta.of(effect, TrailType.EFFECT));
         }
-        for (Particle p : Particle.values()) {
-            trailtypes.put(p.name().toLowerCase() + "_debug_particle",
-                    new TrailMeta(p, null, TrailType.PARTICLE, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
+        for (Particle particle : Particle.values()) {
+            TRAIL_TYPES.put(particle.name().toLowerCase() + "_debug_particle", TrailMeta.of(particle, TrailType.PARTICLE));
         }
-        trailtypes.put("bubbles", new TrailMeta(Particle.CRIT_MAGIC, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0,
-                0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("flames", new TrailMeta(Particle.FLAME, null, TrailType.PARTICLE, TrailStyle.NORMAL, 5, 0, 0.5,
-                0.5, 0.5, 0, 0, 0));
-        trailtypes.put("glitter", new TrailMeta(Particle.SPELL_INSTANT, null, TrailType.PARTICLE, TrailStyle.NORMAL, 15,
-                0, 0.2, 0, 0.2, 0, 0, 0));
-        trailtypes.put("glow", new TrailMeta(Particle.END_ROD, null, TrailType.PARTICLE, TrailStyle.NORMAL, 1, 0, 0.5,
-                0.8, 0.5, 0, 0, 0));
-        trailtypes.put("glyphs", new TrailMeta(Particle.ENCHANTMENT_TABLE, null, TrailType.PARTICLE, TrailStyle.NORMAL,
-                10, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("hearts", new TrailMeta(Particle.DAMAGE_INDICATOR, null, TrailType.PARTICLE, TrailStyle.NORMAL,
-                1, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("lavadrops", new TrailMeta(Particle.DRIP_LAVA, null, TrailType.PARTICLE, TrailStyle.NORMAL, 1, 0,
-                0, 0, 0, 0, 0.4, 0));
-        trailtypes.put("love", new TrailMeta(Particle.HEART, null, TrailType.PARTICLE, TrailStyle.NORMAL, 1, 0, 0.5,
-                0.8, 0.5, 0, 0, 0));
-        trailtypes.put("magic", new TrailMeta(Particle.SPELL_WITCH, null, TrailType.PARTICLE, TrailStyle.NORMAL, 15, 0,
-                0.2, 0, 0.2, 0, 0, 0));
-        trailtypes.put("music", new TrailMeta(Particle.NOTE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 1, 1, 0.5,
-                0.8, 0.5, 0, 0, 0));
-        trailtypes.put("party", new TrailMeta(Particle.TOTEM, null, TrailType.PARTICLE, TrailStyle.NORMAL, 3, 0, 0.5,
-                0.8, 0.5, 0, 0, 0));
-        trailtypes.put("rainbow", new TrailMeta(Particle.REDSTONE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 1,
-                0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("raindrops", new TrailMeta(Particle.WATER_SPLASH, null, TrailType.PARTICLE, TrailStyle.NORMAL,
-                10, 0, 0.2, 0, 0.2, 0, 0, 0));
-        trailtypes.put("redstone", new TrailMeta(Particle.REDSTONE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 0,
-                0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("slime",
-                new TrailMeta(Particle.SLIME, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 0, 0.1, 0, 0.1, 0, 0, 0));
-        trailtypes.put("smoke", new TrailMeta(Particle.SMOKE_LARGE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0,
-                0.3, 0, 0.3, 0, 0, 0));
-        trailtypes.put("snowy", new TrailMeta(Particle.SNOWBALL, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 0, 0.1,
-                0, 0.1, 0, 0, 0));
-        trailtypes.put("sparkles", new TrailMeta(Particle.VILLAGER_HAPPY, null, TrailType.PARTICLE, TrailStyle.NORMAL,
-                2, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("sparks", new TrailMeta(Particle.CRIT, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0, 0.5,
-                0.8, 0.5, 0, 0, 0));
-        trailtypes.put("swirls", new TrailMeta(Particle.SPELL_MOB, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 1,
-                0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("teleport", new TrailMeta(Particle.PORTAL, null, TrailType.PARTICLE, TrailStyle.NORMAL, 10, 0,
-                0.5, 0.8, 0.5, 0, 0, 0));
-        trailtypes.put("thunderclouds", new TrailMeta(Particle.VILLAGER_ANGRY, null, TrailType.PARTICLE,
-                TrailStyle.NORMAL, 1, 0, 0.6, 0.3, 0.6, 0, 0, 0));
-        trailtypes.put("volcano",
-                new TrailMeta(Particle.LAVA, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0, 0, 0, 0, 0, 0, 0));
-        trailtypes.put("waterdrops", new TrailMeta(Particle.DRIP_WATER, null, TrailType.PARTICLE, TrailStyle.NORMAL, 1,
-                0, 0, 0, 0, 0, 0.4, 0));
+        TRAIL_TYPES.put("bubbles", TrailMeta.of(Particle.CRIT_MAGIC, TrailType.PARTICLE).setParticleCount(2).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("flames", TrailMeta.of(Particle.FLAME, TrailType.PARTICLE).setParticleCount(5).setOffset(0.5, 0.5, 0.5));
+        TRAIL_TYPES.put("glitter", TrailMeta.of(Particle.SPELL_INSTANT, TrailType.PARTICLE).setParticleCount(15).setOffset(0.2, 0, 0.2));
+        TRAIL_TYPES.put("glow", TrailMeta.of(Particle.END_ROD, TrailType.PARTICLE).setParticleCount(1).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("glyphs", TrailMeta.of(Particle.ENCHANTMENT_TABLE, TrailType.PARTICLE).setParticleCount(10).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("hearts", TrailMeta.of(Particle.DAMAGE_INDICATOR, TrailType.PARTICLE).setParticleCount(1).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("lavadrops", TrailMeta.of(Particle.DRIP_LAVA, TrailType.PARTICLE).setParticleCount(1).setShiftY(0.4));
+        TRAIL_TYPES.put("love", TrailMeta.of(Particle.HEART, TrailType.PARTICLE).setParticleCount(1).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("magic", TrailMeta.of(Particle.SPELL_WITCH, TrailType.PARTICLE).setParticleCount(15).setOffset(0.2, 0, 0.2));
+        TRAIL_TYPES.put("music", TrailMeta.of(Particle.NOTE, TrailType.PARTICLE).setParticleCount(1).setExtraData(1).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("party", TrailMeta.of(Particle.TOTEM, TrailType.PARTICLE).setParticleCount(3).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("rainbow", TrailMeta.of(Particle.REDSTONE, TrailType.PARTICLE).setParticleCount(4).setExtraData(1).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("raindrops", TrailMeta.of(Particle.WATER_SPLASH, TrailType.PARTICLE).setParticleCount(10).setOffset(0.2, 0, 0.2));
+        TRAIL_TYPES.put("redstone", TrailMeta.of(Particle.REDSTONE, TrailType.PARTICLE).setParticleCount(4).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("slime", TrailMeta.of(Particle.SLIME, TrailType.PARTICLE).setParticleCount(4).setOffset(0.1, 0, 0.1));
+        TRAIL_TYPES.put("smoke", TrailMeta.of(Particle.SMOKE_LARGE, TrailType.PARTICLE).setParticleCount(2).setOffset(0.3, 0, 0.3));
+        TRAIL_TYPES.put("snowy", TrailMeta.of(Particle.SNOWBALL, TrailType.PARTICLE).setParticleCount(4).setOffset(0.1, 0, 0.1));
+        TRAIL_TYPES.put("sparkles", TrailMeta.of(Particle.VILLAGER_HAPPY, TrailType.PARTICLE).setParticleCount(2).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("sparks", TrailMeta.of(Particle.CRIT, TrailType.PARTICLE).setParticleCount(2).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("swirls", TrailMeta.of(Particle.SPELL_MOB, TrailType.PARTICLE).setParticleCount(2).setExtraData(1).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("teleport", TrailMeta.of(Particle.PORTAL, TrailType.PARTICLE).setParticleCount(10).setOffset(0.5, 0.8, 0.5));
+        TRAIL_TYPES.put("thunderclouds", TrailMeta.of(Particle.VILLAGER_ANGRY, TrailType.PARTICLE).setParticleCount(1).setOffset(0.6, 0.3, 0.6));
+        TRAIL_TYPES.put("volcano", TrailMeta.of(Particle.LAVA, TrailType.PARTICLE).setParticleCount(2));
+        TRAIL_TYPES.put("waterdrops", TrailMeta.of(Particle.DRIP_WATER, TrailType.PARTICLE).setParticleCount(1).setShiftY(0.4));
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (playertrail.containsKey(player.getUniqueId())) {
-            playertrail.remove(player.getUniqueId());
-        }
+    @Inject
+    public Trail(final JavaPlugin plugin) {
+        this.plugin = plugin;
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (cmd.getName().equalsIgnoreCase("trail")) {
-                try {
-                    if (args.length == 0) {
-                        if (playertrail.containsKey(player.getUniqueId())) {
-                            playertrail.remove(player.getUniqueId());
-                            Message.normal(player, "Cleared trail.");
-                        } else {
-                            Message.usage(player, "trail <trail/list/clear>");
-                        }
-                    } else if (args.length == 1) {
-                        if (args[0].equalsIgnoreCase("clear")) {
-                            if (playertrail.containsKey(player.getUniqueId())) {
-                                playertrail.remove(player.getUniqueId());
-                                Message.normal(player, "Cleared trail.");
-                            } else {
-                                Message.error(player, "You don't have a trail enabled!");
-                            }
-                        } else if (args[0].equalsIgnoreCase("list")) {
-                            Message.normal(player, "Trails: " + ChatColor.RESET
-                                    + "bubbles, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, music, party, rainbow, raindrops, redstone, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops");
-                        } else if (args[0].equalsIgnoreCase("trail")) {
-                            Message.error(player, "Invalid trail. Type \"/trail list\" to see available trails.");
-                        } else if (trailtypes.containsKey(args[0].toLowerCase())) {
-                            TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
-                            playertrail.put(player.getUniqueId(), trail);
-                            String trailname = args[0].toLowerCase().replace("_", " ");
-                            Message.normal(player, "Trail set to " + ChatColor.RED + trailname + ChatColor.GOLD + ".");
-                        } else {
-                            Message.usage(player, "trail <trail/list/clear>");
-                        }
-                    } else if (args.length == 2) {
-                        if (trailtypes.containsKey(args[0].toLowerCase())) {
-                            TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
-                            if (NumberUtils.isNumber(args[1])) {
-                                if (trail.getType() == TrailType.BLOCK) {
-                                    ItemStack i = ((MaterialData) trail.getData()).toItemStack();
-                                    i.setDurability(Short.parseShort(args[1]));
-                                    trail.setData(i.getData());
-                                }
-                            } else {
-                                TrailStyle s = TrailStyle.valueOf(args[1].toUpperCase());
-                                trail = trail.changeStyle(s);
-                            }
-                            playertrail.put(player.getUniqueId(), trail);
-                            String trailname = args[0].toLowerCase().replace("_", " ");
-                            short durability = (trail.getType() == TrailType.BLOCK)
-                                    ? ((MaterialData) trail.getData()).toItemStack().getDurability() : 0;
-                            Message.normal(player,
-                                    "Trail set to " + ChatColor.RED + trailname
-                                            + (durability != 0 ? ":" + durability : "")
-                                            + (trail.getStyle() != TrailStyle.NORMAL
-                                            ? " " + trail.getStyle().toString().toLowerCase() : "")
-                                            + ChatColor.GOLD + ".");
-                        } else {
-                            Message.usage(player, "trail <trail/list/clear>");
-                        }
-                    } else if (args.length == 3) {
-                        TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
-                        if (trail.getType() == TrailType.BLOCK) {
-                            ItemStack i = ((MaterialData) trail.getData()).toItemStack();
-                            i.setDurability(Short.parseShort(args[1]));
-                            trail.setData(i.getData());
-                        }
-                        TrailStyle s = TrailStyle.valueOf(args[2].toUpperCase());
-                        trail = trail.changeStyle(s);
-                        playertrail.put(player.getUniqueId(), trail);
-                        String trailname = args[0].toLowerCase().replace("_", " ");
-                        short durability = (trail.getType() == TrailType.BLOCK)
-                                ? ((MaterialData) trail.getData()).toItemStack().getDurability() : 0;
-                        Message.normal(player,
-                                "Trail set to " + ChatColor.RED + trailname + (durability != 0 ? ":" + durability : "")
-                                        + (trail.getStyle() != TrailStyle.NORMAL
-                                        ? " " + trail.getStyle().toString().toLowerCase() : "")
-                                        + ChatColor.GOLD + ".");
-                    } else {
-                        Message.usage(player, "trail <trail/list/clear>");
-                    }
-                } catch (Exception e) {
-                    Message.usage(player, "trail <trail/list/clear>");
-                }
+        if (!(sender instanceof Player))
+            return false;
+        final Player player = (Player) sender;
+        if (args.length == 0) {
+            if (!PLAYER_TRAIL.containsKey(player.getUniqueId()))
+                return false;
+            PLAYER_TRAIL.remove(player.getUniqueId());
+            Message.normal(player, "Cleared trail.");
+            return true;
+        } else
+            return parseArguments(player, args);
+    }
+
+    private boolean parseArguments(final Player player, final String[] args) {
+        if ("clear".equalsIgnoreCase(args[0])) {
+            if (PLAYER_TRAIL.containsKey(player.getUniqueId())) {
+                PLAYER_TRAIL.remove(player.getUniqueId());
+                Message.normal(player, "Cleared trail.");
+            } else {
+                Message.error(player, "You don't have a trail enabled!");
             }
-            if (cmd.getName().equalsIgnoreCase("flames")) {
-                if (args.length == 0) {
-                    if (playertrail.containsKey(player.getUniqueId())) {
-                        playertrail.remove(player.getUniqueId());
-                        Message.normal(player, "Cleared trail.");
-                    } else {
-                        playertrail.put(player.getUniqueId(), trailtypes.get("flames"));
-                        Message.normal(player, "Trail set to " + ChatColor.RED + "flames" + ChatColor.GOLD + ".");
-                    }
-                } else {
-                    Message.usage(player, "flames");
-                }
-            }
-            if (cmd.getName().equalsIgnoreCase("hearts")) {
-                if (args.length == 0) {
-                    if (playertrail.containsKey(player.getUniqueId())) {
-                        playertrail.remove(player.getUniqueId());
-                        Message.normal(player, "Cleared trail.");
-                    } else {
-                        playertrail.put(player.getUniqueId(), trailtypes.get("love"));
-                        Message.normal(player, "Trail set to " + ChatColor.RED + "hearts" + ChatColor.GOLD + ".");
-                    }
-                } else {
-                    Message.usage(player, "hearts");
-                }
-            }
+        } else if ("list".equalsIgnoreCase(args[0])) {
+            Message.normal(player, "Trails: " + ChatColor.RESET + BASIC_TRAILS);
+        } else {
+            if (!TRAIL_TYPES.containsKey(args[0].toLowerCase()))
+                return false;
+            TrailMeta trail = new TrailMeta(TRAIL_TYPES.get(args[0].toLowerCase()));
+            processArgument(trail, args);
+            short durability = trail.getType().equals(TrailType.BLOCK) ? trail.getData().toItemStack(0).getDurability() : 0;
+            PLAYER_TRAIL.put(player.getUniqueId(), trail);
+            Message.normal(player, "Trail set to " + ChatColor.RED + args[0].toLowerCase().replace("_", " ") + (durability != 0 ? ":" + durability : "") + (trail.getStyle() != TrailStyle.NORMAL ? " " + trail.getStyle().toString().toLowerCase() : "") + ChatColor.GOLD + ".");
         }
         return true;
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (playertrail.containsKey(player.getUniqueId())) {
-            TrailMeta trail = playertrail.get(player.getUniqueId());
-            if (trail.getType() == TrailType.EFFECT) {
-                for (int i = 0; i < trail.getCount(); i++)
-                    player.getWorld().playEffect(
-                            player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()),
-                            (Effect) trail.getTrail(), trail.getExtra());
-            } else if (trail.getType() == TrailType.PARTICLE) {
-                player.getWorld().spawnParticle((Particle) trail.getTrail(),
-                        player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()),
-                        trail.getCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtra(),
-                        null);
-            } else if (trail.getType() == TrailType.BLOCK) {
-                player.getWorld().spawnParticle((Particle) trail.getTrail(),
-                        player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()),
-                        trail.getCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtra(),
-                        (MaterialData) trail.getData());
-            } else if (trail.getType() == TrailType.ITEM) {
-                player.getWorld().spawnParticle((Particle) trail.getTrail(),
-                        player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()),
-                        trail.getCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtra(),
-                        (ItemStack) trail.getData().toItemStack());
+    private void processArgument(TrailMeta trail, String[] args) {
+        for (String arg : args) {
+            try {
+                trail.changeStyle(TrailStyle.valueOf(arg.toUpperCase()));
+                continue;
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().log(Level.FINE, "Unable to parse argument as a style", e);
+            }
+            if (trail.getType().equals(TrailType.BLOCK)) {
+                try {
+                    short durability = Short.parseShort(arg);
+                    ItemStack i = (trail.getData()).toItemStack(0);
+                    i.setDurability(durability);
+                    trail.setData(i.getData());
+                } catch (NumberFormatException e) {
+                    plugin.getLogger().log(Level.FINE, "Unable to parse argument as a short", e);
+                }
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        final Player player = event.getPlayer();
+        if (PLAYER_TRAIL.containsKey(player.getUniqueId())) {
+            TrailMeta trail = PLAYER_TRAIL.get(player.getUniqueId());
+            if (trail.getType().equals(TrailType.EFFECT)) {
+                for (int i = 0; i < trail.getParticleCount(); ++i)
+                    player.getWorld().playEffect(player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()), (Effect) trail.getTrail(), trail.getExtraData());
+            } else if (trail.getType().equals(TrailType.PARTICLE)) {
+                player.getWorld().spawnParticle((Particle) trail.getTrail(), player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()), trail.getParticleCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtraData(), null);
+            } else if (trail.getType().equals(TrailType.BLOCK)) {
+                player.getWorld().spawnParticle((Particle) trail.getTrail(), player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()), trail.getParticleCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtraData(), (MaterialData) trail.getData());
+            } else if (trail.getType().equals(TrailType.ITEM)) {
+                player.getWorld().spawnParticle((Particle) trail.getTrail(), player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()), trail.getParticleCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtraData(), (ItemStack) trail.getData().toItemStack());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+        if (PLAYER_TRAIL.containsKey(player.getUniqueId()))
+            PLAYER_TRAIL.remove(player.getUniqueId());
     }
 
 }
