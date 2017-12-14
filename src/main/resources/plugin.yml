@@ -24,7 +24,7 @@ commands:
       aliases: [fw, flare]
       permission: popcraft.fireworks
       permission-message: You can't use this.
-      usage: "§cUsage: /fireworks random/list/color [fade] [effect] [type] [height]"
+      usage: "§cUsage: /fireworks <list/property...>"
    tpr:
       description: Teleport to a random location.
       aliases: [wild, rtp]
