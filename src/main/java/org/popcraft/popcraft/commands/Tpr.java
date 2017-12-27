@@ -51,7 +51,6 @@ public class Tpr extends PlayerCommand {
 
     @Inject
     public Tpr(final JavaPlugin plugin, final FileConfiguration config) {
-        super(Range.all());
         this.plugin = plugin;
         this.range = config.getInt("commands.tpr.range");
         this.extendedRange = config.getInt("commands.tpr.extendedrange");

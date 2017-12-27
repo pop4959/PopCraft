@@ -29,12 +29,14 @@ public class Spoof extends PlayerCommand {
 
     @Inject
     public Spoof(final Server server) {
-        super(Range.singleton(1));
         this.server = server;
     }
 
     @Override
     public boolean onPlayerCommand(Player sender, Command cmd, String label, String[] args) {
+        if (args.length != 1) {
+            return false;
+        }
         final Option<Function<Player, String>> possibleCommand = spoofMapping.get(args[0]);
         if (possibleCommand.isDefined()) {
             server.broadcastMessage(possibleCommand.get().apply(sender));

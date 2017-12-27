@@ -16,15 +16,13 @@ public class Textures extends PlayerCommand {
             "2", "http://files.popcraft.org:8080/bin/PopCraft2.zip"
     );
 
-    public Textures() {
-        super(Range.closed(0, 1));
-    }
-
     @Override
     public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
         String url = "http://files.popcraft.org:8080/bin/PopCraft.zip";
         if (args.length == 1) {
             url = resourceMap.getOrElse(args[0], url);
+        } else if (args.length > 1) {
+            return false;
         }
         try {
             player.setResourcePack(url);
