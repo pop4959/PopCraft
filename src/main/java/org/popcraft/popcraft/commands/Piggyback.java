@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import com.google.common.collect.Range;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -22,18 +21,18 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @PopCommand("piggyback")
 public class Piggyback extends PlayerCommand implements Listener {
 
-    private final Map<UUID, Boolean> piggyback = new HashMap<>();
+    private final Map<UUID, Boolean> rideable = new HashMap<>();
 
     @Override
     public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
-        final boolean rideable = !this.canPiggyBack(player);
-        this.piggyback.put(player.getUniqueId(), rideable);
-        player.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, rideable ? "enabled" : "disabled", GOLD));
+        final boolean canRide = !this.canPiggyBack(player);
+        this.rideable.put(player.getUniqueId(), canRide);
+        player.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, canRide ? "enabled" : "disabled", GOLD));
         return true;
     }
 
     private boolean canPiggyBack(final Entity player) {
-        return !(player instanceof Player) || this.piggyback.getOrDefault(player.getUniqueId(), false);
+        return !(player instanceof Player) || this.rideable.getOrDefault(player.getUniqueId(), false);
     }
 
     @EventHandler

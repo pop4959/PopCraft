@@ -16,31 +16,28 @@ import static net.md_5.bungee.api.ChatColor.*;
 @PopCommand("lockdown")
 public class Lockdown implements CommandExecutor, Listener {
 
-    private boolean lockdown = false;
+    private boolean locked = false;
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        lockdown = !lockdown;
-        sender.sendMessage(format("%sLockdown %s%s%s.", GOLD, RED, this.lockdown ? "enabled" : "disabled", GOLD));
+        locked = !locked;
+        sender.sendMessage(format("%sLockdown %s%s%s.", GOLD, RED, locked ? "enabled" : "disabled", GOLD));
         return true;
     }
 
     @EventHandler
     public void onAsyncPlayerPreLogin(final AsyncPlayerPreLoginEvent e) {
-        if (this.lockdown) {
+        if (this.locked)
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, org.bukkit.ChatColor.GREEN + "PopCraft" + org.bukkit.ChatColor.RESET
                     + "\n\nServer temporarily unavailable. Please try again later!");
-        }
     }
 
     @EventHandler
     public void onServerListPing(final ServerListPingEvent e) {
-        if (e.getMaxPlayers() > Bukkit.getMaxPlayers()) {
-            e.setMaxPlayers(e.getNumPlayers());
-        }
-        if (this.lockdown) {
+        if (this.locked)
             e.setMaxPlayers(0);
-        }
+        else if (e.getMaxPlayers() > Bukkit.getMaxPlayers())
+            e.setMaxPlayers(e.getNumPlayers());
     }
 
 }

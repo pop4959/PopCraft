@@ -73,8 +73,8 @@ public enum Messages {
     }
 
     public CommandExecutor createExecutor() {
-        return (commandSender, command, s, strings) -> {
-            commandSender.sendMessage(this.message);
+        return (sender, cmd, label, args) -> {
+            sender.sendMessage(this.message);
             return true;
         };
     }

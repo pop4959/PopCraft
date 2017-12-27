@@ -23,7 +23,7 @@ public class Spoof extends PlayerCommand {
             "join", p -> format("%s\u2714 %s", GREEN, p.getName()),
             "quit", p -> format("%s\u2715 %s", GREEN, p.getName()),
             "afk", p -> format("%s* %s%s is now AFK.", GRAY, p.getDisplayName(), GRAY),
-            "no-afk", p -> format("%s* %s%s is no longer AFK", GRAY, p.getDisplayName(), GRAY)
+            "no-afk", p -> format("%s* %s%s is no longer AFK.", GRAY, p.getDisplayName(), GRAY)
     );
     private final Server server;
 

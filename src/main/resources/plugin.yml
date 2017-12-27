@@ -3,7 +3,7 @@ main: org.popcraft.popcraft.PopCraft
 version: 1.8.3.1
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
-authors: [waffelmonster, 2coolGaming]
+authors: [waffelmonster]
 website: popcraft.enjin.com
 
 commands:
@@ -19,18 +19,12 @@ commands:
       permission: popcraft.magicmessage
       permission-message: You can't use this.
       usage: "§cUsage: /magicmessage [start <message>/stop/show/force]"
-   uuid:
-      description: Lets you look up a player's UUID.
-      aliases: id
-      permission: popcraft.uuid
-      permission-message: You can't use this.
-      usage: "§cUsage: /uuid <username>"
    fireworks:
       description: Spawns fireworks.
       aliases: [fw, flare]
       permission: popcraft.fireworks
       permission-message: You can't use this.
-      usage: "§cUsage: /fireworks"
+      usage: "§cUsage: /fireworks random/list/color [fade] [effect] [type] [height]"
    tpr:
       description: Teleport to a random location.
       aliases: [wild, rtp]
@@ -78,12 +72,6 @@ commands:
       permission: popcraft.hearts
       permission-message: You can't use this.
       usage: "§cUsage: /hearts"
-   kudos:
-      description: Give a person extra ladder points.
-      aliases: k
-      permission: popcraft.kudos
-      permission-message: You can't use this.
-      usage: "§cUsage: /kudos"
    generateworld:
       description: Allows you to generate the world.
       permission: popcraft.generateworld
@@ -93,7 +81,7 @@ commands:
       description: Allows you to play a music discs.
       permission: popcraft.music
       permission-message: You can't use this.
-      usage: "§cUsage: /music <disc/list>"
+      usage: "§cUsage: /music <disc [speed]/list/stop>"
    pvp:
       description: Allows you to toggle PvP.
       permission: popcraft.pvp
@@ -114,7 +102,7 @@ commands:
       description: Allows you to get the score of a user.
       permission: popcraft.getscore
       permission-message: You can't use this.
-      usage: "§cUsage: /getscore <username> <scoreboard>"
+      usage: "§cUsage: /getscore <username>"
    supersay:
       description: Allows the server to speak in the context of user format.
       aliases: [ssay, ss]
@@ -162,7 +150,7 @@ commands:
       description: Handicap yourself!
       permission: popcraft.handicap
       permission-message: You can't use this.
-      usage: "§cUsage: /handicap <hp/off>"
+      usage: "§cUsage: /handicap <hp>"
    vote:
       description: Vote for PopCraft as the best server!
       permission: popcraft.vote
@@ -173,17 +161,6 @@ commands:
       permission: popcraft.aura
       permission-message: You can't use this.
       usage: "§cUsage: /aura <type>"
-   history:
-      description: Gets the username history of a player.
-      aliases: hist
-      permission: popcraft.history
-      permission-message: You can't use this.
-      usage: "§cUsage: /history <username>"
-   name:
-      description: Gets the UUID of a player.
-      permission: popcraft.name
-      permission-message: You can't use this.
-      usage: "§cUsage: /name <UUID>"
    glow:
       description: Toggles player glow effect.
       permission: popcraft.glow
@@ -194,11 +171,6 @@ commands:
       permission: popcraft.spoof
       permission-message: You can't use this.
       usage: "§cUsage: /spoof <join/quit/afk/no-afk>"
-   glow:
-      description: Toggles player glow effect.
-      permission: popcraft.glow
-      permission-message: You can't use this.
-      usage: "§cUsage: /glow"
    discord:
       description: Displays the Discord join link.
       permission: popcraft.discord
@@ -227,12 +199,6 @@ permissions:
     children:
       popcraft.trail: true
       popcraft.trail.custom: true
-  popcraft.tab.donator:
-    description: Allows you to automatically receive a purple tab color upon joining as a donator.
-    default: false
-  popcraft.tab.popular:
-    description: Allows you to automatically receive a gold tab color upon joining as a popular player.
-    default: false
   popcraft.jumper:
     description: Allows you to jump high with a feather.
     default: false
