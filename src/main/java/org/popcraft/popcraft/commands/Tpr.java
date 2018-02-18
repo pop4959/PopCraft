@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.bukkit.Location;
@@ -11,8 +10,8 @@ import org.bukkit.command.Command;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.popcraft.popcraft.newCode.PopCommand;
-import org.popcraft.popcraft.utils.Cooldown;
+import org.popcraft.popcraft.PopCommand;
+import org.popcraft.popcraft.utils.CooldownOld;
 import org.popcraft.popcraft.utils.Message;
 
 import java.util.Set;
@@ -54,7 +53,7 @@ public class Tpr extends PlayerCommand {
         this.plugin = plugin;
         this.range = config.getInt("commands.tpr.range");
         this.extendedRange = config.getInt("commands.tpr.extendedrange");
-        this.coolDownCheck = Cooldown.defaultCooldown("tpr", config.getInt("commands.tpr.cooldown"));
+        this.coolDownCheck = CooldownOld.defaultCooldown("tpr", config.getInt("commands.tpr.cooldown"));
     }
 
     @Override

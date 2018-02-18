@@ -22,6 +22,7 @@ import org.popcraft.popcraft.utils.Message;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static java.lang.String.format;
@@ -29,19 +30,19 @@ import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.RED;
 import static org.bukkit.Sound.ENTITY_CHICKEN_AMBIENT;
 import static org.bukkit.Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO;
-import static org.popcraft.popcraft.utils.Cooldown.reset;
+import static org.popcraft.popcraft.utils.CooldownOld.reset;
 
 @Deprecated
 public class PVP extends PlayerCommand implements Listener {
 
-    private Map<String, Boolean> pvp = new HashMap<>();
+    private Map<UUID, Boolean> pvp = new HashMap<>();
 
-    private static final Function<Player, Boolean> cooldownCheck = Cooldown.defaultCooldown("pvp", 5000);
+    private static final Function<Player, Boolean> cooldownCheck = Cooldown.defaultCooldown(5000);
 
     @Override
     public boolean onPlayerCommand(Player player, Command command, String label, String[] args) {
         final boolean newState = !this.getPvp(player);
-        this.pvp.put(player.getName(), newState);
+        this.pvp.put(player.getUniqueId(), newState);
         Message.normal(player, format("Your PvP is now %s%s%s!", RED, newState ? "enabled" : "disabled", GOLD));
 
         final World world = player.getWorld();
@@ -168,20 +169,18 @@ public class PVP extends PlayerCommand implements Listener {
 
     @EventHandler
     public void onBlockIgniteEvent(BlockIgniteEvent e) {
-        if (e.getIgnitingEntity() instanceof Player) {
-            for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
-                if (en instanceof Player) {
-                    if (!this.getPvp(((Player) en))) {
-                        e.setCancelled(true);
-                    }
-                }
-            }
-        }
+        e.setCancelled(
+                e.getIgnitingEntity() instanceof Player &&
+                        e.getPlayer()
+                                .getNearbyEntities(16, 16, 16)
+                                .stream()
+                                .anyMatch(entity -> (entity instanceof Player && !this.getPvp(entity)))
+        );
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        if (e.getEntity().getKiller() instanceof Player) {
+        if (e.getEntity().getKiller() != null) {
             e.setKeepInventory(true);
             e.getDrops().clear();
             e.setDroppedExp(0);
@@ -189,7 +188,7 @@ public class PVP extends PlayerCommand implements Listener {
         }
     }
 
-    private boolean getPvp(Player player) {
-        return pvp.getOrDefault(player.getName(), false);
+    private boolean getPvp(Entity entity) {
+        return pvp.getOrDefault(entity.getUniqueId(), false);
     }
 }

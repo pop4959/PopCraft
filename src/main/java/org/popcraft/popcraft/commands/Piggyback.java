@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +28,11 @@ public class Piggyback extends PlayerCommand implements Listener {
         final boolean canRide = !this.canPiggyBack(player);
         this.rideable.put(player.getUniqueId(), canRide);
         player.sendMessage(format("%sPiggyback %s%s%s.", GOLD, RED, canRide ? "enabled" : "disabled", GOLD));
+        return true;
+    }
+
+    @Override
+    public boolean playerCheck(Player player) {
         return true;
     }
 

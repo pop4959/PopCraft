@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.server.ServerListPingEvent;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 
 import static java.lang.String.*;
 import static net.md_5.bungee.api.ChatColor.*;

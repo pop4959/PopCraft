@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
@@ -8,7 +7,7 @@ import io.vavr.control.Option;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 
 import java.util.function.Function;
 
@@ -44,4 +43,10 @@ public class Spoof extends PlayerCommand {
         }
         return false;
     }
+
+    @Override
+    public boolean playerCheck(Player player) {
+        return true;
+    }
+
 }

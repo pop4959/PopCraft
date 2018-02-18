@@ -81,7 +81,7 @@ public enum Messages {
 
     public static void registerCommands(final JavaPlugin plugin) {
         for (Messages message : Messages.values()) {
-            plugin.getLogger().info(format("Registering message command /%s", message.command));
+            plugin.getLogger().info(() -> "Registering message command /" + message.command);
             checkNotNull(
                     plugin.getCommand(message.command),
                     "Plugin " + message.command + " was found null"

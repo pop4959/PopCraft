@@ -1,4 +1,4 @@
-package org.popcraft.popcraft.newCode;
+package org.popcraft.popcraft;
 
 import com.google.inject.*;
 import com.google.inject.name.Named;
@@ -26,19 +26,19 @@ public class PopCraftModule extends AbstractModule {
     private static final String LISTENERS_NAME = "listeners";
     private static final String RECIPES_NAME = "recipes";
 
-    public static Key<Map<String, CommandExecutor>> COMMAND_KEY = Key.get(
+    public static final Key<Map<String, CommandExecutor>> COMMAND_KEY = Key.get(
             new TypeLiteral<Map<String, CommandExecutor>>() {
             },
             Names.named(COMMAND_NAME)
     );
 
-    public static Key<Set<Listener>> LISTENERS_KEY = Key.get(
+    public static final Key<Set<Listener>> LISTENERS_KEY = Key.get(
             new TypeLiteral<Set<Listener>>() {
             },
             Names.named(LISTENERS_NAME)
     );
 
-    public static Key<Set<Recipe>> RECIPES_KEY = Key.get(
+    public static final Key<Set<Recipe>> RECIPES_KEY = Key.get(
             new TypeLiteral<Set<Recipe>>() {
             },
             Names.named(RECIPES_NAME)

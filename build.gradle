@@ -54,6 +54,7 @@ dependencies {
     compile 'com.google.inject:guice:4.1.0'
     compile 'io.vavr:vavr:0.9.2'
     compile 'org.reflections:reflections:0.9.11'
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     compile 'org.xerial:sqlite-jdbc:3.21.0'
 
     compile 'org.apache.commons:commons-collections4:4.0'

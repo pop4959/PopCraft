@@ -2,7 +2,7 @@ package org.popcraft.popcraft.commands;
 
 import com.google.inject.Inject;
 import org.bukkit.Server;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 
 import static java.lang.String.format;
 import static org.bukkit.ChatColor.*;

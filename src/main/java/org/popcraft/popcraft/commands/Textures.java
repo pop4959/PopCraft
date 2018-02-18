@@ -1,11 +1,10 @@
 package org.popcraft.popcraft.commands;
 
-import com.google.common.collect.Range;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
 @PopCommand("textures")
@@ -31,4 +30,10 @@ public class Textures extends PlayerCommand {
         }
         return true;
     }
+
+    @Override
+    public boolean playerCheck(Player player) {
+        return true;
+    }
+
 }

@@ -22,11 +22,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,12 +32,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.popcraft.popcraft.commands.*;
-import org.popcraft.popcraft.newCode.PopCraftModule;
-import org.popcraft.popcraft.tasks.AnvilColor;
-import org.popcraft.popcraft.tasks.AnvilLogger;
 import org.popcraft.popcraft.tasks.MagicMessage;
-import org.popcraft.popcraft.tasks.WitchTrap;
-import org.popcraft.popcraft.utils.Cooldown;
+import org.popcraft.popcraft.utils.CooldownOld;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TeamManager;
 
@@ -51,7 +44,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.popcraft.popcraft.newCode.PopCraftModule.*;
+import static org.popcraft.popcraft.PopCraftModule.*;
 
 //TODO Figure out this MagicMessage business
 @Deprecated
@@ -160,7 +153,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
             if (event.getAction() == Action.RIGHT_CLICK_AIR) {
                 if ((player.getInventory().getItemInMainHand().getType() == Material.FEATHER)
                         || (player.getInventory().getItemInOffHand().getType() == Material.FEATHER)) {
-                    if (Cooldown.check(player, "jumper", 5100)) {
+                    if (CooldownOld.check(player, "jumper", 5100)) {
                         (new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 100, 4)).apply(player);
                         player.setVelocity(player.getLocation().getDirection().multiply(new Vector(3, 3, 3)));
                     }
@@ -186,7 +179,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
             }
         }
         if (config.getBoolean("antispam.enabled")) {
-            if (!Cooldown.check(p, "chat", config.getInt("antispam.cooldown"))) {
+            if (!CooldownOld.check(p, "chat", config.getInt("antispam.cooldown"))) {
                 Bukkit.getScheduler().runTask(this, new Runnable() {
                     public void run() {
                         Message.kick(p, "Spamming is not allowed on this server!");
@@ -217,7 +210,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
             }
         }
         if (config.getBoolean("antispam.enabled")) {
-            if (!Cooldown.check(p, "chat", config.getInt("antispam.cooldown"))) {
+            if (!CooldownOld.check(p, "chat", config.getInt("antispam.cooldown"))) {
                 Bukkit.getScheduler().runTask(this, new Runnable() {
                     public void run() {
                         Message.kick(p, "Spamming is not allowed on this server!");

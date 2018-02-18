@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import com.google.common.collect.Range;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,9 +21,7 @@ public abstract class PlayerCommand implements CommandExecutor {
         return this.playerCheck(player) && this.onPlayerCommand(player, command, label, args);
     }
 
-    public boolean playerCheck(final Player player) {
-        return true;
-    }
+    public abstract boolean playerCheck(final Player player);
 
     public abstract boolean onPlayerCommand(Player player, Command command, String label, String[] args);
 
