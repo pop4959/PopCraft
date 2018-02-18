@@ -122,13 +122,10 @@ public final class PopCraft extends JavaPlugin implements Listener {
                     + player.getDisplayName() + ChatColor.GREEN + "!");
             BukkitScheduler scheduler = Bukkit.getScheduler();
             final Player finalPlayer = event.getPlayer();
-            scheduler.runTaskLater(this, new Runnable() {
-                public void run() {
-                    Message.whisper(finalPlayer, "Type /tpr if you would like to teleport away from spawn.");
-                    Message.whisper(finalPlayer, "Server rules can be displayed with /rules.");
-                }
+            scheduler.runTaskLater(this, () -> {
+                Message.whisper(finalPlayer, "Type /tpr if you would like to teleport away from spawn.");
+                Message.whisper(finalPlayer, "Server rules can be displayed with /rules.");
             }, 15L);
-            onPlayerJoinFirework(finalPlayer);
         }
         Glow.disableGlow(player);
         TeamManager.assignTeam(player);
@@ -293,22 +290,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
             e.setCancelled(true);
-    }
-
-    private void onPlayerJoinFirework(final Player PLAYER) {
-        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.scheduleSyncDelayedTask(PopCraft.getPlugin(), new Runnable() {
-            public void run() {
-                int n = 1;
-                while (n <= 10) {
-                    Location LOCATION = Fireworks.commandLocationFirework(PLAYER);
-                    Color COLOR = Fireworks.colorFirework();
-                    Color FADE = Fireworks.fadeFirework(COLOR);
-                    Fireworks.spawnFirework(PLAYER, LOCATION, COLOR, FADE, Type.BALL_LARGE, true, false, 0);
-                    n++;
-                }
-            }
-        }, 30L);
     }
 
     public ItemStack getPlayerHead(String playername) {
