@@ -31,11 +31,6 @@ public class Piggyback extends PlayerCommand implements Listener {
         return true;
     }
 
-    @Override
-    public boolean playerCheck(Player player) {
-        return true;
-    }
-
     private boolean canPiggyBack(final Entity player) {
         return !(player instanceof Player) || this.rideable.getOrDefault(player.getUniqueId(), false);
     }

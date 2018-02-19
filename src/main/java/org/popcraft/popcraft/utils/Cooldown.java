@@ -11,7 +11,7 @@ import static java.lang.String.format;
 import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.RED;
 
-public class Cooldown {
+public class Cooldown implements Function<Player, Boolean> {
 
     private static final PrettyTime FORMAT = new PrettyTime();
     private final Map<UUID, Date> cooldownMap;
@@ -33,10 +33,14 @@ public class Cooldown {
 
     public boolean use(final UUID uuid) {
         if (this.check(uuid)) {
-            this.cooldownMap.put(uuid, new Date(System.currentTimeMillis() + this.duration));
+            this.reset(uuid);
             return true;
         }
         return false;
+    }
+
+    public void reset(final UUID uuid) {
+        this.cooldownMap.put(uuid, new Date(System.currentTimeMillis() + this.duration));
     }
 
     public String getTimeRemaining(final UUID uuid) {
@@ -46,22 +50,17 @@ public class Cooldown {
         return "NaN";
     }
 
-    public static Function<Player, Boolean> defaultCooldown(final long time) {
-        return defaultCooldown(new Cooldown(time));
-    }
+    @Override
+    public Boolean apply(Player player) {
+        final UUID uuid = player.getUniqueId();
+        if (this.use(uuid)) {
+            return true;
+        }
 
-    public static Function<Player, Boolean> defaultCooldown(final Cooldown cooldown) {
-        return (player) -> {
-            final UUID uuid = player.getUniqueId();
-            if (cooldown.use(uuid)) {
-                return true;
-            }
-            player.sendMessage(format(
-                    "%sYou can't use this command again in %s%s%s.",
-                    GOLD, RED, cooldown.getTimeRemaining(uuid), GOLD)
-            );
-            return false;
-        };
+        player.sendMessage(format(
+                "%sYou can't use this command again in %s%s%s.",
+                GOLD, RED, this.getTimeRemaining(uuid), GOLD)
+        );
+        return false;
     }
-
 }

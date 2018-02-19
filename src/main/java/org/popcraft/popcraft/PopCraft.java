@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import org.bukkit.*;
-import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -27,13 +25,9 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.util.Vector;
 import org.popcraft.popcraft.commands.*;
 import org.popcraft.popcraft.tasks.MagicMessage;
-import org.popcraft.popcraft.utils.CooldownOld;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TeamManager;
 
@@ -41,7 +35,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 import static java.lang.String.format;
 import static org.popcraft.popcraft.PopCraftModule.*;
@@ -141,82 +134,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         event.setQuitMessage(ChatColor.GREEN + "\u2715 " + player.getName());
-    }
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
-        if (player.hasPermission("popcraft.jumper")) {
-            if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-                if ((player.getInventory().getItemInMainHand().getType() == Material.FEATHER)
-                        || (player.getInventory().getItemInOffHand().getType() == Material.FEATHER)) {
-                    if (CooldownOld.check(player, "jumper", 5100)) {
-                        (new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 100, 4)).apply(player);
-                        player.setVelocity(player.getLocation().getDirection().multiply(new Vector(3, 3, 3)));
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
-        final Player p = event.getPlayer();
-        String msg = event.getMessage();
-        List<String> word = getConfig().getStringList("profanityprotect");
-        for (String s : word) {
-            if (msg.toLowerCase().contains(s)) {
-                Bukkit.getScheduler().runTask(this, new Runnable() {
-                    public void run() {
-                        Message.kick(p, "Swearing is not allowed on this server!");
-                    }
-                });
-                event.setCancelled(true);
-                return;
-            }
-        }
-        if (config.getBoolean("antispam.enabled")) {
-            if (!CooldownOld.check(p, "chat", config.getInt("antispam.cooldown"))) {
-                Bukkit.getScheduler().runTask(this, new Runnable() {
-                    public void run() {
-                        Message.kick(p, "Spamming is not allowed on this server!");
-                    }
-                });
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        final Player p = event.getPlayer();
-        String ml = event.getMessage().toLowerCase();
-        if (!p.hasPermission("popcraft.staff")) {
-            List<String> word = getConfig().getStringList("profanityprotect");
-            for (String s : word) {
-                if (ml.contains(s)) {
-                    Bukkit.getScheduler().runTask(this, new Runnable() {
-                        public void run() {
-                            Message.kick(p, "Swearing is not allowed on this server!");
-                        }
-                    });
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-        if (config.getBoolean("antispam.enabled")) {
-            if (!CooldownOld.check(p, "chat", config.getInt("antispam.cooldown"))) {
-                Bukkit.getScheduler().runTask(this, new Runnable() {
-                    public void run() {
-                        Message.kick(p, "Spamming is not allowed on this server!");
-                    }
-                });
-                event.setCancelled(true);
-                return;
-            }
-        }
     }
 
     @EventHandler

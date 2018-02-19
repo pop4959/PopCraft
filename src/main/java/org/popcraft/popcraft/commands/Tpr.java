@@ -11,11 +11,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.popcraft.popcraft.PopCommand;
-import org.popcraft.popcraft.utils.CooldownOld;
+import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.bukkit.Material.*;
 import static org.bukkit.block.Biome.*;
@@ -46,14 +45,12 @@ public class Tpr extends PlayerCommand {
     private final int range;
     private final int extendedRange;
 
-    private final Function<Player, Boolean> coolDownCheck;
-
     @Inject
     public Tpr(final JavaPlugin plugin, final FileConfiguration config) {
+        super(new Cooldown(config.getInt("commands.tpr.cooldown")));
         this.plugin = plugin;
         this.range = config.getInt("commands.tpr.range");
         this.extendedRange = config.getInt("commands.tpr.extendedrange");
-        this.coolDownCheck = CooldownOld.defaultCooldown("tpr", config.getInt("commands.tpr.cooldown"));
     }
 
     @Override
@@ -67,11 +64,6 @@ public class Tpr extends PlayerCommand {
             Message.normal(player, "Teleporting to a random location...");
         });
         return true;
-    }
-
-    @Override
-    public boolean playerCheck(Player player) {
-        return this.coolDownCheck.apply(player);
     }
 
     private Location getRandomCoordinate(final int distance) {

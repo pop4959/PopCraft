@@ -5,8 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +24,7 @@ import java.util.logging.Level;
 import static org.popcraft.popcraft.utils.TrailMeta.TrailType;
 
 @PopCommand("aura")
-public class Aura implements Listener, CommandExecutor {
+public class Aura extends PlayerCommand implements Listener {
 
     private final JavaPlugin plugin;
     private static final String BASIC_AURAS = "clouds, dragon, flames, glow, gusts, puffs, smoke, waterdrops";
@@ -53,28 +51,13 @@ public class Aura implements Listener, CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player))
-            return false;
-        final Player player = (Player) sender;
-        if (args.length == 0) {
-            if (!PLAYER_AURA.containsKey(player.getUniqueId()))
-                return false;
-            PLAYER_AURA.remove(player.getUniqueId());
-            Message.normal(player, "Cleared aura.");
-            return true;
-        } else
-            return parseArguments(player, args);
+    public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
+        return args.length == 0 ? cleanAura(player) : parseArguments(player, args);
     }
 
     private boolean parseArguments(final Player player, final String[] args) {
-        if ("clear".equalsIgnoreCase(args[0])) {
-            if (PLAYER_AURA.containsKey(player.getUniqueId())) {
-                PLAYER_AURA.remove(player.getUniqueId());
-                Message.normal(player, "Cleared aura.");
-            } else {
-                Message.error(player, "You don't have an aura enabled!");
-            }
+        if ("clear".equalsIgnoreCase(args[0]) && !cleanAura(player)) {
+            Message.error(player, "You don't have an aura enabled!");
         } else if ("list".equalsIgnoreCase(args[0])) {
             Message.normal(player, "Auras: " + ChatColor.RESET + BASIC_AURAS);
         } else {
@@ -87,6 +70,14 @@ public class Aura implements Listener, CommandExecutor {
             Message.normal(player, "Aura set to " + ChatColor.RED + args[0].toLowerCase().replace("_", " ") + (durability != 0 ? ":" + durability : "") + (aura.getStyle() != TrailMeta.TrailStyle.NORMAL ? " " + aura.getStyle().toString().toLowerCase() : "") + ChatColor.GOLD + ".");
         }
         return true;
+    }
+
+    private boolean cleanAura(final Player player) {
+        boolean cleaned = PLAYER_AURA.remove(player.getUniqueId()) != null;
+        if (cleaned) {
+            Message.normal(player, "Cleared aura.");
+        }
+        return cleaned;
     }
 
     private void processArgument(TrailMeta aura, String[] args) {

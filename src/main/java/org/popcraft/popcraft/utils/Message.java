@@ -34,11 +34,6 @@ public class Message {
         player.kickPlayer(ChatColor.GREEN + "PopCraft\n\n" + ChatColor.WHITE + message);
     }
 
-    public static void cooldown(Player player, String type, int cooldownMillis) {
-        player.sendMessage(ChatColor.GOLD + "You can't use this command for another " + ChatColor.RED
-                + CooldownOld.getTimeRemaining(player, type, cooldownMillis) + ChatColor.GOLD + ".");
-    }
-
     public static String getCurrentTime() {
         DateFormat dateformat = new SimpleDateFormat("MM/dd/y HH:mm");
         Date date = new Date();

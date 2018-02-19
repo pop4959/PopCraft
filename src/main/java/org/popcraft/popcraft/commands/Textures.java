@@ -31,9 +31,4 @@ public class Textures extends PlayerCommand {
         return true;
     }
 
-    @Override
-    public boolean playerCheck(Player player) {
-        return true;
-    }
-
 }

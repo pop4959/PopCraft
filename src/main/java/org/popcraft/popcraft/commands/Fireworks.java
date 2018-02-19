@@ -8,8 +8,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -17,23 +15,24 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @PopCommand("fireworks")
-public class Fireworks implements CommandExecutor {
+public class Fireworks extends PlayerCommand {
 
     private static final Map<String, Color> COLORS = Stream.of(DyeColor.values()).collect(Collectors.toMap(color -> color.name().toLowerCase(), DyeColor::getFireworkColor));
     private static final Map<String, Type> TYPES = Stream.of(Type.values()).collect(Collectors.toMap(type -> type.name().toLowerCase(), type -> type));
     private static final ImmutableMap<String, Integer> HEIGHTS = ImmutableMap.of("low", 0, "medium", 1, "high", 2, "extreme", 3);
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player) || args.length == 0)
+    public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
+        if (args.length == 0)
             return false;
-        final Player player = (Player) sender;
         if (args.length == 1 && "list".equalsIgnoreCase(args[0])) {
             Message.normal(player, "Firework properties:\nColors: "
                     + ChatColor.RESET + Joiner.on(", ").join(COLORS.keySet()) + ", random"
@@ -61,10 +60,10 @@ public class Fireworks implements CommandExecutor {
             } else if ("trail".equals(argument)) {
                 fireworkBuilder.withTrail();
             } else if ("random".equals(argument)) {
-                fireworkBuilder.withColor(COLORS.get(COLORS.keySet().toArray()[(int) (Math.random() * COLORS.keySet().size())]));
+                fireworkBuilder.withColor(this.getRandomColor());
                 valid = true;
             } else if ("*random".equals(argument)) {
-                fireworkBuilder.withFade(COLORS.get(COLORS.keySet().toArray()[(int) (Math.random() * COLORS.keySet().size())]));
+                fireworkBuilder.withFade(this.getRandomColor());
             }
         }
         if (valid) {
@@ -76,6 +75,12 @@ public class Fireworks implements CommandExecutor {
             firework.setFireworkMeta(meta);
         }
         return true;
+    }
+
+    private Color getRandomColor() {
+        List<Color> colors = new ArrayList<>(COLORS.values());
+        Collections.shuffle(colors);
+        return colors.get(0);
     }
 
 }

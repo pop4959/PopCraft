@@ -43,10 +43,5 @@ public class Spoof extends PlayerCommand {
         }
         return false;
     }
-
-    @Override
-    public boolean playerCheck(Player player) {
-        return true;
-    }
-
+    
 }

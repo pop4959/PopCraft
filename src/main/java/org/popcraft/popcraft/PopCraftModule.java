@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.popcraft.popcraft.utils.Cooldown;
 import org.reflections.Reflections;
 
 import static org.bukkit.Material.*;
@@ -119,6 +120,11 @@ public class PopCraftModule extends AbstractModule {
                         .setIngredient('c', CHORUS_FRUIT)
                         .setIngredient('f', END_CRYSTAL)
         );
+    }
+
+    @Provides
+    public Cooldown provideCooldown() {
+        return new Cooldown(5000);
     }
 
     private ShapedRecipe getShapedRecipe(final Material material) {

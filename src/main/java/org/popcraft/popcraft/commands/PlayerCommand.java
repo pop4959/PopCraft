@@ -4,12 +4,32 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
+
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Created by Jonny on 12/4/17.
  */
 public abstract class PlayerCommand implements CommandExecutor {
+
+    private final Function<Player, Boolean> filter;
+    private final Cooldown cooldown;
+
+    public PlayerCommand() {
+        this(null);
+    }
+
+    public PlayerCommand(final long time) {
+        this(new Cooldown(time));
+    }
+
+    public PlayerCommand(final Cooldown cooldown) {
+        this.filter = cooldown == null ? player -> true : cooldown;
+        this.cooldown = cooldown;
+    }
 
     @Override
     public final boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -18,10 +38,12 @@ public abstract class PlayerCommand implements CommandExecutor {
             return false;
         }
         final Player player = (Player) commandSender;
-        return this.playerCheck(player) && this.onPlayerCommand(player, command, label, args);
+        return this.filter.apply(player) && this.onPlayerCommand(player, command, label, args);
     }
 
-    public abstract boolean playerCheck(final Player player);
+    public Cooldown getCooldown() {
+        return cooldown;
+    }
 
     public abstract boolean onPlayerCommand(Player player, Command command, String label, String[] args);
 
