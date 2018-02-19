@@ -14,7 +14,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
 import java.util.List;

@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.popcraft.popcraft.newCode.PopCommand;
+import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TrailMeta;
 
