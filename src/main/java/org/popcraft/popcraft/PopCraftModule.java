@@ -19,6 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.reflections.Reflections;
 
+import java.util.logging.Logger;
+
 import static org.bukkit.Material.*;
 
 public class PopCraftModule extends AbstractModule {

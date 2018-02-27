@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 /**

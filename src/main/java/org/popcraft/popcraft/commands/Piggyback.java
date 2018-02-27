@@ -58,7 +58,6 @@ public class Piggyback extends PlayerCommand implements Listener {
     private Entity getTopMostEntity(final Entity entity) {
         final List<Entity> passengers = entity.getPassengers();
         if (!isEmpty(passengers)) {
-            //TODO: How to address mutliple passengers
             return this.getTopMostEntity(passengers.get(0));
         }
         return entity;

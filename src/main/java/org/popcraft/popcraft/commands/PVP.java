@@ -1,5 +1,6 @@
 package org.popcraft.popcraft.commands;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import net.minecraft.server.v1_12_R1.EntityAreaEffectCloud;
 import org.bukkit.*;
@@ -13,14 +14,13 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.projectiles.ProjectileSource;
 import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -29,10 +29,12 @@ import static org.bukkit.ChatColor.RED;
 import static org.bukkit.Material.LAVA_BUCKET;
 import static org.bukkit.Sound.ENTITY_CHICKEN_AMBIENT;
 import static org.bukkit.Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO;
+import static org.bukkit.potion.PotionEffectType.*;
 
 @PopCommand("pvp")
 public class PVP extends PlayerCommand implements Listener {
 
+    private static final Set<PotionEffectType> harmfullTypes = Sets.newHashSet(HARM, POISON, SLOW, WEAKNESS);
     private final Server server;
     private Map<UUID, Boolean> pvpMap = new HashMap<>();
 
@@ -74,11 +76,9 @@ public class PVP extends PlayerCommand implements Listener {
             e.setCancelled(true);
         }
 
-        if (attacker instanceof Projectile) {
-            Projectile projectile = (Projectile) e.getDamager();
-            if (projectile.getShooter() instanceof Entity) {
-                attacker = (Entity) projectile.getShooter();
-            }
+        final Entity shooter = this.getPossibleShooter(attacker);
+        if (shooter != null) {
+            attacker = shooter;
         }
 
         if (attacker instanceof CraftAreaEffectCloud) {
@@ -90,55 +90,63 @@ public class PVP extends PlayerCommand implements Listener {
 
         if (this.pvpDisabled(victim, attacker)) {
             e.setCancelled(true);
+        } else {
+            this.getCooldown().reset(victim.getUniqueId());
         }
-
-        this.getCooldown().reset(victim.getUniqueId());
     }
 
     @EventHandler
     public void onEntityCombustByEntity(EntityCombustByEntityEvent e) {
-        Entity victim = e.getEntity();
-        if (victim instanceof Player) {
-            if (e.getCombuster() instanceof Arrow) {
-                ProjectileSource source = ((Arrow) e.getCombuster()).getShooter();
-                if (source instanceof Player) {
-                    if (!(this.pvpEnabled(victim) && this.pvpEnabled((Player) source)))
-                        e.setCancelled(true);
-                }
-            }
+        final Entity victim = e.getEntity();
+        final Entity attacker = e.getCombuster();
+        if (!(victim instanceof Player)) {
+            return;
+        }
+        if (this.pvpDisabled(victim, getPossibleShooter(attacker))) {
+            e.setCancelled(true);
         }
     }
 
-    @EventHandler
-    public void onPotionSplash(PotionSplashEvent e) {
-        if (e.getEntity().getShooter() instanceof Player) {
-            for (LivingEntity entity : e.getAffectedEntities()) {
-                if (!(entity instanceof Player)) {
-                    Collection<PotionEffect> pes = e.getPotion().getEffects();
-                    for (PotionEffect pe : pes) {
-                        pe.apply(entity);
-                    }
-                }
-            }
-            for (LivingEntity entity : e.getAffectedEntities()) {
-                if (entity instanceof Player
-                        && !(this.pvpEnabled((Player) entity) && this.pvpEnabled((Player) e.getEntity().getShooter()))) {
-                    this.getCooldown().reset(entity.getUniqueId());
-                    PotionEffectType[] pvpPotions = {PotionEffectType.HARM, PotionEffectType.POISON,
-                            PotionEffectType.SLOW, PotionEffectType.WEAKNESS};
-                    for (PotionEffectType t : pvpPotions)
-                        for (PotionEffect p : e.getPotion().getEffects())
-                            if (p.getType().equals(t))
-                                e.setCancelled(true);
-                }
+    private Entity getPossibleShooter(final Object attacker) {
+        if (attacker instanceof Projectile) {
+            Projectile projectile = (Projectile) attacker;
+            if (projectile.getShooter() instanceof Entity) {
+                return (Entity) projectile.getShooter();
             }
         }
+        return null;
+    }
+
+
+    @EventHandler
+    public void onPotionSplash(PotionSplashEvent e) {
+        if (!(e.getEntity().getShooter() instanceof Player)) {
+            return;
+        }
+        //Apply Potions to non players regardless of pvp
+        e.getAffectedEntities()
+                .stream()
+                .filter(entity -> !(entity instanceof Player))
+                .forEach(entity -> e.getPotion().getEffects().forEach(effect -> effect.apply(entity)));
+
+        //true if any players interactions do not have pvp enabled
+        final boolean pvpNotEnabled = e.getAffectedEntities()
+                .stream()
+                .anyMatch(entity -> this.pvpDisabled(entity, getPossibleShooter(entity)));
+
+        //true if any potions are harmfull
+        final boolean harmPotionDetected = e.getPotion()
+                .getEffects()
+                .stream()
+                .map(PotionEffect::getType)
+                .anyMatch(harmfullTypes::contains);
+
+        e.setCancelled(pvpNotEnabled && harmPotionDetected);
     }
 
     @EventHandler
     public void onLingeringPotionSplash(LingeringPotionSplashEvent e) {
-        System.out.println("Hello");
-        // TODO: Replace NMS
+        //To be implemented later in development
     }
 
     @EventHandler
