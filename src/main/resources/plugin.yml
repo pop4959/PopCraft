@@ -126,14 +126,6 @@ commands:
       permission: popcraft.piggyback
       permission-message: You can't use this.
       usage: "§cUsage: /piggyback"
-   lol:
-      description: You thought this was an actual command.
-      permission: jonslogger.lol
-      permission-message: You don't have the permission you dummy.
-   lolreload:
-      description: Just some old random command.
-      permission: jonslogger.lol
-      permission-message: You don't have the permission you bigger dummy.
    handicap:
       description: Handicap yourself!
       permission: popcraft.handicap
@@ -175,6 +167,11 @@ commands:
       permission: popcraft.ticket
       permission-message: You can't use this.
       usage: "§cUsage: /ticket"
+   update:
+      description: Runs the update script
+      permission: popcraft.update
+      permission-message: You can't use this.
+      usage: "§cUsage: /update"
 permissions:
   popcraft.me:
     description: Allows you to write a message in third person.

@@ -10,6 +10,8 @@ import org.popcraft.popcraft.utils.Message;
 @PopCommand("textures")
 public class Textures extends PlayerCommand {
 
+    private static final String DEFAULT_URL = "http://files.popcraft.org:8080/bin/PopCraft.zip";
+
     private static final Map<String, String> resourceMap = HashMap.of(
             "1", "http://files.popcraft.org:8080/bin/PopCraft1.zip",
             "2", "http://files.popcraft.org:8080/bin/PopCraft2.zip"
@@ -17,7 +19,7 @@ public class Textures extends PlayerCommand {
 
     @Override
     public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
-        String url = "http://files.popcraft.org:8080/bin/PopCraft.zip";
+        String url = DEFAULT_URL;
         if (args.length == 1) {
             url = resourceMap.getOrElse(args[0], url);
         } else if (args.length > 1) {

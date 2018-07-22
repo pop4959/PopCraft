@@ -56,8 +56,10 @@ public class Aura extends PlayerCommand implements Listener {
     }
 
     private boolean parseArguments(final Player player, final String[] args) {
-        if ("clear".equalsIgnoreCase(args[0]) && !cleanAura(player)) {
-            Message.error(player, "You don't have an aura enabled!");
+        if ("clear".equalsIgnoreCase(args[0])) {
+            if (!cleanAura(player)) {
+                Message.error(player, "You don't have an aura enabled!");
+            }
         } else if ("list".equalsIgnoreCase(args[0])) {
             Message.normal(player, "Auras: " + ChatColor.RESET + BASIC_AURAS);
         } else {

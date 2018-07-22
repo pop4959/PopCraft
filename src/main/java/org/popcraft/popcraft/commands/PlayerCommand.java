@@ -37,7 +37,10 @@ public abstract class PlayerCommand implements CommandExecutor {
             return false;
         }
         final Player player = (Player) commandSender;
-        return this.filter.apply(player) && this.onPlayerCommand(player, command, label, args);
+        if (!this.filter.apply(player)) {
+            return true;
+        }
+        return this.onPlayerCommand(player, command, label, args);
     }
 
     public Cooldown getCooldown() {

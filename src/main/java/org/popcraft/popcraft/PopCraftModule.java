@@ -16,14 +16,23 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.ocpsoft.prettytime.PrettyTime;
+import org.ocpsoft.prettytime.units.JustNow;
 import org.popcraft.popcraft.utils.Cooldown;
+import org.popcraft.popcraft.utils.FlagTrie;
 import org.reflections.Reflections;
 
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import static org.bukkit.Material.*;
 
 public class PopCraftModule extends AbstractModule {
+
+    public static final String FLAG_TRIE_KEY = "flag_trie";
+    public static final String COMMAND_TRIE_KEY = "command_trie";
 
     private static final String COMMAND_NAME = "commands";
     private static final String LISTENERS_NAME = "listeners";
@@ -134,6 +143,33 @@ public class PopCraftModule extends AbstractModule {
                 new NamespacedKey(this.plugin, material.toString().toLowerCase()),
                 new ItemStack(material)
         );
+    }
+
+    @Named(FLAG_TRIE_KEY)
+    @Provides
+    @Singleton
+    public FlagTrie providesFlagTrie(final FileConfiguration configuration) {
+        return this.createTrieFromString(configuration.getString("jonslogger.flag"));
+    }
+
+    @Named(COMMAND_TRIE_KEY)
+    @Provides
+    @Singleton
+    public FlagTrie providesCommandTrie(final FileConfiguration configuration) {
+        return this.createTrieFromString(configuration.getString("jonslogger.flag"));
+    }
+
+    private FlagTrie createTrieFromString(final String csv) {
+        final String[] flags = csv.split(",");
+        final FlagTrie trie = new FlagTrie();
+        Arrays.stream(flags).forEach(trie::addFlag);
+        return trie;
+    }
+
+    public static PrettyTime createPrettyTime() {
+        final PrettyTime time = new PrettyTime();
+        time.removeUnit(JustNow.class);
+        return time;
     }
 
 }

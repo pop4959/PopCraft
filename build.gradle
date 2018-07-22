@@ -64,6 +64,11 @@ dependencies {
     compile 'org.apache.commons:commons-collections4:4.0'
     compile 'org.apache.commons:commons-lang3:3.7'
 
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.11.0'
+
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
+
     compileOnly 'org.projectlombok:lombok:1.16.16'
 
     // dependencies go here
@@ -118,7 +123,7 @@ task deploy(type: Copy, dependsOn: ['build']) {
 }
 
 task setupDevServer(dependsOn: 'extractServerJar', type: Copy) {
-    from 'config/serverfiles'
+    from 'config'
     into 'server'
 }
 
@@ -143,6 +148,7 @@ task startDevServer(dependsOn: [prepareDevServer], type: JavaExec) {
     main = "org.bukkit.craftbukkit.Main"
     workingDir = "server/"
     standardInput = System.in
+    jvmArgs = ['-Dlog4j.configurationFile=log4j2.xml']
 }
 
 // START Building Spigot and Bukkit

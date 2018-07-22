@@ -6,10 +6,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TicketManager;
 
-@Deprecated
+@PopCommand("ticket")
 public class TicketCommand implements CommandExecutor {
 
     private static TicketManager tm = new TicketManager();

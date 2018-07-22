@@ -40,15 +40,15 @@ public class Fireworks extends PlayerCommand {
                     + "Types: " + ChatColor.RESET + Joiner.on(", ").join(TYPES.keySet()) + ChatColor.GOLD
                     + "\nHeights: " + ChatColor.RESET + Joiner.on(", ").join(HEIGHTS.keySet()) + ChatColor.GOLD
                     + "\nEffects: " + ChatColor.RESET + "flicker, trail");
+            return true;
         } else {
-            newBuilder(args)
+            return newBuilder(args)
                     .withAction(arg -> arg.contains("flicker"), FireworkEffect.Builder::withFlicker)
                     .withAction(arg -> arg.contains("trail"), FireworkEffect.Builder::withTrail)
                     .withAction(arg -> arg.contains("*random"), builder -> builder.withFade(getRandomColor()))
                     .withRandomColor()
                     .smartBuild(player);
         }
-        return true;
     }
 
     private static Color getRandomColor() {
@@ -90,7 +90,7 @@ public class Fireworks extends PlayerCommand {
             return this;
         }
 
-        public void smartBuild(final Player player) {
+        public boolean smartBuild(final Player player) {
             for (final String arg: arguments) {
                 if (arg.startsWith("*")) {
                     this.fade = COLORS.getOrDefault(arg.substring(1), this.fade);
@@ -101,10 +101,10 @@ public class Fireworks extends PlayerCommand {
                 }
             }
 
-            this.buildFirework(player);
+            return this.buildFirework(player);
         }
 
-        private void buildFirework(final Player player) {
+        private boolean buildFirework(final Player player) {
             if (this.color != null) {
                 builder.withColor(this.color);
                 if (this.fade != null) {
@@ -119,7 +119,10 @@ public class Fireworks extends PlayerCommand {
                 meta.addEffect(fireworkEffect);
                 meta.setPower(this.height);
                 firework.setFireworkMeta(meta);
+            } else {
+                Message.error(player, "A Color must be specified to use this command");
             }
+            return this.color != null;
         }
     }
 

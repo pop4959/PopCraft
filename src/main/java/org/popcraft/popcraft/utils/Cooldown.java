@@ -10,10 +10,11 @@ import java.util.function.Function;
 import static java.lang.String.format;
 import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.RED;
+import static org.popcraft.popcraft.PopCraftModule.createPrettyTime;
 
 public class Cooldown implements Function<Player, Boolean> {
 
-    private static final PrettyTime FORMAT = new PrettyTime();
+    private static final PrettyTime FORMAT = createPrettyTime();
     private final Map<UUID, Date> cooldownMap;
     private final long duration;
 
@@ -28,7 +29,7 @@ public class Cooldown implements Function<Player, Boolean> {
 
     public boolean check(final UUID uuid) {
         final Date nextTimeToActivate = this.cooldownMap.get(uuid);
-        return nextTimeToActivate == null || nextTimeToActivate.after(new Date());
+        return nextTimeToActivate == null || nextTimeToActivate.before(new Date());
     }
 
     public boolean use(final UUID uuid) {
@@ -44,8 +45,9 @@ public class Cooldown implements Function<Player, Boolean> {
     }
 
     public String getTimeRemaining(final UUID uuid) {
-        if (this.check(uuid)) {
-            return FORMAT.format(this.cooldownMap.get(uuid));
+        final Date time = this.cooldownMap.get(uuid);
+        if (time != null) {
+            return FORMAT.format(this.cooldownMap.get(uuid)).replaceAll(" from now", "");
         }
         return "NaN";
     }
