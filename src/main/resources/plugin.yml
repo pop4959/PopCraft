@@ -3,7 +3,7 @@ main: org.popcraft.popcraft.PopCraft
 version: 1.8.3.1
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
-authors: [waffelmonster, 2coolGaming]
+authors: [waffelmonster]
 website: popcraft.enjin.com
 
 commands:
@@ -12,209 +12,166 @@ commands:
       aliases: pc
       permission: popcraft.popcraft
       permission-message: You can't use this.
-      usage: /popcraft <args>
+      usage: "§cUsage: /popcraft <args>"
    magicmessage:
       description: Set an automatic broadcast message.
       aliases: mm
       permission: popcraft.magicmessage
       permission-message: You can't use this.
-      usage: /magicmessage [start <message>/stop/show/force]
-   uuid:
-      description: Lets you look up a player's UUID.
-      aliases: id
-      permission: popcraft.uuid
-      permission-message: You can't use this.
-      usage: /uuid <username>
+      usage: "§cUsage: /magicmessage [start <message>/stop/show/force]"
    fireworks:
       description: Spawns fireworks.
       aliases: [fw, flare]
       permission: popcraft.fireworks
       permission-message: You can't use this.
-      usage: /fireworks
+      usage: "§cUsage: /fireworks <list/property...>"
    tpr:
       description: Teleport to a random location.
       aliases: [wild, rtp]
       permission: popcraft.tpr
       permission-message: You can't use this.
-      usage: /tpr
+      usage: "§cUsage: /tpr"
    listgen:
       description: Generate a list of all players on the server.
       aliases: lg
       permission: popcraft.listgen
       permission-message: You can't use this.
-      usage: /listgen
+      usage: "§cUsage: /listgen"
    me:
       description: Describes an action in the context of the player.
       permission: popcraft.me
       permission-message: You can't use this.
-      usage: /me <action>
+      usage: "§cUsage: /me <action>"
    donate:
       description: Displays information about donating, and donations.
       aliases: [d, donation, donations, donating, buy]
       permission: popcraft.donate
       permission-message: You can't use this.
-      usage: /donate
+      usage: "§cUsage: /donate"
    trail:
       description: Set a movement trail effect!
       aliases: tr
       permission: popcraft.trail
       permission-message: You can't use this.
-      usage: /trail <material> <damage>
+      usage: "§cUsage: /trail <type/list/clear> [style/damage...]"
    staff:
       description: Broadcast, or privately message to all staff members on the server.
       aliases: [st, mods]
       permission: popcraft.staff
       permission-message: You can't use this.
-      usage: /staff <message>
-   flames:
-      description: Wherever you step will burn.
-      aliases: f
-      permission: popcraft.flames
-      permission-message: You can't use this.
-      usage: /flames
-   hearts:
-      description: Spread love wherever you go!
-      aliases: h
-      permission: popcraft.hearts
-      permission-message: You can't use this.
-      usage: /hearts
-   kudos:
-      description: Give a person extra ladder points.
-      aliases: k
-      permission: popcraft.kudos
-      permission-message: You can't use this.
-      usage: /kudos
+      usage: "§cUsage: /staff <message>"
    generateworld:
       description: Allows you to generate the world.
       permission: popcraft.generateworld
       permission-message: You can't use this.
-      usage: /generateworld
+      usage: "§cUsage: /generateworld"
    music:
       description: Allows you to play a music discs.
       permission: popcraft.music
       permission-message: You can't use this.
-      usage: /music <disc/list>
+      usage: "§cUsage: /music <disc [speed]/list/stop>"
    pvp:
       description: Allows you to toggle PvP.
       permission: popcraft.pvp
       permission-message: You can't use this.
-      usage: /pvp
+      usage: "§cUsage: /pvp"
    worldspawn:
       description: Allows you to set the world's spawnpoint.
       permission: popcraft.worldspawn
       permission-message: You can't use this.
-      usage: /worldspawn
+      usage: "§cUsage: /worldspawn"
    textures:
       description: Allows you to use the PopCraft texture pack.
       aliases: [tx, resource, resources, resourcepack, texturepack]
       permission: popcraft.textures
       permission-message: You can't use this.
-      usage: /textures
+      usage: "§cUsage: /textures"
    getscore:
       description: Allows you to get the score of a user.
       permission: popcraft.getscore
       permission-message: You can't use this.
-      usage: /getscore <username> <scoreboard>
+      usage: "§cUsage: /getscore <username>"
    supersay:
       description: Allows the server to speak in the context of user format.
       aliases: [ssay, ss]
       permission: popcraft.supersay
       permission-message: You can't use this.
-      usage: /supersay <message>
+      usage: "§cUsage: /supersay <message>"
    pop:
       description: Allows the server to speak in the context of the owner.
       aliases: p
       permission: popcraft.pop
       permission-message: You can't use this.
-      usage: /pop <message>
+      usage: "§cUsage: /pop <message>"
    lockdown:
       description: Toggles the ability of players to join the server.
       permission: popcraft.lockdown
       permission-message: You can't use this.
-      usage: /lockdown
+      usage: "§cUsage: /lockdown"
    plugins:
       description: Allows you to see the server's plugins.
       aliases: pl
       permission: popcraft.plugins
       permission-message: You can't use this.
-      usage: /plugins
+      usage: "§cUsage: /plugins"
    version:
       description: Allows you to see the server's version.
       aliases: ver
       permission: popcraft.version
       permission-message: You can't use this.
-      usage: /version
+      usage: "§cUsage: /version"
    piggyback:
       description: Toggles the ability of others to piggyback on you.
       aliases: ride
       permission: popcraft.piggyback
       permission-message: You can't use this.
-      usage: /piggyback
-   lol:
-      description: You thought this was an actual command.
-      permission: jonslogger.lol
-      permission-message: You don't have the permission you dummy.
-   lolreload:
-      description: Just some old random command.
-      permission: jonslogger.lol
-      permission-message: You don't have the permission you bigger dummy.
+      usage: "§cUsage: /piggyback"
    handicap:
       description: Handicap yourself!
       permission: popcraft.handicap
       permission-message: You can't use this.
-      usage: /handicap <hp/off>
+      usage: "§cUsage: /handicap <hp>"
    vote:
       description: Vote for PopCraft as the best server!
       permission: popcraft.vote
       permission-message: You can't use this.
-      usage: /vote
+      usage: "§cUsage: /vote"
    aura:
       description: Set an aura for your player!
       permission: popcraft.aura
       permission-message: You can't use this.
-      usage: /aura <type>
-   history:
-      description: Gets the username history of a player.
-      aliases: hist
-      permission: popcraft.history
-      permission-message: You can't use this.
-      usage: /history <username>
-   name:
-      description: Gets the UUID of a player.
-      permission: popcraft.name
-      permission-message: You can't use this.
-      usage: /name <UUID>
+      usage: "§cUsage: /aura <type/list/clear> [damage]"
    glow:
       description: Toggles player glow effect.
       permission: popcraft.glow
       permission-message: You can't use this.
-      usage: /glow
+      usage: "§cUsage: /glow"
    spoof:
       description: Emulates real chat and status messages.
       permission: popcraft.spoof
       permission-message: You can't use this.
-      usage: /spoof <join/quit/afk/no-afk>
-   glow:
-      description: Toggles player glow effect.
-      permission: popcraft.glow
-      permission-message: You can't use this.
-      usage: /glow
+      usage: "§cUsage: /spoof <join/quit/afk/no-afk>"
    discord:
       description: Displays the Discord join link.
       permission: popcraft.discord
       permission-message: You can't use this.
-      usage: /discord
+      usage: "§cUsage: /discord"
    teamspeak:
       description: Displays the TeamSpeak server address.
       permission: popcraft.teamspeak
       permission-message: You can't use this.
-      usage: /teamspeak
+      usage: "§cUsage: /teamspeak"
    ticket:
       description: Manage and send report tickets to staff.
       aliases: [report, tickets]
       permission: popcraft.ticket
       permission-message: You can't use this.
-      usage: /ticket
+      usage: "§cUsage: /ticket"
+   update:
+      description: Runs the update script
+      permission: popcraft.update
+      permission-message: You can't use this.
+      usage: "§cUsage: /update"
 permissions:
   popcraft.me:
     description: Allows you to write a message in third person.
@@ -226,13 +183,7 @@ permissions:
     description: Allows you to set custom trails for any player.
     children:
       popcraft.trail: true
-      popcraft.trail.custom: true
-  popcraft.tab.donator:
-    description: Allows you to automatically receive a purple tab color upon joining as a donator.
-    default: false
-  popcraft.tab.popular:
-    description: Allows you to automatically receive a gold tab color upon joining as a popular player.
-    default: false
+      popcraft.trail.extended: true
   popcraft.jumper:
     description: Allows you to jump high with a feather.
     default: false

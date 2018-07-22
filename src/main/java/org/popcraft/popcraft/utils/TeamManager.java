@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 
 public class TeamManager {
 
+    private TeamManager() {
+    }
+
     public static void assignTeam(Player player) {
         if (player.hasPermission("popcraft.tab.owner")) {
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("0_0").addEntry(player.getName());

@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
+@Deprecated
 public class Glow implements Listener, CommandExecutor {
 
     private static HashMap<UUID, Object[]> task = new HashMap<UUID, Object[]>();

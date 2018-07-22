@@ -1,38 +1,49 @@
 package org.popcraft.popcraft.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import com.google.inject.Inject;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.popcraft.popcraft.utils.Message;
+import org.popcraft.popcraft.PopCommand;
 
+import static java.lang.String.format;
+import static org.bukkit.ChatColor.*;
+import static org.popcraft.popcraft.commands.FakeChatCommand.makeMessage;
+import static org.popcraft.popcraft.utils.Message.normal;
+
+@PopCommand("staff")
 public class Staff implements CommandExecutor {
+
+    private final Server server;
+
+    @Inject
+    public Staff(final Server server) {
+        this.server = server;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player = (Player) sender;
-        if (cmd.getName().equalsIgnoreCase("staff")) {
-            String message = "";
-            int a = 0;
-            if (args.length > 0) {
-                while (a < args.length) {
-                    message = message + args[a] + " ";
-                    a++;
-                }
-                message = ChatColor.GREEN + "" + ChatColor.BOLD + "Staff " + ChatColor.RESET
-                        + ((Player) sender).getDisplayName() + ChatColor.RESET + ": " + message;
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.hasPermission("popcraft.staff")) {
-                        Message.normal(p, ChatColor.translateAlternateColorCodes('&', message));
-                    }
-                }
-            } else {
-                Message.usage(player, "staff <message>");
-            }
-            return true;
+        if (args.length == 0) {
+            return false;
         }
-        return false;
+        final String message = makeMessage(
+                format(
+                        "%s%sStaff %s%s%s:",
+                        GREEN,
+                        BOLD,
+                        RESET,
+                        sender instanceof Player ? ((Player) sender).getDisplayName() : "[Server]",
+                        RESET
+                ),
+                args
+        );
+
+        this.server.getOnlinePlayers()
+                .stream()
+                .filter(p -> p.hasPermission("popcraft.staff"))
+                .forEach(p -> normal(p, message));
+        return true;
     }
 }

@@ -1,70 +1,92 @@
 package org.popcraft.popcraft.commands;
 
-import org.bukkit.Bukkit;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.popcraft.popcraft.PopCraft;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 
-public class Tpr implements CommandExecutor {
+import java.util.Set;
 
-    private static final int COOLDOWN = PopCraft.config.getInt("commands.tpr.cooldown"),
-            RANGE = PopCraft.config.getInt("commands.tpr.range"),
-            EXTENDED_RANGE = PopCraft.config.getInt("commands.tpr.extendedrange");
+import static org.bukkit.Material.*;
+import static org.bukkit.block.Biome.*;
+
+@PopCommand("tpr")
+public class Tpr extends PlayerCommand {
+
+    private static final String EXTENDED_TPR_PERMISSION = "popcraft.tpr.extended";
+
+    private static final Set<Biome> UNSAFE_BIOMES = Sets.immutableEnumSet(
+            RIVER,
+            FROZEN_RIVER,
+            DEEP_OCEAN,
+            OCEAN,
+            FROZEN_OCEAN
+    );
+
+    private static final Set<Material> UNSAFE_MATERIALS = Sets.immutableEnumSet(
+            STATIONARY_LAVA,
+            LAVA,
+            CACTUS,
+            STATIONARY_WATER,
+            WATER
+    );
+
+    private final JavaPlugin plugin;
+
+    private final int range;
+    private final int extendedRange;
+
+    @Inject
+    public Tpr(final JavaPlugin plugin, final FileConfiguration config) {
+        super(new Cooldown(config.getInt("commands.tpr.cooldown")));
+        this.plugin = plugin;
+        this.range = config.getInt("commands.tpr.range");
+        this.extendedRange = config.getInt("commands.tpr.extendedrange");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        final Player player = (Player) sender;
-        if (cmd.getName().equalsIgnoreCase("tpr")) {
-            if (Cooldown.check(player, "tpr", COOLDOWN)) {
-                Bukkit.getScheduler().runTask(PopCraft.getPlugin(), new Runnable() {
-                    public void run() {
-                        boolean notSafe = true;
-                        Location randLoc = player.getLocation();
-                        while (notSafe) {
-                            randLoc = player.hasPermission("popcraft.tpr.extended") ? getRandomCoordinate()
-                                    : getPseudoRandomCoordinate();
-                            if (!randLoc.getBlock().getBiome().equals(Biome.RIVER)
-                                    && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_RIVER)
-                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_OCEAN)
-                                    && !randLoc.getBlock().getBiome().equals(Biome.OCEAN)
-                                    && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_OCEAN)
-                                    && randLoc.add(0, -1, 0).getBlock().getType() != Material.STATIONARY_LAVA) {
-                                notSafe = false;
-                                player.teleport(randLoc);
-                                Message.normal(player, "Teleporting to a random location...");
-                            }
-                        }
-                    }
-                });
-            } else {
-                Message.cooldown(player, "tpr", COOLDOWN);
-            }
-            return true;
-        }
-        return false;
+    public boolean onPlayerCommand(Player player, Command cmd, String label, String[] args) {
+        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+            player.teleport(
+                    getRandomCoordinate(
+                            player.hasPermission(EXTENDED_TPR_PERMISSION) ? this.extendedRange : this.range
+                    )
+            );
+            Message.normal(player, "Teleporting to a random location...");
+        });
+        return true;
     }
 
-    private Location getPseudoRandomCoordinate() {
-        double[] direction = {Math.random() > 0.5 ? 1 : -1, Math.random() > 0.5 ? 1 : -1};
-        Location location = new Location(Bukkit.getServer().getWorlds().get(0), RANGE * direction[0] * Math.random(), 0,
-                RANGE * direction[1] * Math.random());
-        location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
-        return location;
+    private Location getRandomCoordinate(final int distance) {
+        Location location;
+        do {
+            location = new Location(
+                    this.plugin.getServer().getWorlds().get(0),
+                    distance * randomDirection() * Math.random(),
+                    0,
+                    distance * randomDirection() * Math.random()
+            );
+            location.setY(location.getWorld().getHighestBlockYAt(location));
+        } while (notSafe(location));
+        return location.add(0, 1, 0);
     }
 
-    private Location getRandomCoordinate() {
-        double[] direction = {Math.random() > 0.5 ? 1 : -1, Math.random() > 0.5 ? 1 : -1};
-        Location location = new Location(Bukkit.getServer().getWorlds().get(0),
-                EXTENDED_RANGE * direction[0] * Math.random(), 0, EXTENDED_RANGE * direction[1] * Math.random());
-        location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
-        return location;
+    private static boolean notSafe(final Location location) {
+        final Block block = location.getBlock();
+        return UNSAFE_BIOMES.contains(block.getBiome()) || UNSAFE_MATERIALS.contains(block.getType());
+    }
+
+    private static int randomDirection() {
+        return Math.random() > 0.5 ? 1 : -1;
     }
 
 }

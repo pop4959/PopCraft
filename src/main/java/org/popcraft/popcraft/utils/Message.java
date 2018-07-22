@@ -10,12 +10,12 @@ import java.util.Date;
 
 public class Message {
 
-    public static void normal(CommandSender sender, String message) {
-        sender.sendMessage(ChatColor.GOLD + message);
+    private Message() {
+        //Static Utility Helper Class
     }
 
-    public static void generic(String message) {
-        System.out.print(message);
+    public static void normal(CommandSender sender, String message) {
+        sender.sendMessage(ChatColor.GOLD + message);
     }
 
     public static void whisper(CommandSender sender, String message) {
@@ -32,11 +32,6 @@ public class Message {
 
     public static void kick(Player player, String message) {
         player.kickPlayer(ChatColor.GREEN + "PopCraft\n\n" + ChatColor.WHITE + message);
-    }
-
-    public static void cooldown(Player player, String type, int cooldownMillis) {
-        player.sendMessage(ChatColor.GOLD + "You can't use this command for another " + ChatColor.RED
-                + Cooldown.getTimeRemaining(player, type, cooldownMillis) + ChatColor.GOLD + ".");
     }
 
     public static String getCurrentTime() {

@@ -22,3 +22,4 @@ nohup.out
 /file:/
 *.db
 /server/
+/coverage/

@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-public class WitchTrap implements Listener {
+public class WitchTrapListener implements Listener {
 
     private Set<UUID> activated = new HashSet<UUID>();
 
