@@ -1,24 +1,22 @@
 package org.popcraft.popcraft.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import com.google.inject.Inject;
+import org.bukkit.Server;
+import org.popcraft.popcraft.PopCommand;
 
-public class Pop implements CommandExecutor {
+import static java.lang.String.format;
+import static org.bukkit.ChatColor.*;
+
+@PopCommand("pop")
+public class Pop extends FakeChatCommand {
+
+    @Inject
+    public Pop(final Server server) {
+        super(server);
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("pop")) {
-	    String msg = "";
-	    for (String s : args)
-		msg += " " + s;
-	    msg = ChatColor.translateAlternateColorCodes('&', msg);
-	    Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Owner" + ChatColor.RESET + " "
-		    + ChatColor.DARK_GREEN + "pop4959" + ChatColor.RESET + ":" + msg);
-	    return true;
-	}
-	return false;
+    public String getHeader() {
+        return format("%s%sOwner%s %spop4959%s:", DARK_GREEN, BOLD, RESET, DARK_GREEN, RESET);
     }
 }

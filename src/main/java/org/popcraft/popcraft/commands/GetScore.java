@@ -1,23 +1,29 @@
 package org.popcraft.popcraft.commands;
 
-import org.bukkit.Bukkit;
+import com.google.inject.Inject;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import org.popcraft.popcraft.PopCommand;
 
+@PopCommand("getscore")
 public class GetScore implements CommandExecutor {
+
+    private final Server server;
+
+    @Inject
+    public GetScore(final Server server) {
+        this.server = server;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("getscore")) {
-	    Scoreboard s = Bukkit.getScoreboardManager().getMainScoreboard();
-	    if (args.length == 1)
-		for (Objective o : s.getObjectives())
-		    sender.sendMessage(o.getName() + " " + o.getScore(args[0]).getScore());
-	    return true;
-	}
-	return false;
+        if (args.length != 1)
+            return false;
+        for (Objective objective : this.server.getScoreboardManager().getMainScoreboard().getObjectives())
+            sender.sendMessage(objective.getName() + " " + objective.getScore(args[0]).getScore());
+        return true;
     }
 }

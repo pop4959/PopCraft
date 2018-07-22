@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Do not modify packages, mojang created their own logger and packages imports that. The logger is called here using the <Queue> tag-->
+<Configuration status="INFO" packages="com.mojang.util">
+    <Appenders>
+
+        <RollingRandomAccessFile name="AnvilLogger" fileName="logs/anvil/anvil.txt" filePattern="logs/anvil/anvil-%d{yyyy-MM-dd}-%i.txt" immediateFlush="true">
+            <PatternLayout>
+                <Pattern>anvil - [%d{MM/dd/yyyy HH:mm}] - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="25 MB"/> <!-- Start a new log file at 25MB -->
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="BanLogger" fileName="logs/ban/ban.txt" filePattern="logs/ban/ban-%i.txt" immediateFlush="true">
+            <PatternLayout>
+                <Pattern>ban - [%d{MM/dd/yyyy HH:mm}] - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="25 MB"/> <!-- Start a new log file at 25MB -->
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="BookLogger" fileName="logs/books/books.txt" filePattern="logs/books/books-%d{yyyy-MM-dd}-%i.txt" immediateFlush="true">
+            <PatternLayout>
+                <Pattern>book - [%d{MM/dd/yyyy HH:mm}] - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="25 MB"/> <!-- Start a new log file at 25MB -->
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="ChatFlagLogger" fileName="logs/flag/flag.txt" filePattern="logs/flag/flag-%d{yyyy-MM-dd}-%i.txt" immediateFlush="true">
+            <PatternLayout>
+                <Pattern>chat - [%d{MM/dd/yyyy HH:mm}] - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="25 MB"/> <!-- Start a new log file at 25MB -->
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="SignLogger" fileName="logs/signs/signs.txt" filePattern="logs/signs/signs-%d{yyyy-MM-dd}-%i.txt" immediateFlush="true">
+            <PatternLayout>
+                <Pattern>sign - [%d{MM/dd/yyyy HH:mm}] - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="25 MB"/> <!-- Start a new log file at 25MB -->
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <!-- Default Spigot Configuration -->
+        <Console name="WINDOWS_COMPAT" target="SYSTEM_OUT"/>
+        <Queue name="TerminalConsole">
+            <PatternLayout pattern="[%d{HH:mm:ss} %level]: %msg%n" />
+        </Queue>
+        <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <OnStartupTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingRandomAccessFile>
+        <!-- End Default Spigot Configuration -->
+
+    </Appenders>
+    <Loggers>
+        <Logger name="org.popcraft.popcraft.tasks.AnvilListener" level="INFO" additivity="false">
+            <AppenderRef ref="AnvilLogger"/>
+        </Logger>
+
+        <Logger name="org.popcraft.popcraft.tasks.BanListener" level="INFO" additivity="false">
+            <AppenderRef ref="BanLogger"/>
+        </Logger>
+
+        <Logger name="org.popcraft.popcraft.tasks.BookListener" level="INFO" additivity="false">
+            <AppenderRef ref="BookLogger"/>
+        </Logger>
+
+        <Logger name="org.popcraft.popcraft.tasks.ChatFlagListener" level="INFO" additivity="false">
+            <AppenderRef ref="ChatFlagLogger"/>
+        </Logger>
+
+        <Logger name="org.popcraft.popcraft.tasks.SignListener" level="INFO" additivity="false">
+            <AppenderRef ref="SignLogger"/>
+        </Logger>
+
+        <Logger name="org.popcraft.popcraft.tasks.SignListener" level="INFO" additivity="false">
+            <AppenderRef ref="SignLogger"/>
+        </Logger>
+
+        <!-- Default Spigot Configuration -->
+        <Root level="info">
+            <filters>
+                <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY" onMismatch="NEUTRAL" />
+            </filters>
+            <AppenderRef ref="WINDOWS_COMPAT" level="info"/>
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="TerminalConsole" level="info"/>
+        </Root>
+        <!-- End Default Spigot Configuration -->
+    </Loggers>
+</Configuration>

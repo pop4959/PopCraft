@@ -1,24 +1,22 @@
 package org.popcraft.popcraft.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import com.google.inject.Inject;
+import org.bukkit.Server;
+import org.popcraft.popcraft.PopCommand;
 
-public class SuperSay implements CommandExecutor {
+import static java.lang.String.format;
+import static org.bukkit.ChatColor.*;
+
+@PopCommand("supersay")
+public class SuperSay extends FakeChatCommand {
+
+    @Inject
+    public SuperSay(final Server server) {
+        super(server);
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("supersay")) {
-	    String msg = "";
-	    for (String s : args)
-		msg += " " + s;
-	    msg = ChatColor.translateAlternateColorCodes('&', msg);
-	    Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Server" + ChatColor.RESET + " "
-		    + ChatColor.LIGHT_PURPLE + "Console" + ChatColor.RESET + ":" + msg);
-	    return true;
-	}
-	return false;
+    public String getHeader() {
+        return format("%s%sServer%s %sConsole%s:", LIGHT_PURPLE, BOLD, RESET, LIGHT_PURPLE, RESET);
     }
 }
