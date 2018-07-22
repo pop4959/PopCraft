@@ -156,7 +156,7 @@ public class PopCraftModule extends AbstractModule {
     @Provides
     @Singleton
     public FlagTrie providesCommandTrie(final FileConfiguration configuration) {
-        return this.createTrieFromString(configuration.getString("jonslogger.flag"));
+        return this.createTrieFromString(configuration.getString("jonslogger.commands"));
     }
 
     private FlagTrie createTrieFromString(final String csv) {
