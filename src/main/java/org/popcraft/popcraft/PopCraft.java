@@ -4,8 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,7 +17,7 @@ import static java.lang.String.format;
 import static org.popcraft.popcraft.PopCraftModule.*;
 
 //TODO Figure out this MagicMessage business
-@Slf4j
+@Log4j2
 public final class PopCraft extends JavaPlugin {
 
     private static Plugin plugin;

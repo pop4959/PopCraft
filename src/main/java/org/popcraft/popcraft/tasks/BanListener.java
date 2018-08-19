@@ -1,13 +1,13 @@
 package org.popcraft.popcraft.tasks;
 
 import com.google.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
-@Slf4j
+@Log4j2
 public class BanListener {
 
     private final FileConfiguration config;
