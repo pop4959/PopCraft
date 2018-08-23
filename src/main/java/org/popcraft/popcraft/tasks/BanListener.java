@@ -4,11 +4,12 @@ import com.google.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
 @Log4j2
-public class BanListener {
+public class BanListener implements Listener {
 
     private final FileConfiguration config;
 
