@@ -2,7 +2,7 @@ package org.popcraft.popcraft.tasks;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import static org.popcraft.popcraft.PopCraftModule.COMMAND_TRIE_KEY;
 import static org.popcraft.popcraft.PopCraftModule.FLAG_TRIE_KEY;
 
-@Slf4j
+@Log4j2
 public class ChatFlagListener implements Listener {
 
     private final Pattern IP_MATCH = Pattern.compile("(?:\\s*\\d+\\s*\\.){3}\\s*\\d+\\s*");

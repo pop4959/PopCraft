@@ -1,11 +1,11 @@
 package org.popcraft.popcraft.tasks;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEditBookEvent;
 
-@Slf4j
+@Log4j2
 public class BookListener implements Listener {
 
     @EventHandler

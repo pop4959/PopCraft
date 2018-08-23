@@ -1,7 +1,7 @@
 package org.popcraft.popcraft.commands;
 
 import com.google.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,7 +10,7 @@ import org.popcraft.popcraft.PopCommand;
 import org.popcraft.popcraft.utils.Message;
 
 @PopCommand("update")
-@Slf4j
+@Log4j2
 public class UpdateScript implements CommandExecutor {
 
     private final FileConfiguration config;
