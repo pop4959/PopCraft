@@ -67,7 +67,7 @@ public class PVP extends PlayerCommand implements Listener {
         final Entity victim = e.getEntity();
         Entity attacker = e.getDamager();
 
-        if (!(victim instanceof Player) || e.getDamage() <= 0) {
+        if (!(victim instanceof Player) || !(attacker instanceof Player) || e.getDamage() <= 0) {
             return;
         }
 
