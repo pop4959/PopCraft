@@ -29,8 +29,10 @@ public class Aura implements Listener, CommandExecutor {
 
     static {
 	for (Material m : Material.values()) {
-	    auratypes.put(m.toString().toLowerCase(), new TrailMeta(Particle.ITEM_CRACK, (new ItemStack(m)).getData(),
-		    TrailType.ITEM, TrailStyle.NORMAL, 5, 1, 0, 0, 0, 0, 0, 0));
+		if (m.isBlock()) {
+			auratypes.put(m.toString().toLowerCase(), new TrailMeta(Particle.ITEM_CRACK, m.createBlockData(),
+					TrailType.ITEM, TrailStyle.NORMAL, 5, 1, 0, 0, 0, 0, 0, 0));
+		}
 	}
 	auratypes.put("clouds",
 		new TrailMeta(Particle.CLOUD, null, TrailType.PARTICLE, TrailStyle.NORMAL, 5, 1, 0, 0, 0, 0, 0, 0));
@@ -80,26 +82,6 @@ public class Aura implements Listener, CommandExecutor {
 		} else {
 		    Message.usage(player, "aura <clear/list/type>");
 		}
-	    } else if (args.length == 2) {
-		if (auratypes.containsKey(args[0])) {
-		    TrailMeta aura = new TrailMeta(auratypes.get(args[0]));
-		    if (NumberUtils.isNumber(args[1])) {
-			if (aura.getType() == TrailType.ITEM) {
-			    ItemStack i = ((MaterialData) aura.getData()).toItemStack();
-			    i.setDurability(Short.parseShort(args[1]));
-			    aura.setData(i.getData());
-			}
-		    }
-		    playeraura.put(player.getUniqueId(), aura);
-		    String auraname = args[0].toLowerCase().replace("_", " ");
-		    short durability = (aura.getData().toItemStack().getData().getItemType().isBlock())
-			    ? ((MaterialData) aura.getData()).toItemStack().getDurability() : 0;
-		    Message.normal(player,
-			    "Aura set to " + ChatColor.RED + auraname + (durability != 0 ? ":" + durability : "")
-				    + (aura.getStyle() != TrailStyle.NORMAL
-					    ? " " + aura.getStyle().toString().toLowerCase() : "")
-				    + ChatColor.GOLD + ".");
-		}
 	    } else {
 		Message.usage(player, "aura <clear/list/type>");
 	    }
@@ -115,7 +97,7 @@ public class Aura implements Listener, CommandExecutor {
 	    player.getWorld().spawnParticle((Particle) aura.getTrail(),
 		    player.getLocation().add(aura.getShiftX(), aura.getShiftY(), aura.getShiftZ()), aura.getCount(),
 		    aura.getOffsetX(), aura.getOffsetY(), aura.getOffsetZ(), aura.getExtra(),
-		    (aura.getData() == null) ? null : ((ItemStack) aura.getData().toItemStack()));
+		    (aura.getData() == null) ? null : new ItemStack(aura.getData().getMaterial()));
 	}
     }
 

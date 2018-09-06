@@ -1,12 +1,13 @@
 package org.popcraft.popcraft.utils;
 
 import org.bukkit.Particle;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.material.MaterialData;
 
 public class TrailMeta {
 
     private Object trail;
-    private MaterialData data;
+    private BlockData data;
     private TrailType type;
     private TrailStyle style;
     private int count, extra;
@@ -20,8 +21,8 @@ public class TrailMeta {
 	NORMAL, DOTS, RAIN, DUST, SPREAD;
     }
 
-    public TrailMeta(Object trail, MaterialData data, TrailType type, TrailStyle style, int count, int extra,
-	    double offsetX, double offsetY, double offsetZ, double shiftX, double shiftY, double shiftZ) {
+    public TrailMeta(Object trail, BlockData data, TrailType type, TrailStyle style, int count, int extra,
+					 double offsetX, double offsetY, double offsetZ, double shiftX, double shiftY, double shiftZ) {
 	this.trail = trail;
 	this.data = data;
 	this.type = type;
@@ -72,11 +73,11 @@ public class TrailMeta {
 	return this;
     }
 
-    public MaterialData getData() {
+    public BlockData getData() {
 	return data;
     }
 
-    public TrailMeta setData(MaterialData data) {
+    public TrailMeta setData(BlockData data) {
 	this.data = data;
 	return this;
     }

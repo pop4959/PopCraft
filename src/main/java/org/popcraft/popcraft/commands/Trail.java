@@ -6,9 +6,11 @@ import java.util.UUID;
 import org.apache.commons.lang.math.NumberUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,13 +34,10 @@ public class Trail implements Listener, CommandExecutor {
 
     static {
 	for (Material m : Material.values()) {
-	    if (m.isBlock())
-		trailtypes.put(m.toString().toLowerCase(), new TrailMeta(Particle.BLOCK_CRACK,
-			(new ItemStack(m)).getData(), TrailType.BLOCK, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
-	    else
-		trailtypes.put(m.toString().toLowerCase(),
-			new TrailMeta(Particle.ITEM_CRACK, (new ItemStack(m)).getData(), TrailType.ITEM,
-				TrailStyle.NORMAL, 32, 0, 0.5, 0.5, 0.5, 0, 0, 0));
+	    if (m.isBlock()) {
+            trailtypes.put(m.toString().toLowerCase(), new TrailMeta(Particle.BLOCK_CRACK,
+                    m.createBlockData(), TrailType.BLOCK, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
+        }
 	}
 	for (Effect e : Effect.values()) {
 	    if (e.getType() != Effect.Type.SOUND)
@@ -71,12 +70,8 @@ public class Trail implements Listener, CommandExecutor {
 		0.8, 0.5, 0, 0, 0));
 	trailtypes.put("party", new TrailMeta(Particle.TOTEM, null, TrailType.PARTICLE, TrailStyle.NORMAL, 3, 0, 0.5,
 		0.8, 0.5, 0, 0, 0));
-	trailtypes.put("rainbow", new TrailMeta(Particle.REDSTONE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 1,
-		0.5, 0.8, 0.5, 0, 0, 0));
 	trailtypes.put("raindrops", new TrailMeta(Particle.WATER_SPLASH, null, TrailType.PARTICLE, TrailStyle.NORMAL,
 		10, 0, 0.2, 0, 0.2, 0, 0, 0));
-	trailtypes.put("redstone", new TrailMeta(Particle.REDSTONE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 0,
-		0.5, 0.8, 0.5, 0, 0, 0));
 	trailtypes.put("slime",
 		new TrailMeta(Particle.SLIME, null, TrailType.PARTICLE, TrailStyle.NORMAL, 4, 0, 0.1, 0, 0.1, 0, 0, 0));
 	trailtypes.put("smoke", new TrailMeta(Particle.SMOKE_LARGE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0,
@@ -129,7 +124,7 @@ public class Trail implements Listener, CommandExecutor {
 			    }
 			} else if (args[0].equalsIgnoreCase("list")) {
 			    Message.normal(player, "Trails: " + ChatColor.RESET
-				    + "bubbles, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, music, party, rainbow, raindrops, redstone, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops");
+				    + "bubbles, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, music, party, raindrops, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops");
 			} else if (args[0].equalsIgnoreCase("trail")) {
 			    Message.error(player, "Invalid trail. Type \"/trail list\" to see available trails.");
 			} else if (trailtypes.containsKey(args[0].toLowerCase())) {
@@ -143,47 +138,18 @@ public class Trail implements Listener, CommandExecutor {
 		    } else if (args.length == 2) {
 			if (trailtypes.containsKey(args[0].toLowerCase())) {
 			    TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
-			    if (NumberUtils.isNumber(args[1])) {
-				if (trail.getType() == TrailType.BLOCK) {
-				    ItemStack i = ((MaterialData) trail.getData()).toItemStack();
-				    i.setDurability(Short.parseShort(args[1]));
-				    trail.setData(i.getData());
-				}
-			    } else {
 				TrailStyle s = TrailStyle.valueOf(args[1].toUpperCase());
 				trail = trail.changeStyle(s);
-			    }
 			    playertrail.put(player.getUniqueId(), trail);
 			    String trailname = args[0].toLowerCase().replace("_", " ");
-			    short durability = (trail.getType() == TrailType.BLOCK)
-				    ? ((MaterialData) trail.getData()).toItemStack().getDurability() : 0;
 			    Message.normal(player,
 				    "Trail set to " + ChatColor.RED + trailname
-					    + (durability != 0 ? ":" + durability : "")
 					    + (trail.getStyle() != TrailStyle.NORMAL
 						    ? " " + trail.getStyle().toString().toLowerCase() : "")
 				    + ChatColor.GOLD + ".");
 			} else {
 			    Message.usage(player, "trail <trail/list/clear>");
 			}
-		    } else if (args.length == 3) {
-			TrailMeta trail = new TrailMeta(trailtypes.get(args[0].toLowerCase()));
-			if (trail.getType() == TrailType.BLOCK) {
-			    ItemStack i = ((MaterialData) trail.getData()).toItemStack();
-			    i.setDurability(Short.parseShort(args[1]));
-			    trail.setData(i.getData());
-			}
-			TrailStyle s = TrailStyle.valueOf(args[2].toUpperCase());
-			trail = trail.changeStyle(s);
-			playertrail.put(player.getUniqueId(), trail);
-			String trailname = args[0].toLowerCase().replace("_", " ");
-			short durability = (trail.getType() == TrailType.BLOCK)
-				? ((MaterialData) trail.getData()).toItemStack().getDurability() : 0;
-			Message.normal(player,
-				"Trail set to " + ChatColor.RED + trailname + (durability != 0 ? ":" + durability : "")
-					+ (trail.getStyle() != TrailStyle.NORMAL
-						? " " + trail.getStyle().toString().toLowerCase() : "")
-					+ ChatColor.GOLD + ".");
 		    } else {
 			Message.usage(player, "trail <trail/list/clear>");
 		    }
@@ -240,12 +206,12 @@ public class Trail implements Listener, CommandExecutor {
 		player.getWorld().spawnParticle((Particle) trail.getTrail(),
 			player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()),
 			trail.getCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtra(),
-			(MaterialData) trail.getData());
+			trail.getData());
 	    } else if (trail.getType() == TrailType.ITEM) {
 		player.getWorld().spawnParticle((Particle) trail.getTrail(),
 			player.getLocation().add(trail.getShiftX(), trail.getShiftY(), trail.getShiftZ()),
 			trail.getCount(), trail.getOffsetX(), trail.getOffsetY(), trail.getOffsetZ(), trail.getExtra(),
-			(ItemStack) trail.getData().toItemStack());
+			new ItemStack(trail.getData().getMaterial()));
 	    }
 	}
     }
