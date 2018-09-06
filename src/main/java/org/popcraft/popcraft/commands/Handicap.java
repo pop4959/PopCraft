@@ -19,22 +19,20 @@ public class Handicap implements CommandExecutor {
 		    Message.normal(player, "Handicap set to " + ChatColor.RED + 100 + ChatColor.GOLD + "%.");
 		} else if (args.length == 1) {
 		    int hp = Integer.parseInt(args[0]);
-		    if (hp >= 0 && hp <= 20 || player.hasPermission("popcraft.handicap.bypass")) {
-			if (hp == 0)
-			    player.setHealthScale(0.001);
-			else if (player.hasPermission("popcraft.handicap.bypass")) {
+		    if (hp >= 1 && hp <= 20 || player.hasPermission("popcraft.handicap.bypass")) {
+			if (player.hasPermission("popcraft.handicap.bypass")) {
 			    player.setHealthScale(hp);
 			} else if (hp <= 20) {
 			    player.setHealthScale(hp);
 			}
 			Message.normal(player, "Handicap set to " + ChatColor.RED + hp * 5 + ChatColor.GOLD + "%");
 		    } else
-			Message.error(player, "You must enter a value between 0 and 20.");
+			Message.error(player, "You must enter a value between 1 and 20.");
 		} else
 		    Message.usage(player, "handicap <hp/off>");
 		return true;
 	    } catch (NumberFormatException e) {
-		Message.error(player, "You must enter a value between 0 and 20.");
+		Message.error(player, "You must enter a value between 1 and 20.");
 	    }
 	}
 	return false;
