@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftSplashPotion;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftSplashPotion;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Illager;
@@ -31,7 +31,7 @@ public class WitchTrap implements Listener {
 			.getPlayer(((CraftSplashPotion) event.getDamager()).getHandle().getShooter().getUniqueID());
 		if (event.getCause() == DamageCause.MAGIC) {
 		    Location loc = damager.getLocation();
-		    if (loc.getBlock().getBiome() == Biome.ROOFED_FOREST) {
+		    if (loc.getBlock().getBiome() == Biome.DARK_FOREST) {
 			Random random = new Random();
 			for (int i = 0; i < 14; i++) {
 			    double[] direction = { Math.random() > 0.5 ? 1 : -1, Math.random() > 0.5 ? 1 : -1 };

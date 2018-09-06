@@ -154,7 +154,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 	if (Bukkit.getServer().getOfflinePlayer(player.getUniqueId()).hasPlayedBefore() == true) {
 	    event.setJoinMessage(ChatColor.GREEN + "\u2714 " + player.getName());
 	    Bukkit.getScoreboardManager().getMainScoreboard().getObjective("Minutes").getScore(player.getName())
-		    .setScore((int) (Math.round(player.getStatistic(Statistic.PLAY_ONE_TICK) / 1200)));
+		    .setScore((int) (Math.round(player.getStatistic(Statistic.PLAY_ONE_MINUTE))));
 	} else {
 	    event.setJoinMessage(ChatColor.GREEN + "Welcome to PopCraft, " + ChatColor.DARK_GREEN
 		    + player.getDisplayName() + ChatColor.GREEN + "!");
@@ -329,7 +329,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 		World w = e.getEntity().getWorld();
 		w.getBlockAt(0, w.getHighestBlockYAt(0, 0) + 1, 0).setType(Material.DRAGON_EGG);
 		if (config.getDouble("heads.dragon.chance") > Math.random()) {
-		    w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.SKULL_ITEM, 1, (short) 5));
+		    w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.DRAGON_HEAD, 1, (short) 5));
 		}
 	    }
 	}
@@ -339,6 +339,13 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
 	if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
 	    e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
+        if (e.getMessage().length() > 3 && e.getMessage().substring(0,4).equalsIgnoreCase("/buy")) {
+            e.setCancelled(true);
+        }
     }
 
     private void onPlayerJoinFirework(final Player PLAYER) {
@@ -358,7 +365,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
     }
 
     public ItemStack getPlayerHead(String playername) {
-	ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+	ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
 	SkullMeta meta = (SkullMeta) item.getItemMeta();
 	meta.setOwner(playername);
 	item.setItemMeta(meta);

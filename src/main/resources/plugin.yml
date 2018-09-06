@@ -1,9 +1,10 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
-version: 1.8.3.1
+api-version: 1.13
+version: 1.9.0
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
-authors: [waffelmonster, 2coolGaming]
+authors: [waffelmonster]
 website: popcraft.enjin.com
 
 commands:

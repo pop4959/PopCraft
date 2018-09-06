@@ -35,7 +35,7 @@ public class Tpr implements CommandExecutor {
 				    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_OCEAN)
 				    && !randLoc.getBlock().getBiome().equals(Biome.OCEAN)
 				    && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_OCEAN)
-				    && randLoc.add(0, -1, 0).getBlock().getType() != Material.STATIONARY_LAVA) {
+				    && randLoc.add(0, -1, 0).getBlock().getType() != Material.LAVA) {
 				notSafe = false;
 				player.teleport(randLoc);
 				Message.normal(player, "Teleporting to a random location...");

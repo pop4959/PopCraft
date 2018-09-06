@@ -34,8 +34,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftAreaEffectCloud;
-import net.minecraft.server.v1_12_R1.EntityAreaEffectCloud;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftAreaEffectCloud;
+import net.minecraft.server.v1_13_R1.EntityAreaEffectCloud;
 
 public class PVP implements Listener, CommandExecutor {
 
@@ -50,7 +50,7 @@ public class PVP implements Listener, CommandExecutor {
 		    PVP.setPvp(player, true);
 		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
 		    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
-		    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_WOLOLO, 2,
+		    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 2,
 			    1);
 		} else {
 		    PVP.setPvp(player, false);
