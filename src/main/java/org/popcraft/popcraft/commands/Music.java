@@ -32,7 +32,7 @@ public class Music implements CommandExecutor {
 		    } else
 			Message.error(player, "You are not playing anything right now!");
 		} else {
-		    Sound sound = Sound.valueOf("RECORD_" + args[0].toUpperCase());
+		    Sound sound = Sound.valueOf("MUSIC_DISC_" + args[0].toUpperCase());
 		    float pitch = 1;
 		    if (args.length >= 2)
 			pitch = Float.parseFloat(args[1]);
