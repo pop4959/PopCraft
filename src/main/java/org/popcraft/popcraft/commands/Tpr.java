@@ -7,12 +7,16 @@ import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.PopCraft;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
 
-public class Tpr implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class Tpr implements CommandExecutor, TabCompleter {
 
     private static final int COOLDOWN = PopCraft.config.getInt("commands.tpr.cooldown"),
 	    RANGE = PopCraft.config.getInt("commands.tpr.range"),
@@ -66,5 +70,10 @@ public class Tpr implements CommandExecutor {
 	location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
 	return location;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		return Collections.emptyList();
+	}
 
 }

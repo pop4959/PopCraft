@@ -1,10 +1,13 @@
 package org.popcraft.popcraft.commands;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.popcraft.popcraft.utils.Message;
 import net.md_5.bungee.api.ChatColor;
 
-public class Piggyback implements Listener, CommandExecutor {
+public class Piggyback implements Listener, CommandExecutor, TabCompleter {
     public static HashMap<UUID, Boolean> piggyback = new HashMap<UUID, Boolean>();
 
     @Override
@@ -62,4 +65,9 @@ public class Piggyback implements Listener, CommandExecutor {
 	Boolean state = piggyback.get(uuid);
 	return state;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		return Collections.emptyList();
+	}
 }

@@ -1,33 +1,30 @@
 package org.popcraft.popcraft.commands;
 
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.apache.commons.lang.math.NumberUtils;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TrailMeta;
 import org.popcraft.popcraft.utils.TrailMeta.TrailStyle;
 import org.popcraft.popcraft.utils.TrailMeta.TrailType;
 
-public class Trail implements Listener, CommandExecutor {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+public class Trail implements Listener, CommandExecutor, TabCompleter {
 
     private static HashMap<String, TrailMeta> trailtypes = new HashMap<String, TrailMeta>();
     private static HashMap<UUID, TrailMeta> playertrail = new HashMap<UUID, TrailMeta>();
@@ -39,15 +36,15 @@ public class Trail implements Listener, CommandExecutor {
                     m.createBlockData(), TrailType.BLOCK, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
         }
 	}
-	for (Effect e : Effect.values()) {
-	    if (e.getType() != Effect.Type.SOUND)
-		trailtypes.put(e.name().toLowerCase() + "_debug_effect",
-			new TrailMeta(e, null, TrailType.EFFECT, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
-	}
-	for (Particle p : Particle.values()) {
-	    trailtypes.put(p.name().toLowerCase() + "_debug_particle",
-		    new TrailMeta(p, null, TrailType.PARTICLE, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
-	}
+//	for (Effect e : Effect.values()) {
+//	    if (e.getType() != Effect.Type.SOUND)
+//		trailtypes.put(e.name().toLowerCase() + "_debug_effect",
+//			new TrailMeta(e, null, TrailType.EFFECT, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
+//	}
+//	for (Particle p : Particle.values()) {
+//	    trailtypes.put(p.name().toLowerCase() + "_debug_particle",
+//		    new TrailMeta(p, null, TrailType.PARTICLE, TrailStyle.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
+//	}
 	trailtypes.put("bubbles", new TrailMeta(Particle.CRIT_MAGIC, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0,
 		0.5, 0.8, 0.5, 0, 0, 0));
 	trailtypes.put("flames", new TrailMeta(Particle.FLAME, null, TrailType.PARTICLE, TrailStyle.NORMAL, 5, 0, 0.5,
@@ -216,4 +213,26 @@ public class Trail implements Listener, CommandExecutor {
 	}
     }
 
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		List<String> options = new ArrayList<>();
+		if (args.length == 1) {
+			options.addAll(trailtypes.keySet());
+			options.add("trail");
+			options.add("list");
+			options.add("clear");
+		} else if (args.length == 2) {
+			options.add("dots");
+			options.add("rain");
+			options.add("dust");
+			options.add("spread");
+		}
+		List<String> finalOptions = new ArrayList<>();
+		for (String option : options) {
+			if (option.contains(args[args.length - 1])) {
+				finalOptions.add(option);
+			}
+		}
+		return finalOptions;
+	}
 }

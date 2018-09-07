@@ -10,6 +10,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -22,7 +23,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.popcraft.popcraft.PopCraft;
 import org.popcraft.popcraft.utils.Message;
 
-public class Fireworks implements Listener, CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Fireworks implements Listener, CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -655,4 +660,80 @@ public class Fireworks implements Listener, CommandExecutor {
 	    }
 	}
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		List<String> options = new ArrayList<>();
+		if (args.length == 1) {
+			options.add("random");
+			options.add("list");
+			options.add("aqua");
+			options.add("black");
+			options.add("blue");
+			options.add("fuchsia");
+			options.add("gray");
+			options.add("green");
+			options.add("lime");
+			options.add("maroon");
+			options.add("navy");
+			options.add("olive");
+			options.add("orange");
+			options.add("purple");
+			options.add("red");
+			options.add("silver");
+			options.add("teal");
+			options.add("white");
+			options.add("yellow");
+		} else if (args.length == 2) {
+    		if (args[0].equalsIgnoreCase("list")) {
+    			options.add("colors");
+				options.add("fades");
+				options.add("effects");
+				options.add("types");
+				options.add("heights");
+			} else {
+				options.add("random");
+				options.add("aqua");
+				options.add("black");
+				options.add("blue");
+				options.add("fuchsia");
+				options.add("gray");
+				options.add("green");
+				options.add("lime");
+				options.add("maroon");
+				options.add("navy");
+				options.add("olive");
+				options.add("orange");
+				options.add("purple");
+				options.add("red");
+				options.add("silver");
+				options.add("teal");
+				options.add("white");
+				options.add("yellow");
+			}
+		} else if (args.length == 3) {
+			options.add("none");
+			options.add("random");
+			options.add("flicker");
+			options.add("trail");
+		} else if (args.length == 4) {
+			options.add("small");
+			options.add("large");
+			options.add("burst");
+			options.add("creeper");
+			options.add("star");
+		} else if (args.length == 5) {
+			options.add("low");
+			options.add("medium");
+			options.add("high");
+			options.add("extreme");
+		}
+		List<String> finalOptions = new ArrayList<>();
+		for (String option : options) {
+			if (option.contains(args[args.length - 1])) {
+				finalOptions.add(option);
+			}
+		}
+		return finalOptions;
+	}
 }

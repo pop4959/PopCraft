@@ -4,13 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TicketManager;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class TicketCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketCommand implements CommandExecutor, TabCompleter {
 
     private static TicketManager tm = new TicketManager();
 
@@ -212,4 +216,31 @@ public class TicketCommand implements CommandExecutor {
     public static TicketManager getTicketManager() {
 	return tm;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		List<String> options = new ArrayList<>();
+		if (args.length == 1) {
+			options.add("send");
+			options.add("list");
+			options.add("close");
+			if (sender.hasPermission("popcraft.ticket.mod")) {
+				options.add("archive");
+				options.add("read");
+				options.add("view");
+				options.add("claim");
+				options.add("unclaim");
+				options.add("open");
+				options.add("comment");
+				options.add("tp");
+			}
+		}
+		List<String> finalOptions = new ArrayList<>();
+		for (String option : options) {
+			if (option.contains(args[args.length - 1])) {
+				finalOptions.add(option);
+			}
+		}
+		return finalOptions;
+	}
 }

@@ -3,10 +3,14 @@ package org.popcraft.popcraft.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.utils.Message;
 
-public class Textures implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class Textures implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -38,4 +42,9 @@ public class Textures implements CommandExecutor {
 	}
 	return true;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		return Collections.emptyList();
+	}
 }

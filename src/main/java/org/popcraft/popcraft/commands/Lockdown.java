@@ -3,10 +3,14 @@ package org.popcraft.popcraft.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.popcraft.popcraft.utils.Message;
 import net.md_5.bungee.api.ChatColor;
 
-public class Lockdown implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class Lockdown implements CommandExecutor, TabCompleter {
 
     static boolean lockdown = false;
 
@@ -26,4 +30,9 @@ public class Lockdown implements CommandExecutor {
     public static boolean isLockdown() {
 	return lockdown;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		return Collections.emptyList();
+	}
 }

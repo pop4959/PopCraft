@@ -1,7 +1,9 @@
 package org.popcraft.popcraft.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -10,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +22,7 @@ import org.bukkit.scoreboard.Team;
 import org.popcraft.popcraft.PopCraft;
 import org.popcraft.popcraft.utils.Message;
 
-public class Glow implements Listener, CommandExecutor {
+public class Glow implements Listener, CommandExecutor, TabCompleter {
 
     private static HashMap<UUID, Object[]> task = new HashMap<UUID, Object[]>();
 
@@ -107,4 +110,17 @@ public class Glow implements Listener, CommandExecutor {
 	}
 	player.setGlowing(false);
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		List<String> options = new ArrayList<>();
+		if (args.length == 1 && args[0].length() > 0) {
+			if ("0123456789abcdefABCDEF".contains("" + args[0].charAt(args[0].length() - 1))) {
+				for (char c : "0123456789abcdefABCDEF".toCharArray()) {
+					options.add(args[0] + c);
+				}
+			}
+		}
+		return options;
+	}
 }

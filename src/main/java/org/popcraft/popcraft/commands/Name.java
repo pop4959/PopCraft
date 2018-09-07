@@ -4,10 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.popcraft.popcraft.utils.MCAPI;
 import org.popcraft.popcraft.utils.Message;
 
-public class Name implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class Name implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -25,4 +29,9 @@ public class Name implements CommandExecutor {
 	}
 	return false;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		return Collections.emptyList();
+	}
 }

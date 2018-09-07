@@ -1,6 +1,9 @@
 package org.popcraft.popcraft.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -10,6 +13,7 @@ import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +26,7 @@ import org.popcraft.popcraft.utils.TrailMeta;
 import org.popcraft.popcraft.utils.TrailMeta.TrailStyle;
 import org.popcraft.popcraft.utils.TrailMeta.TrailType;
 
-public class Aura implements Listener, CommandExecutor {
+public class Aura implements Listener, CommandExecutor, TabCompleter {
 
     public static HashMap<String, TrailMeta> auratypes = new HashMap<String, TrailMeta>();
     public static HashMap<UUID, TrailMeta> playeraura = new HashMap<UUID, TrailMeta>();
@@ -108,4 +112,22 @@ public class Aura implements Listener, CommandExecutor {
 	    playeraura.remove(player.getUniqueId());
 	}
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		List<String> options = new ArrayList<>();
+		if (args.length == 1) {
+			options.addAll(auratypes.keySet());
+			options.add("clear");
+			options.add("list");
+			options.add("type");
+		}
+		List<String> finalOptions = new ArrayList<>();
+		for (String option : options) {
+			if (option.contains(args[args.length - 1])) {
+				finalOptions.add(option);
+			}
+		}
+		return finalOptions;
+	}
 }

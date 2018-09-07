@@ -1,7 +1,9 @@
 package org.popcraft.popcraft.commands;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -9,10 +11,11 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.utils.Message;
 
-public class Music implements CommandExecutor {
+public class Music implements CommandExecutor, TabCompleter {
 
     private static HashMap<UUID, Sound> playing = new HashMap<UUID, Sound>();
 
@@ -50,4 +53,37 @@ public class Music implements CommandExecutor {
 	}
 	return true;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		List<String> options = new ArrayList<>();
+		if (args.length == 1) {
+			options.add("11");
+			options.add("13");
+			options.add("blocks");
+			options.add("cat");
+			options.add("chirp");
+			options.add("far");
+			options.add("mall");
+			options.add("mellohi");
+			options.add("stal");
+			options.add("strad");
+			options.add("wait");
+			options.add("ward");
+			options.add("list");
+			options.add("stop");
+		} else if (args.length == 2) {
+			options.add("0.5");
+			options.add("1.0");
+			options.add("1.5");
+			options.add("2.0");
+		}
+		List<String> finalOptions = new ArrayList<>();
+		for (String option : options) {
+			if (option.contains(args[args.length - 1])) {
+				finalOptions.add(option);
+			}
+		}
+		return finalOptions;
+	}
 }

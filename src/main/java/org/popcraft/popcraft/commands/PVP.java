@@ -1,7 +1,10 @@
 package org.popcraft.popcraft.commands;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,6 +13,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
@@ -37,7 +41,7 @@ import org.popcraft.popcraft.utils.Message;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftAreaEffectCloud;
 import net.minecraft.server.v1_13_R1.EntityAreaEffectCloud;
 
-public class PVP implements Listener, CommandExecutor {
+public class PVP implements Listener, CommandExecutor, TabCompleter {
 
     public static HashMap<String, Boolean> pvp = new HashMap<String, Boolean>();
 
@@ -204,4 +208,9 @@ public class PVP implements Listener, CommandExecutor {
 	Boolean state = pvp.get(player.getName());
 	return state;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		return Collections.emptyList();
+	}
 }
