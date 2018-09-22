@@ -201,7 +201,7 @@ public class PVP implements Listener, CommandExecutor, TabCompleter {
 	pvp.put(player.getName(), state);
     }
 
-    private static boolean getPvp(Player player) {
+    public static boolean getPvp(Player player) {
 	if (!pvp.containsKey(player.getName())) {
 	    pvp.put(player.getName(), false);
 	}

@@ -7,6 +7,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
+import org.popcraft.popcraft.commands.PVP;
 
 public class XPBoard implements Listener {
 
@@ -27,7 +28,7 @@ public class XPBoard implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Objective scores = Bukkit.getScoreboardManager().getMainScoreboard().getObjective(OBJECTIVE_NAME);
         Score score = scores.getScore(e.getEntity().getName());
-        if (score.getScore() < AMOUNT_LOST) {
+        if (score.getScore() < AMOUNT_LOST || PVP.getPvp(e.getEntity())) {
             return;
         }
         score.setScore(score.getScore() - AMOUNT_LOST);
