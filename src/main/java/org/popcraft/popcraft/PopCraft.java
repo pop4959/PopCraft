@@ -78,7 +78,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
 			.setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
 	getServer().addRecipe(recipeSkulkerShell);
 	registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
-		new Aura(), new Trail(), new Fireworks(), new Glow(), new WitchTrap());
+		new Aura(), new Trail(), new Fireworks(), new Glow(), new WitchTrap(), new XPBoard());
 	getCommand("textures").setExecutor(new Textures());
 	getCommand("getscore").setExecutor(new GetScore());
 	getCommand("music").setExecutor(new Music());
