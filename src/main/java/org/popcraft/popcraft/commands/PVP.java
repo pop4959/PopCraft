@@ -1,10 +1,6 @@
 package org.popcraft.popcraft.commands;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
+import net.minecraft.server.v1_13_R1.EntityAreaEffectCloud;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftAreaEffectCloud;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
@@ -38,8 +35,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftAreaEffectCloud;
-import net.minecraft.server.v1_13_R1.EntityAreaEffectCloud;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class PVP implements Listener, CommandExecutor, TabCompleter {
 
@@ -47,170 +47,170 @@ public class PVP implements Listener, CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	Player player = (Player) sender;
-	if (cmd.getName().equalsIgnoreCase("pvp")) {
-	    if (Cooldown.check(player, "pvp", 5000)) {
-		if (!PVP.getPvp(player)) {
-		    PVP.setPvp(player, true);
-		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
-		    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
-		    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 2,
-			    1);
-		} else {
-		    PVP.setPvp(player, false);
-		    Message.normal(player, "Your PvP is now " + ChatColor.RED + "disabled" + ChatColor.GOLD + "!");
-		    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CHICKEN_AMBIENT, 2, 1);
-		}
-	    } else {
-		Message.cooldown(player, "pvp", 5000);
-	    }
-	    return true;
-	}
-	return false;
+        Player player = (Player) sender;
+        if (cmd.getName().equalsIgnoreCase("pvp")) {
+            if (Cooldown.check(player, "pvp", 5000)) {
+                if (!PVP.getPvp(player)) {
+                    PVP.setPvp(player, true);
+                    Message.normal(player, "Your PvP is now " + ChatColor.RED + "enabled" + ChatColor.GOLD + "!");
+                    player.getWorld().spawnParticle(Particle.LAVA, player.getLocation(), 50);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 2,
+                            1);
+                } else {
+                    PVP.setPvp(player, false);
+                    Message.normal(player, "Your PvP is now " + ChatColor.RED + "disabled" + ChatColor.GOLD + "!");
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CHICKEN_AMBIENT, 2, 1);
+                }
+            } else {
+                Message.cooldown(player, "pvp", 5000);
+            }
+            return true;
+        }
+        return false;
     }
 
     @EventHandler
     public static void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-	Entity victim = e.getEntity();
-	Entity attacker = e.getDamager();
-	if (victim instanceof Player) {
-	    try {
-		if (victim.getLocation().distance(
-			Bukkit.getWorld(Bukkit.getServer().getWorlds().get(0).getName()).getSpawnLocation()) < 16)
-		    e.setCancelled(true);
-	    } catch (IllegalArgumentException ex) {
-	    }
-	    if (attacker instanceof Player) {
-		if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker)))
-		    e.setCancelled(true);
-	    }
-	    if (attacker instanceof Projectile) {
-		Projectile projectile = (Projectile) e.getDamager();
-		try {
-		    attacker = (Player) ((Projectile) e.getDamager()).getShooter();
-		} catch (ClassCastException ex) {
-		}
-		if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
-		    if (projectile instanceof Arrow || projectile instanceof Egg || projectile instanceof FishHook
-			    || projectile instanceof Snowball || projectile instanceof EnderPearl) {
-			e.setCancelled(true);
-		    }
-		}
-	    }
-	    if (attacker instanceof AreaEffectCloud) {
-		EntityAreaEffectCloud nmsEffectCloud = ((CraftAreaEffectCloud) ((AreaEffectCloud) attacker))
-			.getHandle();
-		if (nmsEffectCloud.getSource() != null) {
-		    attacker = nmsEffectCloud.getSource().getBukkitEntity();
-		    if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
-			PotionEffectType potionType = ((AreaEffectCloud) nmsEffectCloud.getBukkitEntity())
-				.getBasePotionData().getType().getEffectType();
-			if (potionType == PotionEffectType.HARM || potionType == PotionEffectType.POISON)
-			    e.setCancelled(true);
-		    }
-		}
-	    }
-	    Cooldown.reset((Player) victim, "pvp", 5000);
-	}
+        Entity victim = e.getEntity();
+        Entity attacker = e.getDamager();
+        if (victim instanceof Player) {
+            try {
+                if (victim.getLocation().distance(
+                        Bukkit.getWorld(Bukkit.getServer().getWorlds().get(0).getName()).getSpawnLocation()) < 16)
+                    e.setCancelled(true);
+            } catch (IllegalArgumentException ex) {
+            }
+            if (attacker instanceof Player) {
+                if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker)))
+                    e.setCancelled(true);
+            }
+            if (attacker instanceof Projectile) {
+                Projectile projectile = (Projectile) e.getDamager();
+                try {
+                    attacker = (Player) ((Projectile) e.getDamager()).getShooter();
+                } catch (ClassCastException ex) {
+                }
+                if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
+                    if (projectile instanceof Arrow || projectile instanceof Egg || projectile instanceof FishHook
+                            || projectile instanceof Snowball || projectile instanceof EnderPearl) {
+                        e.setCancelled(true);
+                    }
+                }
+            }
+            if (attacker instanceof AreaEffectCloud) {
+                EntityAreaEffectCloud nmsEffectCloud = ((CraftAreaEffectCloud) ((AreaEffectCloud) attacker))
+                        .getHandle();
+                if (nmsEffectCloud.getSource() != null) {
+                    attacker = nmsEffectCloud.getSource().getBukkitEntity();
+                    if (attacker instanceof Player && !(PVP.getPvp((Player) victim) && PVP.getPvp((Player) attacker))) {
+                        PotionEffectType potionType = ((AreaEffectCloud) nmsEffectCloud.getBukkitEntity())
+                                .getBasePotionData().getType().getEffectType();
+                        if (potionType == PotionEffectType.HARM || potionType == PotionEffectType.POISON)
+                            e.setCancelled(true);
+                    }
+                }
+            }
+            Cooldown.reset((Player) victim, "pvp", 5000);
+        }
     }
 
     @EventHandler
     public static void onEntityCombustByEntity(EntityCombustByEntityEvent e) {
-	Entity victim = e.getEntity();
-	if (victim instanceof Player) {
-	    if (e.getCombuster() instanceof Arrow) {
-		ProjectileSource source = ((Arrow) e.getCombuster()).getShooter();
-		if (source instanceof Player) {
-		    if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) source)))
-			e.setCancelled(true);
-		}
-	    }
-	}
+        Entity victim = e.getEntity();
+        if (victim instanceof Player) {
+            if (e.getCombuster() instanceof Arrow) {
+                ProjectileSource source = ((Arrow) e.getCombuster()).getShooter();
+                if (source instanceof Player) {
+                    if (!(PVP.getPvp((Player) victim) && PVP.getPvp((Player) source)))
+                        e.setCancelled(true);
+                }
+            }
+        }
     }
 
     @EventHandler
     public static void onPotionSplash(PotionSplashEvent e) {
-	if (e.getEntity().getShooter() instanceof Player) {
-	    for (LivingEntity entity : e.getAffectedEntities()) {
-		if (!(entity instanceof Player)) {
-		    Collection<PotionEffect> pes = e.getPotion().getEffects();
-		    for (PotionEffect pe : pes) {
-			pe.apply(entity);
-		    }
-		}
-	    }
-	    for (LivingEntity entity : e.getAffectedEntities()) {
-		if (entity instanceof Player
-			&& !(PVP.getPvp((Player) entity) && PVP.getPvp((Player) e.getEntity().getShooter()))) {
-		    Cooldown.reset((Player) entity, "pvp", 5000);
-		    PotionEffectType[] pvpPotions = { PotionEffectType.HARM, PotionEffectType.POISON,
-			    PotionEffectType.SLOW, PotionEffectType.WEAKNESS };
-		    for (PotionEffectType t : pvpPotions)
-			for (PotionEffect p : e.getPotion().getEffects())
-			    if (p.getType().equals(t))
-				e.setCancelled(true);
-		}
-	    }
-	}
+        if (e.getEntity().getShooter() instanceof Player) {
+            for (LivingEntity entity : e.getAffectedEntities()) {
+                if (!(entity instanceof Player)) {
+                    Collection<PotionEffect> pes = e.getPotion().getEffects();
+                    for (PotionEffect pe : pes) {
+                        pe.apply(entity);
+                    }
+                }
+            }
+            for (LivingEntity entity : e.getAffectedEntities()) {
+                if (entity instanceof Player
+                        && !(PVP.getPvp((Player) entity) && PVP.getPvp((Player) e.getEntity().getShooter()))) {
+                    Cooldown.reset((Player) entity, "pvp", 5000);
+                    PotionEffectType[] pvpPotions = {PotionEffectType.HARM, PotionEffectType.POISON,
+                            PotionEffectType.SLOW, PotionEffectType.WEAKNESS};
+                    for (PotionEffectType t : pvpPotions)
+                        for (PotionEffect p : e.getPotion().getEffects())
+                            if (p.getType().equals(t))
+                                e.setCancelled(true);
+                }
+            }
+        }
     }
 
     @EventHandler
     public static void onLingeringPotionSplash(LingeringPotionSplashEvent e) {
-	// TODO: Replace NMS
+        // TODO: Replace NMS
     }
 
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent e) {
-	Material bucket = e.getBucket();
-	if (bucket.toString().contains("LAVA_BUCKET")) {
-	    for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
-		if (en instanceof Player) {
-		    if (!PVP.getPvp(((Player) en))) {
-			e.setCancelled(true);
-			e.getPlayer().updateInventory();
-		    }
-		}
-	    }
-	}
+        Material bucket = e.getBucket();
+        if (bucket.toString().contains("LAVA_BUCKET")) {
+            for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
+                if (en instanceof Player) {
+                    if (!PVP.getPvp(((Player) en))) {
+                        e.setCancelled(true);
+                        e.getPlayer().updateInventory();
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
     public void onBlockIgniteEvent(BlockIgniteEvent e) {
-	if (e.getIgnitingEntity() instanceof Player) {
-	    for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
-		if (en instanceof Player) {
-		    if (!PVP.getPvp(((Player) en))) {
-			e.setCancelled(true);
-		    }
-		}
-	    }
-	}
+        if (e.getIgnitingEntity() instanceof Player) {
+            for (Entity en : e.getPlayer().getNearbyEntities(16, 16, 16)) {
+                if (en instanceof Player) {
+                    if (!PVP.getPvp(((Player) en))) {
+                        e.setCancelled(true);
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-	if (e.getEntity().getKiller() instanceof Player) {
-	    e.setKeepInventory(true);
-	    e.getDrops().clear();
-	    e.setDroppedExp(0);
-	    e.setKeepLevel(true);
-	}
+        if (e.getEntity().getKiller() instanceof Player) {
+            e.setKeepInventory(true);
+            e.getDrops().clear();
+            e.setDroppedExp(0);
+            e.setKeepLevel(true);
+        }
     }
 
     private static void setPvp(Player player, Boolean state) {
-	pvp.put(player.getName(), state);
+        pvp.put(player.getName(), state);
     }
 
     public static boolean getPvp(Player player) {
-	if (!pvp.containsKey(player.getName())) {
-	    pvp.put(player.getName(), false);
-	}
-	Boolean state = pvp.get(player.getName());
-	return state;
+        if (!pvp.containsKey(player.getName())) {
+            pvp.put(player.getName(), false);
+        }
+        Boolean state = pvp.get(player.getName());
+        return state;
     }
 
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		return Collections.emptyList();
-	}
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        return Collections.emptyList();
+    }
 }

@@ -9,39 +9,39 @@ public class MagicMessage implements Runnable {
     private int taskId;
     private boolean enabled = false;
     private String message = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "*" + ChatColor.DARK_GREEN + "] "
-	    + ChatColor.GREEN + "Default Message";
+            + ChatColor.GREEN + "Default Message";
 
     public int getTaskId() {
-	return taskId;
+        return taskId;
     }
 
     public void setTaskId(int taskId) {
-	this.taskId = taskId;
+        this.taskId = taskId;
     }
 
     public boolean getEnabled() {
-	return enabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
+        this.enabled = enabled;
     }
 
     public String getMessage() {
-	return message;
+        return message;
     }
 
     public void setMessage(String message) {
-	this.message = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "*" + ChatColor.DARK_GREEN + "] "
-		+ ChatColor.GREEN + message;
+        this.message = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "*" + ChatColor.DARK_GREEN + "] "
+                + ChatColor.GREEN + message;
     }
 
     public void run() {
-	for (Player player : Bukkit.getOnlinePlayers()) {
-	    if (player.hasPermission("popcraft.magicmessage.receive")) {
-		player.sendMessage(message);
-	    }
-	}
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.hasPermission("popcraft.magicmessage.receive")) {
+                player.sendMessage(message);
+            }
+        }
     }
 
 }
