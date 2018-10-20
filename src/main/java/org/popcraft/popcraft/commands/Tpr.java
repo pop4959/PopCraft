@@ -36,9 +36,16 @@ public class Tpr implements CommandExecutor, TabCompleter {
                                     : getPseudoRandomCoordinate();
                             if (!randLoc.getBlock().getBiome().equals(Biome.RIVER)
                                     && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_RIVER)
-                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_OCEAN)
                                     && !randLoc.getBlock().getBiome().equals(Biome.OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_OCEAN)
                                     && !randLoc.getBlock().getBiome().equals(Biome.FROZEN_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.WARM_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.LUKEWARM_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.COLD_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_WARM_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_LUKEWARM_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_COLD_OCEAN)
+                                    && !randLoc.getBlock().getBiome().equals(Biome.DEEP_FROZEN_OCEAN)
                                     && randLoc.add(0, -1, 0).getBlock().getType() != Material.LAVA) {
                                 notSafe = false;
                                 player.teleport(randLoc);
