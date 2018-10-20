@@ -47,6 +47,8 @@ public class Trail implements Listener, CommandExecutor, TabCompleter {
 //	}
         trailtypes.put("bubbles", new TrailMeta(Particle.CRIT_MAGIC, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0,
                 0.5, 0.8, 0.5, 0, 0, 0));
+        trailtypes.put("darkness", new TrailMeta(Particle.SQUID_INK, null, TrailType.PARTICLE, TrailStyle.NORMAL, 2, 0, 0.5,
+                0.7, 0.5, 0, 0, 0));
         trailtypes.put("flames", new TrailMeta(Particle.FLAME, null, TrailType.PARTICLE, TrailStyle.NORMAL, 5, 0, 0.5,
                 0.5, 0.5, 0, 0, 0));
         trailtypes.put("glitter", new TrailMeta(Particle.SPELL_INSTANT, null, TrailType.PARTICLE, TrailStyle.NORMAL, 15,
@@ -63,6 +65,8 @@ public class Trail implements Listener, CommandExecutor, TabCompleter {
                 0.8, 0.5, 0, 0, 0));
         trailtypes.put("magic", new TrailMeta(Particle.SPELL_WITCH, null, TrailType.PARTICLE, TrailStyle.NORMAL, 15, 0,
                 0.2, 0, 0.2, 0, 0, 0));
+        trailtypes.put("mist", new TrailMeta(Particle.SPIT, null, TrailType.PARTICLE, TrailStyle.NORMAL, 3, 0, 0.5,
+                0.6, 0.5, 0, 0, 0));
         trailtypes.put("music", new TrailMeta(Particle.NOTE, null, TrailType.PARTICLE, TrailStyle.NORMAL, 1, 1, 0.5,
                 0.8, 0.5, 0, 0, 0));
         trailtypes.put("party", new TrailMeta(Particle.TOTEM, null, TrailType.PARTICLE, TrailStyle.NORMAL, 3, 0, 0.5,
@@ -121,7 +125,7 @@ public class Trail implements Listener, CommandExecutor, TabCompleter {
                             }
                         } else if (args[0].equalsIgnoreCase("list")) {
                             Message.normal(player, "Trails: " + ChatColor.RESET
-                                    + "bubbles, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, music, party, raindrops, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops");
+                                    + "bubbles, darkness, flames, glitter, glow, glyphs, hearts, lavadrops, love, magic, mist, music, party, raindrops, slime, smoke, snowy, sparkles, sparks, swirls, teleport, thunderclouds, volcano, waterdrops");
                         } else if (args[0].equalsIgnoreCase("trail")) {
                             Message.error(player, "Invalid trail. Type \"/trail list\" to see available trails.");
                         } else if (trailtypes.containsKey(args[0].toLowerCase())) {
