@@ -3,7 +3,7 @@ package org.popcraft.popcraft.tasks;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftSplashPotion;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftSplashPotion;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Illager;
