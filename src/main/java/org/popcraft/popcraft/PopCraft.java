@@ -205,6 +205,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
         }
         Glow.disableGlow(player);
         TeamManager.assignTeam(player);
+        player.setPlayerListHeaderFooter(ChatColor.translateAlternateColorCodes('&', "&2PopCraft Survival"), ChatColor.translateAlternateColorCodes('&', "&2mc.popcraft.org"));
         if (player.hasPermission("popcraft.ticket.mod")) {
             int ticketCount = TicketCommand.getTicketManager().ticketCount(true);
             if (ticketCount > 0)
