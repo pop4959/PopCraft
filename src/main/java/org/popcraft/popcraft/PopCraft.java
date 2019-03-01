@@ -72,6 +72,7 @@ import org.popcraft.popcraft.tasks.AnvilColor;
 import org.popcraft.popcraft.tasks.AnvilLogger;
 import org.popcraft.popcraft.tasks.JonsLogger;
 import org.popcraft.popcraft.tasks.MagicMessage;
+import org.popcraft.popcraft.tasks.VoteHandler;
 import org.popcraft.popcraft.tasks.WitchTrap;
 import org.popcraft.popcraft.tasks.XPBoard;
 import org.popcraft.popcraft.utils.Cooldown;
@@ -113,7 +114,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
                 .setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
         getServer().addRecipe(recipeSkulkerShell);
         registerEvents(this, this, new PVP(), new AnvilColor(), new AnvilLogger(), jonslogger, new Piggyback(),
-                new Aura(), new Trail(), new Fireworks(), new Glow(), new WitchTrap(), new XPBoard());
+                new Aura(), new Trail(), new Fireworks(), new Glow(), new WitchTrap(), new XPBoard(), new VoteHandler());
         getCommand("textures").setExecutor(new Textures());
         getCommand("getscore").setExecutor(new GetScore());
         getCommand("music").setExecutor(new Music());

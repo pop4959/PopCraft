@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.popcraft.popcraft</groupId>
     <artifactId>PopCraft</artifactId>
-    <version>1.9.4</version>
+    <version>1.9.5</version>
     <name>PopCraft Plugin</name>
     <description>Developed for the PopCraft server. Copyright 2016 pop4959.</description>
     <build>
@@ -23,6 +23,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>votifier-repo</id>
+            <url>http://repo.howaner.de/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -36,6 +40,13 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vexsoftware</groupId>
+            <artifactId>votifier</artifactId>
+            <version>1.9</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>

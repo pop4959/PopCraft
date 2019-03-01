@@ -36,3 +36,7 @@ jonslogger:
   checkip: true
   showban: true
   file: /home/thinkserver/Desktop/minecraft/syncsite.sh
+votehandler:
+  enabled: true
+  reward: true
+  amount: 500

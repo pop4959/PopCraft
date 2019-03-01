@@ -34,4 +34,10 @@ public class XPBoard implements Listener {
         score.setScore(score.getScore() - AMOUNT_LOST);
     }
 
+    public static void addScore(String playerName, int amount) {
+        Objective scores = Bukkit.getScoreboardManager().getMainScoreboard().getObjective(OBJECTIVE_NAME);
+        Score score = scores.getScore(playerName);
+        score.setScore(score.getScore() + amount);
+    }
+
 }
