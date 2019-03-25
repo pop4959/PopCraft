@@ -1,12 +1,18 @@
 package org.popcraft.popcraft.commands;
 
+import com.earth2me.essentials.Teleport;
+import com.earth2me.essentials.Trade;
+import net.ess3.api.IEssentials;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 import org.popcraft.popcraft.utils.Message;
 import org.popcraft.popcraft.utils.TicketManager;
 
@@ -154,7 +160,21 @@ public class TicketCommand implements CommandExecutor, TabCompleter {
                     }
                 } else if (args[0].equalsIgnoreCase("tp") && args.length > 1) {
                     if (player.hasPermission("popcraft.ticket.mod")) {
-                        player.teleport(tm.getTicket(Integer.parseInt(args[1])).decodeLocation());
+                        Location location = tm.getTicket(Integer.parseInt(args[1])).decodeLocation();
+                        Plugin essentialsPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
+                        if (essentialsPlugin != null) {
+                            IEssentials ess = (IEssentials) essentialsPlugin;
+                            final Trade charge = new Trade(cmd.getName(), ess);
+                            Teleport teleport = ess.getUser(player).getTeleport();
+                            teleport.setTpType(Teleport.TeleportType.NORMAL);
+                            try {
+                                teleport.teleport(location, charge, PlayerTeleportEvent.TeleportCause.COMMAND);
+                            } catch (Exception e) {
+                                player.teleport(location);
+                            }
+                        } else {
+                            player.teleport(location);
+                        }
                         Message.normal(player, "Teleporting...");
                     }
                 } else if (args[0].equalsIgnoreCase("purge") && args.length > 1) {
