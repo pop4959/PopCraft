@@ -1,5 +1,8 @@
 package org.popcraft.popcraft.commands;
 
+import com.earth2me.essentials.Teleport;
+import com.earth2me.essentials.Trade;
+import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,6 +12,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 import org.popcraft.popcraft.PopCraft;
 import org.popcraft.popcraft.utils.Cooldown;
 import org.popcraft.popcraft.utils.Message;
@@ -48,7 +53,20 @@ public class Tpr implements CommandExecutor, TabCompleter {
                                     && !randLoc.getBlock().getBiome().equals(Biome.DEEP_FROZEN_OCEAN)
                                     && randLoc.add(0, -1, 0).getBlock().getType() != Material.LAVA) {
                                 notSafe = false;
-                                player.teleport(randLoc);
+                                Plugin essentialsPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
+                                if (essentialsPlugin != null) {
+                                    IEssentials ess = (IEssentials) essentialsPlugin;
+                                    final Trade charge = new Trade(cmd.getName(), ess);
+                                    Teleport teleport = ess.getUser(player).getTeleport();
+                                    teleport.setTpType(Teleport.TeleportType.NORMAL);
+                                    try {
+                                        teleport.teleport(randLoc, charge, PlayerTeleportEvent.TeleportCause.COMMAND);
+                                    } catch (Exception e) {
+                                        player.teleport(randLoc);
+                                    }
+                                } else {
+                                    player.teleport(randLoc);
+                                }
                                 Message.normal(player, "Teleporting to a random location...");
                             }
                         }

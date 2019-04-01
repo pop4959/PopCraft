@@ -24,9 +24,11 @@ heads:
   player:
     enabled: false
     chance: 0.0
+    looting: 0.0
   dragon:
     enabled: false
     chance: 0.0
+    looting: 0.0
 profanityprotect:
 - item1
 - item2 etc

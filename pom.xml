@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.popcraft.popcraft</groupId>
     <artifactId>PopCraft</artifactId>
-    <version>1.9.5</version>
+    <version>1.9.7</version>
     <name>PopCraft Plugin</name>
     <description>Developed for the PopCraft server. Copyright 2016 pop4959.</description>
     <build>
@@ -24,6 +24,10 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
+            <id>ess-repo</id>
+            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+        </repository>
+        <repository>
             <id>votifier-repo</id>
             <url>http://repo.howaner.de/</url>
         </repository>
@@ -41,6 +45,12 @@
             <artifactId>spigot</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version>
             <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.ess3</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.16.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

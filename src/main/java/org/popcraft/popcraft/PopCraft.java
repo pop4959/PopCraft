@@ -12,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventException;
@@ -362,23 +363,31 @@ public final class PopCraft extends JavaPlugin implements Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        Player killer = event.getEntity().getKiller();
+        int lootingLevel = killer == null ? 0 : killer.getItemInHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS);
+        double lootingBonus = lootingLevel * config.getDouble("heads.player.looting");
         if (config.getBoolean("heads.player.enabled")) {
-            if (config.getDouble("heads.player.chance") > Math.random()) {
+            if (config.getDouble("heads.player.chance") + lootingBonus > Math.random()) {
                 Bukkit.getPlayer(event.getEntity().getUniqueId()).getWorld()
                         .dropItemNaturally(event.getEntity().getLocation(), getPlayerHead(event.getEntity().getName()));
             }
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
+        Player killer = e.getEntity().getKiller();
+        int lootingLevel = killer == null ? 0 : killer.getItemInHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS);
+        double lootingBonus = lootingLevel * config.getDouble("heads.dragon.looting");
         if (config.getBoolean("heads.dragon.enabled")) {
             if (e.getEntityType().equals(EntityType.ENDER_DRAGON)) {
                 World w = e.getEntity().getWorld();
-                w.getBlockAt(0, w.getHighestBlockYAt(0, 0) + 1, 0).setType(Material.DRAGON_EGG);
-                if (config.getDouble("heads.dragon.chance") > Math.random()) {
+                w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.DRAGON_EGG, 1));
+                if (config.getDouble("heads.dragon.chance") + lootingBonus > Math.random()) {
                     w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.DRAGON_HEAD, 1, (short) 5));
                 }
             }
