@@ -83,7 +83,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class PopCraft extends JavaPlugin implements Listener {
 
@@ -165,6 +167,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
         }
     }
 
+    private Map<Player, Boolean> nowos = new HashMap<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("magicmessage")) {
@@ -172,6 +176,9 @@ public final class PopCraft extends JavaPlugin implements Listener {
         }
         if (cmd.getName().equalsIgnoreCase("worldspawn")) {
             commandWorldSpawn(sender);
+        }
+        if (cmd.getName().equalsIgnoreCase("nowo") && sender instanceof Player) {
+            nowos.put((Player) sender, !nowos.getOrDefault(sender, false));
         }
         return true;
     }
@@ -239,14 +246,14 @@ public final class PopCraft extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        final Player p = event.getPlayer();
+        final Player player = event.getPlayer();
         String msg = event.getMessage();
         List<String> word = getConfig().getStringList("profanityprotect");
         for (String s : word) {
             if (msg.toLowerCase().contains(s)) {
                 Bukkit.getScheduler().runTask(this, new Runnable() {
                     public void run() {
-                        Message.kick(p, "Swearing is not allowed on this server!");
+                        Message.kick(player, "Swearing is not allowed on this server!");
                     }
                 });
                 event.setCancelled(true);
@@ -254,15 +261,21 @@ public final class PopCraft extends JavaPlugin implements Listener {
             }
         }
         if (config.getBoolean("antispam.enabled")) {
-            if (!Cooldown.check(p, "chat", config.getInt("antispam.cooldown"))) {
+            if (!Cooldown.check(player, "chat", config.getInt("antispam.cooldown"))) {
                 Bukkit.getScheduler().runTask(this, new Runnable() {
                     public void run() {
-                        Message.kick(p, "Spamming is not allowed on this server!");
+                        Message.kick(player, "Spamming is not allowed on this server!");
                     }
                 });
                 event.setCancelled(true);
                 return;
             }
+        }
+        if (nowos.getOrDefault(player, false)) {
+            String aprilFoolsMessage = event.getMessage();
+            aprilFoolsMessage.replaceAll("[Oo]", "owo");
+            aprilFoolsMessage.replaceAll("[Uu]", "uwu");
+            event.setMessage(aprilFoolsMessage);
         }
     }
 
