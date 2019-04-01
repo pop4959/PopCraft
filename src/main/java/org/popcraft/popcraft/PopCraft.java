@@ -168,7 +168,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
         }
     }
 
-    private Map<Player, Boolean> nowos = new HashMap<>();
+    private Map<String, Boolean> nowos = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -179,7 +179,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
             commandWorldSpawn(sender);
         }
         if (cmd.getName().equalsIgnoreCase("nowo") && sender instanceof Player) {
-            nowos.put((Player) sender, !nowos.getOrDefault(sender, false));
+            nowos.put(sender.getName(), !nowos.getOrDefault(sender.getName(), true));
+            sender.sendMessage(ChatColor.GOLD + "Owos have been " + ChatColor.RED + (nowos.get(sender.getName()) ? "enabled" : "disabled") + ChatColor.GOLD + " uwu");
         }
         return true;
     }
@@ -272,11 +273,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
                 return;
             }
         }
-        if (nowos.getOrDefault(player, false)) {
-            String aprilFoolsMessage = event.getMessage();
-            aprilFoolsMessage.replaceAll("[Oo]", "owo");
-            aprilFoolsMessage.replaceAll("[Uu]", "uwu");
-            event.setMessage(aprilFoolsMessage);
+        if (nowos.getOrDefault(player.getName(), true)) {
+            event.setMessage(event.getMessage().replaceAll("[Oo]", "owo").replaceAll("[Uu]", "uwu"));
         }
     }
 

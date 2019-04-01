@@ -216,6 +216,12 @@ commands:
       permission: popcraft.ticket
       permission-message: You can't use this.
       usage: /ticket
+   nowo:
+      description: Please turn this thing off!
+      aliases: [nuwu, yuwu, yowo]
+      permission: popcraft.nowo
+      permission-message: You can't use this uwu
+      usage: /nowo
 permissions:
   popcraft.me:
     description: Allows you to write a message in third person.
