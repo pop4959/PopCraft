@@ -1,7 +1,7 @@
 name: PopCraft
 main: org.popcraft.popcraft.PopCraft
 api-version: 1.13
-version: 1.9.8
+version: 1.10.0
 description: Specially crafted plugin for the PopCraft server.
 author: pop4959
 authors: [waffelmonster]
@@ -20,12 +20,6 @@ commands:
       permission: popcraft.magicmessage
       permission-message: You can't use this.
       usage: /magicmessage [start <message>/stop/show/force]
-   uuid:
-      description: Lets you look up a player's UUID.
-      aliases: id
-      permission: popcraft.uuid
-      permission-message: You can't use this.
-      usage: /uuid <username>
    fireworks:
       description: Spawns fireworks.
       aliases: [fw, flare]
@@ -174,17 +168,6 @@ commands:
       permission: popcraft.aura
       permission-message: You can't use this.
       usage: /aura <type>
-   history:
-      description: Gets the username history of a player.
-      aliases: hist
-      permission: popcraft.history
-      permission-message: You can't use this.
-      usage: /history <username>
-   name:
-      description: Gets the UUID of a player.
-      permission: popcraft.name
-      permission-message: You can't use this.
-      usage: /name <UUID>
    glow:
       description: Toggles player glow effect.
       permission: popcraft.glow
