@@ -16,7 +16,6 @@ public class Staff implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player = (Player) sender;
         if (cmd.getName().equalsIgnoreCase("staff")) {
             String message = "";
             int a = 0;
@@ -26,14 +25,15 @@ public class Staff implements CommandExecutor, TabCompleter {
                     a++;
                 }
                 message = ChatColor.GREEN + "" + ChatColor.BOLD + "Staff " + ChatColor.RESET
-                        + ((Player) sender).getDisplayName() + ChatColor.RESET + ": " + message;
+                        + ((sender instanceof Player) ? ((Player) sender).getDisplayName() : "&d&lServer &r&dConsole") + ChatColor.RESET + ": " + message;
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (p.hasPermission("popcraft.staff")) {
                         Message.normal(p, ChatColor.translateAlternateColorCodes('&', message));
                     }
                 }
+                Message.normal(Bukkit.getConsoleSender(), ChatColor.translateAlternateColorCodes('&', message));
             } else {
-                Message.usage(player, "staff <message>");
+                Message.usage(sender, "staff <message>");
             }
             return true;
         }
@@ -42,6 +42,6 @@ public class Staff implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        return Collections.emptyList();
+        return null;
     }
 }

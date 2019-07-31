@@ -45,7 +45,7 @@ commands:
       usage: /me <action>
    donate:
       description: Displays information about donating, and donations.
-      aliases: [d, donation, donations, donating, buy]
+      aliases: [d, donation, donations, donating, buy, shop]
       permission: popcraft.donate
       permission-message: You can't use this.
       usage: /donate
@@ -199,6 +199,11 @@ commands:
       permission: popcraft.ticket
       permission-message: You can't use this.
       usage: /ticket
+   creeper:
+      description: Aw man
+      permission: popcraft.creeper
+      permission-message: You can't use this.
+      usage: /creeper
 permissions:
   popcraft.me:
     description: Allows you to write a message in third person.

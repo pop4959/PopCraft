@@ -1,9 +1,11 @@
 package org.popcraft.popcraft.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.PopCraft;
@@ -21,6 +23,15 @@ public class Donate implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            if (args.length == 1) {
+                Player toMessage = Bukkit.getPlayerExact(args[0]);
+                if (toMessage != null && toMessage.isOnline()) {
+                    Message.whisper(toMessage, "Thank you for donating to PopCraft!");
+                }
+            }
+            return true;
+        }
         Player player = (Player) sender;
         if (cmd.getName().equalsIgnoreCase("donate")) {
             if (args.length == 0) {

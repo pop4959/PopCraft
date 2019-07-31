@@ -20,6 +20,11 @@ magicmessage:
 antispam:
   enabled: false
   cooldown: 300
+drops:
+  guardian:
+    enabled: false
+    chance: 0.0
+    looting: 0.0
 heads:
   player:
     enabled: false

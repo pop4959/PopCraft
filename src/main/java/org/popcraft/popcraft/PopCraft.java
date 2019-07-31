@@ -42,6 +42,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.popcraft.popcraft.commands.Aura;
+import org.popcraft.popcraft.commands.Creeper;
 import org.popcraft.popcraft.commands.Discord;
 import org.popcraft.popcraft.commands.Donate;
 import org.popcraft.popcraft.commands.Fireworks;
@@ -104,8 +105,8 @@ public final class PopCraft extends JavaPlugin implements Listener {
                     config.getLong("magicmessage.defaultinterval"), config.getLong("magicmessage.defaultinterval")));
         }
         ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA))
-                .shape("fcf", "fsf", "f f").setIngredient('c', Material.CHAINMAIL_CHESTPLATE)
-                .setIngredient('f', Material.FEATHER).setIngredient('s', Material.NETHER_STAR);
+                .shape("pcp", "psp", "p p").setIngredient('c', Material.CHAINMAIL_CHESTPLATE)
+                .setIngredient('p', Material.PHANTOM_MEMBRANE).setIngredient('s', Material.NETHER_STAR);
         getServer().addRecipe(recipeElytra);
         ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"),
                 new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
@@ -142,6 +143,7 @@ public final class PopCraft extends JavaPlugin implements Listener {
         getCommand("glow").setExecutor(new Glow());
         getCommand("teamspeak").setExecutor(new TeamSpeak());
         getCommand("ticket").setExecutor(new TicketCommand());
+        getCommand("creeper").setExecutor(new Creeper());
     }
 
     @Override
@@ -242,6 +244,11 @@ public final class PopCraft extends JavaPlugin implements Listener {
                 Bukkit.getScheduler().runTask(this, new Runnable() {
                     public void run() {
                         Message.kick(p, "Swearing is not allowed on this server!");
+                        for (Player notifyPlayer : Bukkit.getOnlinePlayers()) {
+                            if (notifyPlayer.hasPermission("popcraft.staff")) {
+                                Message.normal(notifyPlayer, p.getDisplayName() + ChatColor.GOLD + " was kicked for the following message: " + ChatColor.RESET + event.getMessage());
+                            }
+                        }
                     }
                 });
                 event.setCancelled(true);
@@ -280,6 +287,11 @@ public final class PopCraft extends JavaPlugin implements Listener {
                     Bukkit.getScheduler().runTask(this, new Runnable() {
                         public void run() {
                             Message.kick(p, "Swearing is not allowed on this server!");
+                            for (Player notifyPlayer : Bukkit.getOnlinePlayers()) {
+                                if (notifyPlayer.hasPermission("popcraft.staff")) {
+                                    Message.normal(notifyPlayer, p.getDisplayName() + ChatColor.GOLD + " was kicked for the following message: " + ChatColor.RESET + event.getMessage());
+                                }
+                            }
                         }
                     });
                     event.setCancelled(true);
@@ -363,13 +375,22 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEntityDeath(EntityDeathEvent e) {
         Player killer = e.getEntity().getKiller();
         int lootingLevel = killer == null ? 0 : killer.getItemInHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS);
-        double lootingBonus = lootingLevel * config.getDouble("heads.dragon.looting");
         if (config.getBoolean("heads.dragon.enabled")) {
+            double lootingBonus = lootingLevel * config.getDouble("heads.dragon.looting");
             if (e.getEntityType().equals(EntityType.ENDER_DRAGON)) {
                 World w = e.getEntity().getWorld();
                 w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.DRAGON_EGG, 1));
                 if (config.getDouble("heads.dragon.chance") + lootingBonus > Math.random()) {
                     w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.DRAGON_HEAD, 1, (short) 5));
+                }
+            }
+        }
+        if (config.getBoolean("drops.guardian.enabled")) {
+            double lootingBonusGuardian = lootingLevel * config.getDouble("drops.guardian.looting");
+            if (e.getEntityType().equals(EntityType.GUARDIAN)) {
+                World w = e.getEntity().getWorld();
+                if (config.getDouble("drops.guardian.chance") + lootingBonusGuardian > Math.random()) {
+                    w.dropItem(e.getEntity().getLocation(), new ItemStack(Material.SPONGE, 1));
                 }
             }
         }
@@ -379,13 +400,6 @@ public final class PopCraft extends JavaPlugin implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getEntityType().equals(EntityType.ENDER_CRYSTAL))
             e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
-        if (e.getMessage().length() > 3 && e.getMessage().substring(0, 4).equalsIgnoreCase("/buy")) {
-            e.setCancelled(true);
-        }
     }
 
     private void onPlayerJoinFirework(final Player PLAYER) {
