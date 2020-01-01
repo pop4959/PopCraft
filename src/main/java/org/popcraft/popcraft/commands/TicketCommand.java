@@ -253,6 +253,10 @@ public class TicketCommand implements CommandExecutor, TabCompleter {
                 options.add("comment");
                 options.add("tp");
             }
+        } else {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                options.add(player.getName());
+            }
         }
         List<String> finalOptions = new ArrayList<>();
         for (String option : options) {

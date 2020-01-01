@@ -4,6 +4,7 @@ spawn:
   coordinate-z: 0
   radius: 128
 fireworks:
+  enabled: false
   radius: 20
   variedheight: 5
 commands:

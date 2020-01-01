@@ -199,7 +199,9 @@ public final class PopCraft extends JavaPlugin implements Listener {
                     Message.whisper(finalPlayer, "Server rules can be displayed with /rules.");
                 }
             }, 15L);
-            onPlayerJoinFirework(finalPlayer);
+            if (config.getBoolean("fireworks.enabled")) {
+                onPlayerJoinFirework(finalPlayer);
+            }
         }
         Glow.disableGlow(player);
         TeamManager.assignTeam(player);
