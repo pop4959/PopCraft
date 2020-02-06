@@ -1,28 +1,60 @@
-apply plugin: 'java'
+import de.undercouch.gradle.tasks.download.Download
+import org.apache.tools.ant.filters.ReplaceTokens
 
-group = pluginGroup
-version = pluginVersion
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'de.undercouch.download' version '4.0.4'
+}
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+group = project.property('pluginGroup')
+version = project.property('pluginVersion')
+sourceCompatibility = project.property('sourceVersion')
 
 repositories {
     mavenCentral()
     maven {
-        name = 'spigotmc-repo'
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+    compileOnly group: 'org.bukkit', name: 'bukkit', version: project.property('apiVersion')
 }
 
-import org.apache.tools.ant.filters.ReplaceTokens
+jar {
+    actions.clear()
+    dependsOn('shadowJar')
+}
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+// Test server environment setup
+
+def paperJar = new File('server', 'paper.jar')
+
+task downloadPaperJar(type: Download) {
+    if (paperJar.exists()) {
+        enabled = false
+    } else {
+        src project.property('paperUrl')
+        dest paperJar
+    }
+}
+
+task copyPlugin(dependsOn: ['build'], type: Copy) {
+    from "${buildDir}/libs"
+    into 'server/plugins'
+}
+
+task startDevServer(dependsOn: ['downloadPaperJar', 'copyPlugin'], type: JavaExec) {
+    classpath = files('server/paper.jar')
+    workingDir = 'server'
+    standardInput = System.in
+    args '--nogui'
 }
