@@ -1,0 +1,19 @@
+protection:
+  preventEnderCrystalExplosion: true
+drops:
+  playerHead:
+    enabled: true
+    baseChance: 0.025
+    lootingBonus: 0.005
+  dragonHead:
+    enabled: true
+    baseChance: 0.2
+    lootingBonus: 0.04
+  dragonEgg:
+    enabled: true
+    baseChance: 1.0
+    lootingBonus: 0.0
+  guardianSponge:
+    enabled: true
+    baseChance: 0.005
+    lootingBonus: 0.001
