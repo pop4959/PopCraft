@@ -17,3 +17,9 @@ drops:
     enabled: true
     baseChance: 0.005
     lootingBonus: 0.001
+profanity:
+  - word1
+  - word2
+teams:
+  default: f
+  donator: 6

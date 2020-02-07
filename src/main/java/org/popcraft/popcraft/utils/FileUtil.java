@@ -20,7 +20,7 @@ public class FileUtil {
             bufferedWriter.close();
             fileWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            PopCraft.getPlugin().getLogger().severe("Could not write to file " + name);
         }
     }
 
