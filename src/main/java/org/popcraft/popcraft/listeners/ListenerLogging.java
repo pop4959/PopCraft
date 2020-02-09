@@ -31,7 +31,7 @@ public class ListenerLogging extends PopCraftListener {
     public void onSignChange(SignChangeEvent event) {
         Location location = event.getBlock().getLocation();
         log("signs.txt", event.getPlayer().getName(), TimeUtil.getCurrentTime(),
-                "\"" + StringUtils.join(event.getLines(), ' ') + "\"", ,
+                "\"" + StringUtils.join(event.getLines(), ' ') + "\"",
                 "(" + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + ")");
     }
 
