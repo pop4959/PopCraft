@@ -15,11 +15,16 @@ repositories {
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+    maven {
+        // Votifier
+        url = 'http://repo.howaner.de'
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compileOnly group: 'org.bukkit', name: 'bukkit', version: project.property('apiVersion')
+    compileOnly group: 'com.vexsoftware', name: 'votifier', version: '1.9'
 }
 
 jar {

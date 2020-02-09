@@ -23,3 +23,15 @@ profanity:
 teams:
   default: f
   donator: 6
+scoreboard:
+  name: popcraftScore
+  deathPenalty: 100
+voting:
+  enabled: true
+  reward: 500
+flagger:
+  flags:
+    - server
+  commands:
+    - msg
+    - r
