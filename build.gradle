@@ -13,17 +13,27 @@ sourceCompatibility = project.property('sourceVersion')
 repositories {
     mavenCentral()
     maven {
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        name 'spigot'
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
     maven {
-        // Votifier
-        url = 'http://repo.howaner.de'
+        name 'paper'
+        url 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        name 'essentials'
+        url 'https://ci.ender.zone/plugin/repository/everything'
+    }
+    maven {
+        name 'votifier'
+        url 'http://repo.howaner.de'
     }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compileOnly group: 'org.bukkit', name: 'bukkit', version: project.property('apiVersion')
+    compileOnly group: 'net.ess3', name: 'EssentialsX', version: '2.17.1'
     compileOnly group: 'com.vexsoftware', name: 'votifier', version: '1.9'
 }
 

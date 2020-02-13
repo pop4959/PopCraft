@@ -6,10 +6,10 @@ import java.util.Date;
 
 public class TimeUtil {
 
+    private final static DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/y HH:mm");
+
     public static String getCurrentTime() {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/y HH:mm");
-        Date date = new Date();
-        return dateFormat.format(date);
+        return DATE_FORMAT.format(new Date());
     }
 
 }

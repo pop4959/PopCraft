@@ -6,4 +6,39 @@ prefix: PopCraft
 authors: [pop4959]
 description: Custom plugin for the PopCraft server.
 website: https://github.com/pop4959/PopCraft
-softdepend: [Votifier]
+softdepend: [Essentials, Votifier]
+commands:
+  discord:
+    description: Displays the Discord join link.
+    permission: popcraft.discord
+    usage: /<command>
+  donate:
+    description: Displays information about donating.
+    permission: popcraft.donate
+    usage: /<command>>
+    aliases: [d, donation, donations, donating, buy, shop]
+  me:
+    description: Describes an action in the context of the sender.
+    usage: /<command> <action>
+    permission: popcraft.me
+  plugins:
+    description: Allows you to see the server's plugins.
+    permission: popcraft.plugins
+    usage: /<command>
+    aliases: [pl]
+  version:
+    description: Allows you to see the server's version.
+    permission: popcraft.version
+    usage: /<command>
+    aliases: [ver]
+  vote:
+    description: Vote for PopCraft as the best server!
+    permission: popcraft.vote
+    usage: /<command>
+permissions:
+  popcraft.donate:
+    description: Allows you to view donation info.
+    default: true
+  popcraft.me:
+    description: Allows you to write a message in third person.
+    default: true
