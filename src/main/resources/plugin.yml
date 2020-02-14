@@ -15,17 +15,30 @@ commands:
   donate:
     description: Displays information about donating.
     permission: popcraft.donate
-    usage: /<command>>
+    usage: /<command>
     aliases: [d, donation, donations, donating, buy, shop]
+  handicap:
+    description: Handicap yourself!
+    permission: popcraft.handicap
+    usage: /<command> [hp]
   me:
     description: Describes an action in the context of the sender.
-    usage: /<command> <action>
     permission: popcraft.me
+    usage: /<command> <action>
   plugins:
     description: Allows you to see the server's plugins.
     permission: popcraft.plugins
     usage: /<command>
     aliases: [pl]
+  resourcepack:
+    description: Allows you to use the PopCraft resource pack.
+    permission: popcraft.resourcepack
+    usage: /<command>
+    aliases: [rp, resource, resources, tx, texturepack]
+  transferscores:
+    description: Display and transfer scoreboard data between players.
+    permission: popcraft.transferscores
+    usage: /<command> <from> [to]
   version:
     description: Allows you to see the server's version.
     permission: popcraft.version

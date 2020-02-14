@@ -41,8 +41,9 @@ public final class PopCraft extends JavaPlugin {
         registerEvents(new ListenerAnvil(), new ListenerDrops(), new ListenerLogging(), new ListenerPlayer(),
                 new ListenerProtection(), new ListenerScoreboard(), new ListenerVotifier());
         // Register commands
-        registerCommands(new CommandDiscord(), new CommandDonate(), new CommandMe(), new CommandPlugins(),
-                new CommandVersion(), new CommandVote());
+        registerCommands(new CommandDiscord(), new CommandDonate(), new CommandHandicap(), new CommandMe(),
+                new CommandPlugins(), new CommandResourcepack(), new CommandTransferscores(), new CommandVersion(),
+                new CommandVote());
     }
 
     @Override
@@ -59,9 +60,13 @@ public final class PopCraft extends JavaPlugin {
             return true;
         }
         Result result = cmd.execute(sender, command, label, args);
-        if (result.equals(Result.INCORRECT_USAGE)) {
+        if (result == null || result.equals(Result.FAILURE)) {
+            sender.sendMessage(this.getMessage("commandFailure"));
+        } else if (result.equals(Result.INCORRECT_USAGE)) {
             sender.sendMessage(command.getDescription());
             sender.sendMessage(command.getUsage().replaceAll("<command>", label));
+        } else if (result.equals(Result.UNSUPPORTED_SENDER)) {
+            sender.sendMessage(this.getMessage("unsupportedSender", sender.getClass().getSimpleName()));
         }
         return true;
     }
