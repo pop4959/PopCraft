@@ -36,3 +36,13 @@ flagger:
     - msg
     - r
 resourcepack: https://drive.google.com/uc?export=download&id=1fYolAwdGEEeZZ-5Ka3f16LA3qybdgnys
+world:
+  overworld: world
+  nether: world_nether
+  end: world_the_end
+command:
+  tpr:
+    cooldown: 75000
+    minimumRange: 256
+    range: 2000
+    extendedRange: 6000

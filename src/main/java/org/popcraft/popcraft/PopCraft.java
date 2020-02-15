@@ -1,11 +1,16 @@
 package org.popcraft.popcraft;
 
+import com.earth2me.essentials.Essentials;
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.popcraft.popcraft.commands.*;
 import org.popcraft.popcraft.listeners.*;
@@ -21,6 +26,9 @@ public final class PopCraft extends JavaPlugin {
     private static PopCraft plugin;
     private Properties messages;
     private Map<String, PopCraftCommand> commands = new HashMap<>();
+    private Essentials essentials;
+    private Permission permissions;
+    private Chat chat;
 
     @Override
     public void onEnable() {
@@ -39,11 +47,35 @@ public final class PopCraft extends JavaPlugin {
         }
         // Register events
         registerEvents(new ListenerAnvil(), new ListenerDrops(), new ListenerLogging(), new ListenerPlayer(),
-                new ListenerProtection(), new ListenerScoreboard(), new ListenerVotifier());
+                new ListenerProtection(), new ListenerScoreboard());
+        if (this.getServer().getPluginManager().getPlugin("Votifier") != null) {
+            registerEvents(new ListenerVotifier());
+        }
         // Register commands
         registerCommands(new CommandDiscord(), new CommandDonate(), new CommandHandicap(), new CommandMe(),
-                new CommandPlugins(), new CommandResourcepack(), new CommandTransferscores(), new CommandVersion(),
-                new CommandVote());
+                new CommandMusic(), new CommandPlugins(), new CommandPop(), new CommandResourcepack(),
+                new CommandSay(), new CommandSpoof(), new CommandStaff(), new CommandTpr(),
+                new CommandTransferscores(), new CommandVersion(), new CommandVote());
+        // Get Essentials API
+        Plugin essentialsPlugin = this.getServer().getPluginManager().getPlugin("Essentials");
+        if (essentialsPlugin != null) {
+            this.essentials = (Essentials) essentialsPlugin;
+        }
+        // Set up Vault API
+        if (this.getServer().getPluginManager().getPlugin("Vault") != null) {
+            // Chat
+            RegisteredServiceProvider<Chat> registeredServiceProviderChat = this.getServer()
+                    .getServicesManager().getRegistration(Chat.class);
+            if (registeredServiceProviderChat != null) {
+                this.chat = registeredServiceProviderChat.getProvider();
+            }
+            // Permissions
+            RegisteredServiceProvider<Permission> registeredServiceProviderPermissions = this.getServer()
+                    .getServicesManager().getRegistration(Permission.class);
+            if (registeredServiceProviderPermissions != null) {
+                this.permissions = registeredServiceProviderPermissions.getProvider();
+            }
+        }
     }
 
     @Override
@@ -99,6 +131,18 @@ public final class PopCraft extends JavaPlugin {
     public String getMessage(String key, Object... args) {
         String formattedMessage = String.format(messages.getProperty(key), args);
         return ChatColor.translateAlternateColorCodes('&', formattedMessage);
+    }
+
+    public Essentials getEssentials() {
+        return this.essentials;
+    }
+
+    public Permission getPermissions() {
+        return this.permissions;
+    }
+
+    public Chat getChat() {
+        return this.chat;
     }
 
 }

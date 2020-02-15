@@ -19,7 +19,7 @@ public class CommandMe extends PopCraftCommand {
 
     @Override
     public Result execute(CommandSender sender, Command command, String label, String[] args) {
-        Essentials essentials = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
+        Essentials essentials = plugin.getEssentials();
         if (essentials != null && sender instanceof Player && essentials.getUser((Player) sender).isMuted()) {
             sender.sendMessage(tl("voiceSilenced"));
             return Result.SUCCESS;

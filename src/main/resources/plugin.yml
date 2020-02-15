@@ -6,7 +6,7 @@ prefix: PopCraft
 authors: [pop4959]
 description: Custom plugin for the PopCraft server.
 website: https://github.com/pop4959/PopCraft
-softdepend: [Essentials, Votifier]
+softdepend: [Vault, Essentials, Votifier]
 commands:
   discord:
     description: Displays the Discord join link.
@@ -25,16 +25,42 @@ commands:
     description: Describes an action in the context of the sender.
     permission: popcraft.me
     usage: /<command> <action>
+  music:
+    description: Allows you to play a music discs.
+    permission: popcraft.music
+    usage: /<command> <list/play/stop> [disc [speed]]
   plugins:
     description: Allows you to see the server's plugins.
     permission: popcraft.plugins
     usage: /<command>
     aliases: [pl]
+  pop:
+    description: Allows the server to speak in the context of the owner.
+    permission: popcraft.pop
+    usage: /<command> <message>
   resourcepack:
     description: Allows you to use the PopCraft resource pack.
     permission: popcraft.resourcepack
     usage: /<command>
     aliases: [rp, resource, resources, tx, texturepack]
+  say:
+    description: Allows the server to speak with chat formatting enabled.
+    permission: popcraft.say
+    usage: /<command> <message>
+  spoof:
+    description: Emulates real chat and status messages.
+    permission: popcraft.spoof
+    usage: /<command> <join/quit/afk/unafk>
+  staff:
+    description: Privately message all staff members on the server.
+    permission: popcraft.staff
+    usage: /<command> <message>
+    aliases: [st]
+  tpr:
+    description: Teleport to a random location.
+    permission: popcraft.tpr
+    usage: /<command>
+    aliases: [wild, rtp]
   transferscores:
     description: Display and transfer scoreboard data between players.
     permission: popcraft.transferscores
