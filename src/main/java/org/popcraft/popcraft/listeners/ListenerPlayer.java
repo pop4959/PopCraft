@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.popcraft.popcraft.commands.CommandTicket;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +43,10 @@ public class ListenerPlayer extends PopCraftListener {
                 team.addEntry(player.getName());
             }
         }
-        // TODO: show tickets
+        CommandTicket ticketCommand = (CommandTicket) plugin.getCommands().get("ticket");
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            ticketCommand.notifyStaff(player);
+        }, 20L);
     }
 
     @EventHandler

@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.popcraft.popcraft.commands.CommandPvp;
 
 /**
  * Custom scoreboard for the server
@@ -27,8 +28,10 @@ public class ListenerScoreboard extends PopCraftListener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (((CommandPvp) plugin.getCommands().get("pvp")).isPvpEnabled(event.getEntity())) {
+            return;
+        }
         Score score = getScore(event.getEntity());
-        // TODO: also check if the player is in PVP (they do not take a penalty)
         if (score == null || score.getScore() < DEATH_PENALTY) {
             return;
         }

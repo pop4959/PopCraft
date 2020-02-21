@@ -41,8 +41,10 @@ world:
   nether: world_nether
   end: world_the_end
 command:
+  pvp:
+    cooldown: 5000
   tpr:
     cooldown: 75000
-    minimumRange: 256
+    minimumRange: 500
     range: 2000
     extendedRange: 6000

@@ -46,16 +46,17 @@ public final class PopCraft extends JavaPlugin {
             this.getLogger().severe("Failed to load messages");
         }
         // Register events
-        registerEvents(new ListenerAnvil(), new ListenerDrops(), new ListenerLogging(), new ListenerPlayer(),
-                new ListenerProtection(), new ListenerScoreboard());
+        registerEvents(new ListenerAnvil(), new ListenerDrops(), new ListenerLogging(), new ListenerPiggyback(),
+                new ListenerPlayer(), new ListenerProtection(), new ListenerPvp(), new ListenerScoreboard());
         if (this.getServer().getPluginManager().getPlugin("Votifier") != null) {
             registerEvents(new ListenerVotifier());
         }
         // Register commands
         registerCommands(new CommandDiscord(), new CommandDonate(), new CommandHandicap(), new CommandMe(),
-                new CommandMusic(), new CommandPlugins(), new CommandPop(), new CommandResourcepack(),
-                new CommandSay(), new CommandSpoof(), new CommandStaff(), new CommandTpr(),
-                new CommandTransferscores(), new CommandVersion(), new CommandVote());
+                new CommandMusic(), new CommandPiggyback(), new CommandPlugins(), new CommandPop(), new CommandPvp(),
+                new CommandResourcepack(), new CommandSay(), new CommandSpoof(), new CommandStaff(),
+                new CommandTicket(), new CommandTpr(), new CommandTransferscores(), new CommandVersion(),
+                new CommandVote());
         // Get Essentials API
         Plugin essentialsPlugin = this.getServer().getPluginManager().getPlugin("Essentials");
         if (essentialsPlugin != null) {
@@ -131,6 +132,10 @@ public final class PopCraft extends JavaPlugin {
     public String getMessage(String key, Object... args) {
         String formattedMessage = String.format(messages.getProperty(key), args);
         return ChatColor.translateAlternateColorCodes('&', formattedMessage);
+    }
+
+    public Map<String, PopCraftCommand> getCommands() {
+        return commands;
     }
 
     public Essentials getEssentials() {

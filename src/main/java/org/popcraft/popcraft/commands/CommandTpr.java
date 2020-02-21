@@ -1,9 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.Teleport;
-import com.earth2me.essentials.Trade;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,8 +7,8 @@ import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.popcraft.popcraft.Cooldown;
+import org.popcraft.popcraft.utils.TeleportUtil;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -43,34 +39,27 @@ public class CommandTpr extends PopCraftCommand {
         if (cooldown.isFinished(player)) {
             boolean extended = player.hasPermission("popcraft.tpr.extended");
             int range = plugin.getConfig().getInt(extended ? "command.tpr.extendedRange" : "command.tpr.range");
-            Location location = findRandomSafeLocation(range);
-            try {
-                Essentials essentials = plugin.getEssentials();
-                final Trade charge = new Trade(command.getName(), essentials);
-                Teleport teleport = essentials.getUser(player).getTeleport();
-                teleport.setTpType(Teleport.TeleportType.NORMAL);
-                teleport.teleport(location, charge, PlayerTeleportEvent.TeleportCause.COMMAND);
-            } catch (Exception e) {
-                PaperLib.teleportAsync(player, location);
-            }
+            int minRange = plugin.getConfig().getInt("popcraft.tpr.minimumRange");
+            Location location = findRandomSafeLocation(range, minRange);
+            TeleportUtil.teleport(command, player, location);
             cooldown.set(player);
-            player.sendMessage(plugin.getMessage("teleporting"));
+            player.sendMessage(plugin.getMessage("teleportingRandomly"));
         } else {
             player.sendMessage(plugin.getMessage("commandOnCooldown", cooldown.getFormattedTimeRemaining(player)));
         }
         return Result.SUCCESS;
     }
 
-    private Location findRandomSafeLocation(int range) {
+    private Location findRandomSafeLocation(int range, int minRange) {
         double[] direction = {Math.random() > 0.5 ? 1 : -1, Math.random() > 0.5 ? 1 : -1};
         Location location = new Location(Bukkit.getServer().getWorlds().get(0),
-                direction[0] * range * Math.random(),
+                direction[0] * (minRange + (range - minRange) * Math.random()),
                 0,
-                direction[1] * range * Math.random());
+                direction[1] * (minRange + (range - minRange) * Math.random()));
         location.setY(Objects.requireNonNull(location.getWorld()).getHighestBlockYAt(location) + 1);
         return UNSAFE_BIOMES.contains(location.getBlock().getBiome())
                 || UNSAFE_BLOCKS.contains(location.add(0, -1, 0).getBlock().getType())
-                ? findRandomSafeLocation(range) : location;
+                ? findRandomSafeLocation(range, minRange) : location;
     }
 
     @Override

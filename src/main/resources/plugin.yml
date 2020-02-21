@@ -29,6 +29,11 @@ commands:
     description: Allows you to play a music discs.
     permission: popcraft.music
     usage: /<command> <list/play/stop> [disc [speed]]
+  piggyback:
+    description: Toggles the piggyback ability.
+    permission: popcraft.piggyback
+    usage: /<command>
+    aliases: [ride]
   plugins:
     description: Allows you to see the server's plugins.
     permission: popcraft.plugins
@@ -38,6 +43,10 @@ commands:
     description: Allows the server to speak in the context of the owner.
     permission: popcraft.pop
     usage: /<command> <message>
+  pvp:
+    description: Allows you to toggle your PvP status.
+    permission: popcraft.pvp
+    usage: /<command>
   resourcepack:
     description: Allows you to use the PopCraft resource pack.
     permission: popcraft.resourcepack
@@ -56,6 +65,11 @@ commands:
     permission: popcraft.staff
     usage: /<command> <message>
     aliases: [st]
+  ticket:
+    description: Send a report ticket to the server staff.
+    permission: popcraft.ticket
+    usage: /<command> send <message>
+    aliases: [report]
   tpr:
     description: Teleport to a random location.
     permission: popcraft.tpr
