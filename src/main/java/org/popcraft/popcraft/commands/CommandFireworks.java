@@ -133,17 +133,17 @@ public class CommandFireworks extends PopCraftCommand {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> suggestions = new ArrayList<>();
-        suggestions.addAll(TabCompleteUtil.startsWithLastArg(colors.keySet().stream()
+        suggestions.addAll(TabCompleteUtil.containsLastArg(colors.keySet().stream()
                 .map(k -> "color:" + k).collect(Collectors.toList()), args));
-        suggestions.addAll(TabCompleteUtil.startsWithLastArg(colors.keySet().stream()
+        suggestions.addAll(TabCompleteUtil.containsLastArg(colors.keySet().stream()
                 .map(k -> "fade:" + k).collect(Collectors.toList()), args));
-        suggestions.addAll(TabCompleteUtil.startsWithLastArg(
+        suggestions.addAll(TabCompleteUtil.containsLastArg(
                 Arrays.asList("effect:flicker", "effect:trail"), args));
-        suggestions.addAll(TabCompleteUtil.startsWithLastArg(types.keySet().stream()
+        suggestions.addAll(TabCompleteUtil.containsLastArg(types.keySet().stream()
                 .map(k -> "type:" + k).collect(Collectors.toList()), args));
-        suggestions.addAll(TabCompleteUtil.startsWithLastArg(powers.keySet().stream()
+        suggestions.addAll(TabCompleteUtil.containsLastArg(powers.keySet().stream()
                 .map(k -> "power:" + k).collect(Collectors.toList()), args));
-        suggestions.addAll(TabCompleteUtil.startsWithLastArg(
+        suggestions.addAll(TabCompleteUtil.containsLastArg(
                 Arrays.asList("color:random", "fade:random", "effect:random", "type:random", "power:random"), args));
         return suggestions;
     }
