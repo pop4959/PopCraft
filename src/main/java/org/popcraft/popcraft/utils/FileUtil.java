@@ -25,7 +25,7 @@ public class FileUtil {
     }
 
     private static File loadOrCreateFile(String name) throws IOException {
-        File file = new File(dataFolder.getAbsolutePath() + File.pathSeparator + name);
+        File file = new File(dataFolder.getAbsolutePath() + File.separatorChar + name);
         if (!file.exists()) {
             //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
