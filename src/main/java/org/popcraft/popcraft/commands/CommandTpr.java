@@ -39,7 +39,7 @@ public class CommandTpr extends PopCraftCommand {
         if (cooldown.isFinished(player)) {
             boolean extended = player.hasPermission("popcraft.tpr.extended");
             int range = plugin.getConfig().getInt(extended ? "command.tpr.extendedRange" : "command.tpr.range");
-            int minRange = plugin.getConfig().getInt("popcraft.tpr.minimumRange");
+            int minRange = plugin.getConfig().getInt("command.tpr.minimumRange");
             Location location = findRandomSafeLocation(range, minRange);
             TeleportUtil.teleport(command, player, location);
             cooldown.set(player);

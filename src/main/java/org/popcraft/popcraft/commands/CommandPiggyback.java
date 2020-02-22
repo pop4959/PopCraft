@@ -6,14 +6,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CommandPiggyback extends PopCraftCommand {
 
-    private HashMap<UUID, Boolean> rideable = new HashMap<>();
+    private Map<UUID, Boolean> rideable = new HashMap<>();
 
     public CommandPiggyback() {
         super("piggyback");
@@ -36,10 +33,13 @@ public class CommandPiggyback extends PopCraftCommand {
     }
 
     public boolean isRideable(Entity entity) {
-        if (!(entity instanceof Player) && !(entity instanceof Monster)) {
+        if (entity instanceof Monster) {
+            return false;
+        } else if (!(entity instanceof Player)) {
             return true;
+        } else {
+            return rideable.getOrDefault(entity.getUniqueId(), false);
         }
-        return rideable.getOrDefault(entity.getUniqueId(), false);
     }
 
     @Override

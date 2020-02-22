@@ -1,13 +1,17 @@
 name: PopCraft
 version: @version@
 main: org.popcraft.popcraft.PopCraft
-api-version: 1.13
+api-version: "1.13"
 prefix: PopCraft
 authors: [pop4959]
 description: Custom plugin for the PopCraft server.
 website: https://github.com/pop4959/PopCraft
 softdepend: [Vault, Essentials, Votifier]
 commands:
+  aura:
+    description: Set an aura around yourself!
+    permission: popcraft.aura
+    usage: /aura <clear/list/set> [...]
   discord:
     description: Displays the Discord join link.
     permission: popcraft.discord
@@ -17,6 +21,11 @@ commands:
     permission: popcraft.donate
     usage: /<command>
     aliases: [d, donation, donations, donating, buy, shop]
+  fireworks:
+    description: Spawns fireworks.
+    permission: popcraft.fireworks
+    usage: /<command>
+    aliases: [fw, flare]
   handicap:
     description: Handicap yourself!
     permission: popcraft.handicap
@@ -75,6 +84,11 @@ commands:
     permission: popcraft.tpr
     usage: /<command>
     aliases: [wild, rtp]
+  trail:
+    description: Set a custom trail!
+    permission: popcraft.trail
+    usage: /trail <clear/list/set> [...]
+    aliases: [tr]
   transferscores:
     description: Display and transfer scoreboard data between players.
     permission: popcraft.transferscores

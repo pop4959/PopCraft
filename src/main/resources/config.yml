@@ -44,7 +44,7 @@ command:
   pvp:
     cooldown: 5000
   tpr:
-    cooldown: 75000
+    cooldown: 180000
     minimumRange: 500
     range: 2000
     extendedRange: 6000

@@ -47,16 +47,17 @@ public final class PopCraft extends JavaPlugin {
         }
         // Register events
         registerEvents(new ListenerAnvil(), new ListenerDrops(), new ListenerLogging(), new ListenerPiggyback(),
-                new ListenerPlayer(), new ListenerProtection(), new ListenerPvp(), new ListenerScoreboard());
+                new ListenerPlayer(), new ListenerProtection(), new ListenerPvp(), new ListenerScoreboard(),
+                new ListenerTrail());
         if (this.getServer().getPluginManager().getPlugin("Votifier") != null) {
             registerEvents(new ListenerVotifier());
         }
         // Register commands
-        registerCommands(new CommandDiscord(), new CommandDonate(), new CommandHandicap(), new CommandMe(),
-                new CommandMusic(), new CommandPiggyback(), new CommandPlugins(), new CommandPop(), new CommandPvp(),
-                new CommandResourcepack(), new CommandSay(), new CommandSpoof(), new CommandStaff(),
-                new CommandTicket(), new CommandTpr(), new CommandTransferscores(), new CommandVersion(),
-                new CommandVote());
+        registerCommands(new CommandAura(), new CommandDiscord(), new CommandDonate(), new CommandFireworks(),
+                new CommandHandicap(), new CommandMe(), new CommandMusic(), new CommandPiggyback(),
+                new CommandPlugins(), new CommandPop(), new CommandPvp(), new CommandResourcepack(), new CommandSay(),
+                new CommandSpoof(), new CommandStaff(), new CommandTicket(), new CommandTpr(), new CommandTrail(),
+                new CommandTransferscores(), new CommandVersion(), new CommandVote());
         // Get Essentials API
         Plugin essentialsPlugin = this.getServer().getPluginManager().getPlugin("Essentials");
         if (essentialsPlugin != null) {

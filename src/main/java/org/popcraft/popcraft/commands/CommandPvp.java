@@ -8,15 +8,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.popcraft.popcraft.Cooldown;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CommandPvp extends PopCraftCommand {
 
     private Cooldown cooldown = new Cooldown(plugin.getConfig().getLong("command.pvp.cooldown"));
-    private HashMap<UUID, Boolean> pvp = new HashMap<>();
+    private Map<UUID, Boolean> pvp = new HashMap<>();
 
     public CommandPvp() {
         super("pvp");

@@ -1,5 +1,6 @@
 package org.popcraft.popcraft.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class CommandMusic extends PopCraftCommand {
 
-    private HashMap<UUID, Sound> playing = new HashMap<>();
+    private Map<UUID, Sound> playing = new HashMap<>();
 
     private final List<String> MUSIC_DISCS = Arrays.stream(Material.values())
             .filter(m -> m.toString().startsWith("MUSIC_DISC_"))
@@ -35,7 +36,7 @@ public class CommandMusic extends PopCraftCommand {
         Player player = (Player) sender;
         UUID playerUUID = player.getUniqueId();
         if (args[0].equalsIgnoreCase("list")) {
-            player.sendMessage(plugin.getMessage("musicList", MUSIC_DISCS));
+            player.sendMessage(plugin.getMessage("musicList", StringUtils.join(MUSIC_DISCS, ", ")));
         } else if (args[0].equalsIgnoreCase("stop")) {
             if (playing.containsKey(playerUUID)) {
                 player.stopSound(playing.get(playerUUID));

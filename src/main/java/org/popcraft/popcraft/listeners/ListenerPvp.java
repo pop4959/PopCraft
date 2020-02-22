@@ -31,6 +31,15 @@ public class ListenerPvp extends PopCraftListener {
             event.setCancelled(true);
             return;
         }
+        // No damage is dealt by fireworks created by this plugin
+        if (attacker instanceof Firework) {
+            Firework firework = (Firework) attacker;
+            List<String> lore = firework.getFireworkMeta().getLore();
+            if (lore != null && lore.contains(plugin.getName())) {
+                event.setCancelled(true);
+                return;
+            }
+        }
         // Direct damage PVP check
         if (attacker instanceof Player && !areBothPvpEnabled(victim, attacker)) {
             event.setCancelled(true);

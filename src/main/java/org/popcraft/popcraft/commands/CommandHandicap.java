@@ -1,5 +1,7 @@
 package org.popcraft.popcraft.commands;
 
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -7,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandHandicap extends PopCraftCommand {
 
@@ -33,6 +36,8 @@ public class CommandHandicap extends PopCraftCommand {
         if (hp < 1 || hp > 20 && !player.hasPermission("popcraft.handicap.bypass")) {
             player.sendMessage(plugin.getMessage("error", plugin.getMessage("handicapRangeError")));
         } else {
+            AttributeInstance maxHealth = Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH));
+            maxHealth.setBaseValue(hp);
             player.setHealthScale(hp);
             player.sendMessage(plugin.getMessage("handicapSet", hp));
         }

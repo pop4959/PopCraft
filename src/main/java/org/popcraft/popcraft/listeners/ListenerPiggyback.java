@@ -19,19 +19,33 @@ public class ListenerPiggyback extends PopCraftListener {
         Player rider = event.getPlayer();
         Entity target = event.getRightClicked();
         if (rider.getVehicle() == null && rider.getPassengers().isEmpty()) {
-            // If the player isn't riding anything, and isn't being ridden, then they can ride something
-            List<Entity> toRide = target.getPassengers();
-            // Find a new target while the number of passengers for each is at capacity
-            while (!(target instanceof Boat) && toRide.size() == 1 || toRide.size() == 2) {
-                target = target.getPassengers().get(0);
-                toRide = target.getPassengers();
+            // If the player isn't riding anything, and isn't being ridden, then they can ride / be ridden
+            if (rider.isSneaking()) {
+                // If sneaking and the entity isn't a monster, have the entity ride you instead
+                if (isRideable(rider) && isRideable(target)) {
+                    rider.addPassenger(target);
+                }
+            } else {
+                // Otherwise, just ride the entities
+                List<Entity> toRide = target.getPassengers();
+                // Find a new target while the number of passengers for each is at capacity
+                while (!(target instanceof Boat) && toRide.size() == 1 || toRide.size() == 2) {
+                    target = target.getPassengers().get(0);
+                    toRide = target.getPassengers();
+                }
+                if (isRideable(rider) && isRideable(target)) {
+                    target.addPassenger(rider);
+                }
             }
-            if (isRideable(rider) && isRideable(target)) {
-                target.addPassenger(rider);
-            }
-        } else if (rider.getPassengers().contains(target) && !isHolding(rider, Material.FIREWORK_ROCKET)) {
+        } else if (!rider.isSneaking() && !isHolding(rider, Material.FIREWORK_ROCKET)) {
             // Otherwise, the player is probably trying to dismount someone
-            rider.eject();
+            // Target may not be the correct entity so we need to check if the rider is lower down
+            while (target.getVehicle() != null && !target.getVehicle().equals(rider)) {
+                target = target.getVehicle();
+            }
+            if (rider.getPassengers().contains(target)) {
+                rider.eject();
+            }
         }
     }
 

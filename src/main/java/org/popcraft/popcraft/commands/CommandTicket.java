@@ -23,7 +23,7 @@ public class CommandTicket extends PopCraftCommand {
 
     private Gson gson;
     private File ticketFile, ticketFileDeleted;
-    private HashMap<String, Ticket> tickets;
+    private Map<String, Ticket> tickets;
 
     public CommandTicket() {
         super("ticket");
