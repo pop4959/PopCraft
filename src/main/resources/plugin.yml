@@ -11,7 +11,7 @@ commands:
   aura:
     description: Set an aura around yourself!
     permission: popcraft.aura
-    usage: /aura <clear/list/set> [...]
+    usage: /<command> <clear/list/set> [...]
   discord:
     description: Displays the Discord join link.
     permission: popcraft.discord
@@ -87,7 +87,7 @@ commands:
   trail:
     description: Set a custom trail!
     permission: popcraft.trail
-    usage: /trail <clear/list/set> [...]
+    usage: /<command> <clear/list/set> [...]
     aliases: [tr]
   transferscores:
     description: Display and transfer scoreboard data between players.
