@@ -17,8 +17,8 @@ public class CommandSay extends PopCraftCommand {
     @Override
     public Result execute(CommandSender sender, Command command, String label, String[] args) {
         String message = ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, ' '));
-        Bukkit.broadcastMessage(plugin.getMessage("chatFormat", plugin.getMessage("consolePrefix"),
-                plugin.getMessage("consoleName"), message));
+        Bukkit.broadcastMessage(plugin.getMessage("chatFormat",
+                plugin.getMessage("consolePrefix") + plugin.getMessage("consoleName"), message));
         return Result.SUCCESS;
     }
 

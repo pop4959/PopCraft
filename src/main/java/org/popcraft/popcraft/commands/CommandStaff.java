@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import net.milkbowl.vault.chat.Chat;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,20 +22,14 @@ public class CommandStaff extends PopCraftCommand {
         String prefix = "";
         String name;
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-            name = player.getDisplayName();
-            Chat chat = plugin.getChat();
-            if (chat != null) {
-                prefix = chat.getPlayerPrefix(player);
-            }
+            name = ((Player) sender).getDisplayName();
         } else if (sender instanceof ConsoleCommandSender) {
-            name = plugin.getMessage("consoleName");
-            prefix = plugin.getMessage("consolePrefix");
+            name = plugin.getMessage("consolePrefix") + plugin.getMessage("consoleName");
         } else {
             return Result.UNSUPPORTED_SENDER;
         }
         Bukkit.broadcast(plugin.getMessage("staffChatFormat",
-                plugin.getMessage("chatFormat", prefix, name, message)), "popcraft.staff");
+                plugin.getMessage("chatFormat", name, message)), "popcraft.staff");
         return Result.SUCCESS;
     }
 
