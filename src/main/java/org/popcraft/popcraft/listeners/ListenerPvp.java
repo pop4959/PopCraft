@@ -129,6 +129,7 @@ public class ListenerPvp extends PopCraftListener {
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         // Lava bucket PVP check
         if (Material.LAVA_BUCKET.equals(event.getBucket()) && !areNearbyPvpEnabled(event.getPlayer())) {
+            event.getPlayer().sendMessage(plugin.getMessage("pvpActionBlocked"));
             event.setCancelled(true);
             event.getPlayer().updateInventory();
         }
@@ -137,7 +138,9 @@ public class ListenerPvp extends PopCraftListener {
     @EventHandler
     public void onBlockIgnite(BlockIgniteEvent event) {
         // Flint and steel PVP check
-        if (event.getIgnitingEntity() instanceof Player && !areNearbyPvpEnabled(event.getPlayer())) {
+        if (event.getIgnitingEntity() instanceof Player && event.getPlayer() != null
+                && !areNearbyPvpEnabled(event.getPlayer())) {
+            event.getPlayer().sendMessage(plugin.getMessage("pvpActionBlocked"));
             event.setCancelled(true);
         }
     }
@@ -162,11 +165,8 @@ public class ListenerPvp extends PopCraftListener {
     }
 
     private boolean areNearbyPvpEnabled(Entity entity) {
-        if (!(entity instanceof Player) || !isPvpEnabled(entity)) {
-            return false;
-        }
         return entity.getNearbyEntities(8, 8, 8).stream()
-                .filter(e -> e instanceof Player).anyMatch(this::isPvpEnabled);
+                .filter(e -> e instanceof Player).allMatch(this::isPvpEnabled);
     }
 
     private boolean instanceOfAny(Object object, Class<?>... classes) {
