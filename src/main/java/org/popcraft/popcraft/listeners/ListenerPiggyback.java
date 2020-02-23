@@ -17,6 +17,10 @@ public class ListenerPiggyback extends PopCraftListener {
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractAtEntityEvent event) {
         Player rider = event.getPlayer();
+        // The player shouldn't be able to use piggyback even if they had it enabled, if they do not have permission
+        if (!rider.hasPermission("popcraft.piggyback")) {
+            return;
+        }
         Entity target = event.getRightClicked();
         if (rider.getVehicle() == null && rider.getPassengers().isEmpty()) {
             // If the player isn't riding anything, and isn't being ridden, then they can ride / be ridden
