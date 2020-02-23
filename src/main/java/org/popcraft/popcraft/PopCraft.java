@@ -5,10 +5,14 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,6 +64,16 @@ public final class PopCraft extends JavaPlugin {
                 new CommandPlugins(), new CommandPop(), new CommandPvp(), new CommandResourcepack(), new CommandSay(),
                 new CommandSpoof(), new CommandStaff(), new CommandTicket(), new CommandTpr(), new CommandTrail(),
                 new CommandTransferscores(), new CommandVersion(), new CommandVote());
+        // Register recipes
+        ShapedRecipe recipeElytra = new ShapedRecipe(new NamespacedKey(this, "elytra"),
+                new ItemStack(Material.ELYTRA))
+                .shape("pcp", "pnp", "p p").setIngredient('p', Material.PHANTOM_MEMBRANE)
+                .setIngredient('c', Material.CHAINMAIL_CHESTPLATE).setIngredient('n', Material.NETHER_STAR);
+        this.getServer().addRecipe(recipeElytra);
+        ShapedRecipe recipeSkulkerShell = new ShapedRecipe(new NamespacedKey(this, "shulker_shell"),
+                new ItemStack(Material.SHULKER_SHELL)).shape("ccc", "cfc", "c c")
+                .setIngredient('c', Material.CHORUS_FRUIT).setIngredient('f', Material.END_CRYSTAL);
+        this.getServer().addRecipe(recipeSkulkerShell);
         // Get Essentials API
         Plugin essentialsPlugin = this.getServer().getPluginManager().getPlugin("Essentials");
         if (essentialsPlugin != null) {
