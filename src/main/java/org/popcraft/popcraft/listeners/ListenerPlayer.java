@@ -27,9 +27,9 @@ public class ListenerPlayer extends PopCraftListener {
         Player player = event.getPlayer();
         // Welcome the player
         if (Bukkit.getServer().getOfflinePlayer(player.getUniqueId()).hasPlayedBefore()) {
-            event.setJoinMessage(plugin.getMessage("join", player.getDisplayName()));
+            event.setJoinMessage(plugin.getMessage("join", player.getName()));
         } else {
-            event.setJoinMessage(plugin.getMessage("welcome", player.getDisplayName()));
+            event.setJoinMessage(plugin.getMessage("welcome", player.getName()));
             Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage(plugin.getMessage("welcomeTips")), 10L);
         }
         // Set the player's TAB list header and footer
@@ -49,7 +49,7 @@ public class ListenerPlayer extends PopCraftListener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        event.setQuitMessage(plugin.getMessage("quit", event.getPlayer().getDisplayName()));
+        event.setQuitMessage(plugin.getMessage("quit", event.getPlayer().getName()));
     }
 
     @EventHandler
