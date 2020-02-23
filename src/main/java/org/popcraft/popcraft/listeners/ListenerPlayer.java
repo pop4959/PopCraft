@@ -36,17 +36,15 @@ public class ListenerPlayer extends PopCraftListener {
         player.setPlayerListHeaderFooter(plugin.getMessage("playerListHeader"), plugin.getMessage("playerListFooter"));
         // Move the player to the appropriate team
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-        if (scoreboardManager != null) {
+        if (scoreboardManager != null && !player.hasPermission("popcraft.tab.staff")) {
             String teamName = player.hasPermission("popcraft.tab.donator") ? config.getString("teams.donator") : config.getString("teams.default");
             Team team = scoreboardManager.getMainScoreboard().getTeam(Objects.requireNonNull(teamName));
-            if (team != null && !player.hasPermission("popcraft.tab.staff")) {
+            if (team != null) {
                 team.addEntry(player.getName());
             }
         }
         CommandTicket ticketCommand = (CommandTicket) plugin.getCommands().get("ticket");
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            ticketCommand.notifyStaff(player);
-        }, 20L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> ticketCommand.notifyStaff(player), 20L);
     }
 
     @EventHandler
