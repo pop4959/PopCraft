@@ -2,9 +2,7 @@ package org.popcraft.popcraft.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 import java.util.*;
 
@@ -33,13 +31,23 @@ public class CommandPiggyback extends PopCraftCommand {
     }
 
     public boolean isRideable(Entity entity) {
-        if (entity instanceof Monster) {
+        if (instanceOfAny(entity, Monster.class, Ghast.class, MagmaCube.class, Phantom.class,
+                Shulker.class, Slime.class, EnderDragon.class)) {
             return false;
         } else if (!(entity instanceof Player)) {
             return true;
         } else {
             return rideable.getOrDefault(entity.getUniqueId(), false);
         }
+    }
+
+    private boolean instanceOfAny(Object object, Class<?>... classes) {
+        for (Class<?> clazz : classes) {
+            if (clazz.isInstance(object)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
