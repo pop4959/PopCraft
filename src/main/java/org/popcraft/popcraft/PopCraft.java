@@ -41,7 +41,9 @@ public final class PopCraft extends JavaPlugin {
             Properties defaultMessages = new Properties();
             defaultMessages.load(new InputStreamReader(Objects.requireNonNull(this.getResource("messages.properties"))));
             this.messages = new Properties(defaultMessages);
-            this.messages.load(new FileReader(messageFile));
+            if (messageFile.exists()) {
+                this.messages.load(new FileReader(messageFile));
+            }
         } catch (IOException e) {
             this.getLogger().severe("Failed to load messages");
         }
