@@ -111,10 +111,8 @@ public class Ticket implements Comparable<Ticket> {
     }
 
     public String getLocationFormatted() {
-        String[] locationData = this.location.split(",");
-        String locationFormatted = locationData[0] + " at " +
-                locationData[1] + " / " + locationData[2] + " / " + locationData[3];
-        return locationFormatted;
+        String[] location = this.location.split(",");
+        return String.format("%s at %s, %s, %s", location[0], location[1], location[2], location[3]);
     }
 
     public Location decodeLocation() {
