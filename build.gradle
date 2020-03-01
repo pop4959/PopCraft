@@ -11,7 +11,7 @@ version = project.property('pluginVersion')
 sourceCompatibility = project.property('sourceVersion')
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven {
         name 'spigot'
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
@@ -40,6 +40,8 @@ dependencies {
     compileOnly group: 'com.github.MilkBowl', name: 'VaultAPI', version: '1.7'
     compileOnly group: 'net.ess3', name: 'EssentialsX', version: '2.17.1'
     compileOnly group: 'com.vexsoftware', name: 'votifier', version: '1.9'
+    compile group: 'net.luckperms', name: 'api', version: '5.0'
+    compile group: 'net.dv8tion', name: 'JDA', version: '4.1.1_101'
 }
 
 jar {

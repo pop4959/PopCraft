@@ -1,6 +1,7 @@
 package org.popcraft.popcraft;
 
 import com.earth2me.essentials.Essentials;
+import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -17,6 +18,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.popcraft.popcraft.commands.*;
+import org.popcraft.popcraft.integration.discord.DiscordIntegration;
 import org.popcraft.popcraft.listeners.*;
 
 import java.io.File;
@@ -33,6 +35,8 @@ public final class PopCraft extends JavaPlugin {
     private Essentials essentials;
     private Permission permissions;
     private Chat chat;
+    private LuckPerms luckperms;
+    private DiscordIntegration discordIntegration;
 
     @Override
     public void onEnable() {
@@ -52,9 +56,9 @@ public final class PopCraft extends JavaPlugin {
             this.getLogger().severe("Failed to load messages");
         }
         // Register events
-        registerEvents(new ListenerAnvil(), new ListenerDrops(), new ListenerLogging(), new ListenerPiggyback(),
-                new ListenerPlayer(), new ListenerProtection(), new ListenerPvp(), new ListenerScoreboard(),
-                new ListenerTrail());
+        registerEvents(new ListenerAnvil(), new ListenerDiscord(), new ListenerDrops(), new ListenerLogging(),
+                new ListenerPiggyback(), new ListenerPlayer(), new ListenerProtection(), new ListenerPvp(),
+                new ListenerScoreboard(), new ListenerTrail());
         if (this.getServer().getPluginManager().getPlugin("Votifier") != null) {
             registerEvents(new ListenerVotifier());
         }
@@ -94,6 +98,14 @@ public final class PopCraft extends JavaPlugin {
                 this.permissions = registeredServiceProviderPermissions.getProvider();
             }
         }
+        // Get LuckPerms API
+        RegisteredServiceProvider<LuckPerms> registeredServiceProviderLuckperms = Bukkit.getServicesManager()
+                .getRegistration(LuckPerms.class);
+        if (registeredServiceProviderLuckperms != null) {
+            this.luckperms = registeredServiceProviderLuckperms.getProvider();
+        }
+        // Start Discord integration
+        this.discordIntegration = new DiscordIntegration(this);
     }
 
     @Override
@@ -165,6 +177,14 @@ public final class PopCraft extends JavaPlugin {
 
     public Chat getChat() {
         return this.chat;
+    }
+
+    public LuckPerms getLuckperms() {
+        return this.luckperms;
+    }
+
+    public DiscordIntegration getDiscordIntegration() {
+        return discordIntegration;
     }
 
 }
