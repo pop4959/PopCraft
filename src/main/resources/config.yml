@@ -48,8 +48,3 @@ command:
     minimumRange: 500
     range: 2000
     extendedRange: 6000
-discord:
-  token: token
-  uuid: uuid
-  guild: snowflake
-  channel: snowflake
