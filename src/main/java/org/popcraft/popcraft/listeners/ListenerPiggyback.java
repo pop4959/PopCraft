@@ -5,7 +5,8 @@ import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.popcraft.popcraft.commands.CommandPiggyback;
 
@@ -15,7 +16,11 @@ import java.util.List;
 public class ListenerPiggyback extends PopCraftListener {
 
     @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractAtEntityEvent event) {
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        // Don't let this event fire twice (it should only fire from the main hand)
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
         Player rider = event.getPlayer();
         // The player shouldn't be able to use piggyback even if they had it enabled, if they do not have permission
         if (!rider.hasPermission("popcraft.piggyback")) {
