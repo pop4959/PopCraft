@@ -31,18 +31,16 @@ public class CommandPiggyback extends PopCraftCommand {
     }
 
     public boolean isRideable(Entity entity) {
-        if (!instanceOfAny(entity,
-                Bat.class, Cat.class, Chicken.class, Cod.class, Cow.class, Donkey.class, Fox.class,
-                Horse.class, MushroomCow.class, Mule.class, Ocelot.class, Parrot.class, Pig.class,
-                PufferFish.class, Rabbit.class, Salmon.class, Sheep.class, SkeletonHorse.class,
-                Snowman.class, Squid.class, TropicalFish.class, Turtle.class, Villager.class,
-                WanderingTrader.class, Bee.class, Dolphin.class, IronGolem.class, Llama.class,
-                Panda.class, PolarBear.class, Wolf.class)) {
-            return false;
-        } else if (!(entity instanceof Player)) {
-            return true;
-        } else {
+        if (entity instanceof Player) {
             return rideable.getOrDefault(entity.getUniqueId(), false);
+        } else {
+            return instanceOfAny(entity,
+                    Bat.class, Cat.class, Chicken.class, Cod.class, Cow.class, Donkey.class, Fox.class,
+                    Horse.class, MushroomCow.class, Mule.class, Ocelot.class, Parrot.class, Pig.class,
+                    PufferFish.class, Rabbit.class, Salmon.class, Sheep.class, SkeletonHorse.class,
+                    Snowman.class, Squid.class, TropicalFish.class, Turtle.class, Villager.class,
+                    WanderingTrader.class, Bee.class, Dolphin.class, IronGolem.class, Llama.class,
+                    Panda.class, PolarBear.class, Wolf.class);
         }
     }
 
