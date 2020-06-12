@@ -35,7 +35,7 @@ public class CommandPiggyback extends PopCraftCommand {
             return rideable.getOrDefault(entity.getUniqueId(), false);
         } else {
             return instanceOfAny(entity,
-                    Bat.class, Cat.class, Chicken.class, Cod.class, Cow.class, Donkey.class, Fox.class,
+                    Boat.class, Bat.class, Cat.class, Chicken.class, Cod.class, Cow.class, Donkey.class, Fox.class,
                     Horse.class, MushroomCow.class, Mule.class, Ocelot.class, Parrot.class, Pig.class,
                     PufferFish.class, Rabbit.class, Salmon.class, Sheep.class, SkeletonHorse.class,
                     Snowman.class, Squid.class, TropicalFish.class, Turtle.class, Villager.class,
