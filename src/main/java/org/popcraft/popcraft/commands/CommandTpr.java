@@ -20,8 +20,8 @@ public class CommandTpr extends PopCraftCommand {
     private Cooldown cooldown = new Cooldown(plugin.getConfig().getLong("command.tpr.cooldown"));
 
     private final EnumSet<Biome> UNSAFE_BIOMES = EnumSet.of(Biome.COLD_OCEAN, Biome.DEEP_COLD_OCEAN,
-            Biome.DEEP_FROZEN_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_OCEAN, Biome.DEEP_WARM_OCEAN,
-            Biome.FROZEN_OCEAN, Biome.FROZEN_RIVER, Biome.LUKEWARM_OCEAN, Biome.OCEAN, Biome.RIVER, Biome.WARM_OCEAN);
+            Biome.DEEP_FROZEN_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_OCEAN, Biome.FROZEN_OCEAN,
+            Biome.FROZEN_RIVER, Biome.LUKEWARM_OCEAN, Biome.OCEAN, Biome.RIVER, Biome.WARM_OCEAN);
 
     private final EnumSet<Material> UNSAFE_BLOCKS = EnumSet.of(Material.LAVA, Material.FIRE, Material.CACTUS,
             Material.MAGMA_BLOCK, Material.CAMPFIRE, Material.SWEET_BERRY_BUSH, Material.WITHER_ROSE);
