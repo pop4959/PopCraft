@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,7 +17,7 @@ public class CommandStaff extends PopCraftCommand {
 
     @Override
     public Result execute(CommandSender sender, Command command, String label, String[] args) {
-        String message = ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, ' '));
+        String message = ChatColor.translateAlternateColorCodes('&', String.join(" ", args));
         String prefix = "";
         String name;
         if (sender instanceof Player) {

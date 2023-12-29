@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -59,7 +58,7 @@ public class CommandAura extends PopCraftCommand {
                 player.sendMessage(plugin.getMessage("auraClear"));
                 return Result.SUCCESS;
             } else if (args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(plugin.getMessage("auraList", StringUtils.join(presetAuraTypeNames, ", ")));
+                player.sendMessage(plugin.getMessage("auraList", String.join(", ", presetAuraTypeNames)));
                 return Result.SUCCESS;
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("set")) {

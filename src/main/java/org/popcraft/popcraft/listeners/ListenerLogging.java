@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.listeners;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,7 +30,7 @@ public class ListenerLogging extends PopCraftListener {
     public void onSignChange(SignChangeEvent event) {
         Location location = event.getBlock().getLocation();
         log("signs.txt", event.getPlayer().getName(), TimeUtil.getCurrentTime(),
-                "\"" + StringUtils.join(event.getLines(), ' ') + "\"",
+                "\"" + String.join(" ", event.getLines()) + "\"",
                 "(" + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + ")");
     }
 
@@ -84,7 +83,7 @@ public class ListenerLogging extends PopCraftListener {
     }
 
     private void log(String filename, String... fields) {
-        FileUtil.writeLine(filename, StringUtils.join(fields, " - "));
+        FileUtil.writeLine(filename, String.join(" - ", fields));
     }
 
 }

@@ -2,7 +2,6 @@ package org.popcraft.popcraft.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -43,7 +42,7 @@ public class CommandTicket extends PopCraftCommand {
             this.sendHelp(sender);
         } else {
             if (args[0].equalsIgnoreCase("send") && args.length > 1) {
-                String id = this.createTicket(sender, StringUtils.join(args, ' ').substring(5));
+                String id = this.createTicket(sender, String.join(" ", args).substring(5));
                 sender.sendMessage(plugin.getMessage("ticketSend", id));
                 this.notifyAllStaff();
             } else if (!sender.hasPermission("popcraft.ticket.mod")) {
@@ -83,7 +82,7 @@ public class CommandTicket extends PopCraftCommand {
                     sender.sendMessage(plugin.getMessage("error", plugin.getMessage("ticketErrorCantCloseUnclaimed")));
                 }
             } else if (args[0].equalsIgnoreCase("comment") && args.length > 2) {
-                String comment = StringUtils.join(args, ' ').substring(13);
+                String comment = String.join(" ", args).substring(13);
                 if (this.comment(sender, args[1], comment)) {
                     sender.sendMessage(plugin.getMessage("ticketComment", args[1]));
                 } else {

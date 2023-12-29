@@ -1,7 +1,6 @@
 package org.popcraft.popcraft.commands;
 
 import com.earth2me.essentials.Essentials;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,7 +26,7 @@ public class CommandMe extends PopCraftCommand {
         if (args.length < 1) {
             return Result.INCORRECT_USAGE;
         }
-        String message = ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, ' '));
+        String message = ChatColor.translateAlternateColorCodes('&', String.join(" ", args));
         plugin.getServer().broadcastMessage(plugin.getMessage("me", sender.getName(), message));
         return Result.SUCCESS;
     }

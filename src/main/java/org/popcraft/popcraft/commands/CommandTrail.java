@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -91,7 +90,7 @@ public class CommandTrail extends PopCraftCommand {
                 player.sendMessage(plugin.getMessage("trailClear"));
                 return Result.SUCCESS;
             } else if (args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(plugin.getMessage("trailList", StringUtils.join(presetTrailTypeNames, ", ")));
+                player.sendMessage(plugin.getMessage("trailList", String.join(", ", presetTrailTypeNames)));
                 return Result.SUCCESS;
             }
         } else if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {

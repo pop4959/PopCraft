@@ -1,6 +1,5 @@
 package org.popcraft.popcraft.commands;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -36,7 +35,7 @@ public class CommandMusic extends PopCraftCommand {
         Player player = (Player) sender;
         UUID playerUUID = player.getUniqueId();
         if (args[0].equalsIgnoreCase("list")) {
-            player.sendMessage(plugin.getMessage("musicList", StringUtils.join(MUSIC_DISCS, ", ")));
+            player.sendMessage(plugin.getMessage("musicList", String.join(", ", MUSIC_DISCS)));
         } else if (args[0].equalsIgnoreCase("stop")) {
             if (playing.containsKey(playerUUID)) {
                 player.stopSound(playing.get(playerUUID));
