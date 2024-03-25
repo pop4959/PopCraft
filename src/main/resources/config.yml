@@ -48,3 +48,7 @@ command:
     minimumRange: 500
     range: 2000
     extendedRange: 6000
+contexts:
+  playtime:
+    over_ten_minutes:
+      requiredPlayTime: 12000

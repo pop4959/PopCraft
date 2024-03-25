@@ -55,4 +55,5 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("com.github.NuVotifier.NuVotifier:nuvotifier-api:2.7.2")
     compileOnly("com.github.NuVotifier.NuVotifier:nuvotifier-bukkit:2.7.2")
+    compileOnly("net.luckperms:api:5.4")
 }

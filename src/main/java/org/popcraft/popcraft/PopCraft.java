@@ -1,6 +1,7 @@
 package org.popcraft.popcraft;
 
 import com.earth2me.essentials.Essentials;
+import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -9,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.popcraft.popcraft.commands.*;
+import org.popcraft.popcraft.contexts.PlaytimeContextCalculator;
 import org.popcraft.popcraft.listeners.*;
 
 import java.io.File;
@@ -92,6 +95,17 @@ public final class PopCraft extends JavaPlugin {
                     .getServicesManager().getRegistration(Permission.class);
             if (registeredServiceProviderPermissions != null) {
                 this.permissions = registeredServiceProviderPermissions.getProvider();
+            }
+        }
+        // Set up LuckPerms API
+        if (this.getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+            RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+            if (provider != null) {
+                LuckPerms api = provider.getProvider();
+                for (final String key : Objects.requireNonNullElse(getConfig().getConfigurationSection("contexts.playtime"), new MemoryConfiguration()).getKeys(false)) {
+                    final long requiredPlaytime = getConfig().getLong("contexts.playtime.%s.requiredPlayTime".formatted(key), 0L);
+                    api.getContextManager().registerCalculator(new PlaytimeContextCalculator(key, requiredPlaytime));
+                }
             }
         }
     }
