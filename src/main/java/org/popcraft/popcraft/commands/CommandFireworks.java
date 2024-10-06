@@ -60,7 +60,7 @@ public class CommandFireworks extends PopCraftCommand {
         }
         Player player = (Player) sender;
         FireworkEffect.Builder fireworkEffectBuilder = FireworkEffect.builder();
-        Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+        Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK_ROCKET);
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
         fireworkMeta.setLore(Collections.singletonList(plugin.getName()));
         for (String arg : args) {

@@ -12,7 +12,7 @@ public class ListenerProtection extends PopCraftListener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         if (config.getBoolean("protection.preventEnderCrystalExplosion")) {
-            if (EntityType.ENDER_CRYSTAL.equals(event.getEntityType())) {
+            if (EntityType.END_CRYSTAL.equals(event.getEntityType())) {
                 event.setCancelled(true);
             }
         }

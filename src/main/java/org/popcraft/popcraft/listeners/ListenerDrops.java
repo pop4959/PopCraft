@@ -71,8 +71,8 @@ public class ListenerDrops extends PopCraftListener {
             return 0;
         }
         return Math.max(
-                player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS),
-                player.getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS)
+                player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOTING),
+                player.getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LOOTING)
         );
     }
 

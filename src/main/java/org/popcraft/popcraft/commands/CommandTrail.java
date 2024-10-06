@@ -17,58 +17,58 @@ public class CommandTrail extends PopCraftCommand {
     private Map<UUID, Trail> trail = new HashMap<>();
 
     static {
-        types.put("bubbles", new Trail(Particle.CRIT_MAGIC, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("bubbles", new Trail(Particle.ENCHANTED_HIT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 0, 0.5, 0.8, 0.5, 0, 0, 0));
         types.put("darkness", new Trail(Particle.SQUID_INK, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 0, 0.5, 0.7, 0.5, 0, 0, 0));
         types.put("flames", new Trail(Particle.FLAME, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 0, 0.5, 0.5, 0.5, 0, 0, 0));
-        types.put("glitter", new Trail(Particle.SPELL_INSTANT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("glitter", new Trail(Particle.INSTANT_EFFECT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 15, 0, 0.2, 0, 0.2, 0, 0, 0));
         types.put("glow", new Trail(Particle.END_ROD, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("glyphs", new Trail(Particle.ENCHANTMENT_TABLE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("glyphs", new Trail(Particle.ENCHANT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 10, 0, 0.5, 0.8, 0.5, 0, 0, 0));
         types.put("hearts", new Trail(Particle.DAMAGE_INDICATOR, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("lavadrops", new Trail(Particle.DRIP_LAVA, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("lavadrops", new Trail(Particle.DRIPPING_LAVA, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 0, 0, 0, 0, 0, 0.4, 0));
         types.put("love", new Trail(Particle.HEART, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("magic", new Trail(Particle.SPELL_WITCH, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("magic", new Trail(Particle.WITCH, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 15, 0, 0.2, 0, 0.2, 0, 0, 0));
         types.put("mist", new Trail(Particle.SPIT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 3, 0, 0.5, 0.6, 0.5, 0, 0, 0));
         types.put("music", new Trail(Particle.NOTE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 1, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("party", new Trail(Particle.TOTEM, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("party", new Trail(Particle.TOTEM_OF_UNDYING, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 3, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("raindrops", new Trail(Particle.WATER_SPLASH, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("raindrops", new Trail(Particle.SPLASH, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 10, 0, 0.2, 0, 0.2, 0, 0, 0));
-        types.put("slime", new Trail(Particle.SLIME, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("slime", new Trail(Particle.ITEM_SLIME, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 4, 0, 0.1, 0, 0.1, 0, 0, 0));
-        types.put("smoke", new Trail(Particle.SMOKE_LARGE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("smoke", new Trail(Particle.LARGE_SMOKE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 0, 0.3, 0, 0.3, 0, 0, 0));
-        types.put("snowy", new Trail(Particle.SNOWBALL, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("snowy", new Trail(Particle.ITEM_SNOWBALL, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 4, 0, 0.1, 0, 0.1, 0, 0, 0));
-        types.put("sparkles", new Trail(Particle.VILLAGER_HAPPY, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("sparkles", new Trail(Particle.HAPPY_VILLAGER, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 0, 0.5, 0.8, 0.5, 0, 0, 0));
         types.put("sparks", new Trail(Particle.CRIT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("swirls", new Trail(Particle.SPELL_MOB, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("swirls", new Trail(Particle.ENTITY_EFFECT, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 1, 0.5, 0.8, 0.5, 0, 0, 0));
         types.put("teleport", new Trail(Particle.PORTAL, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 10, 0, 0.5, 0.8, 0.5, 0, 0, 0));
-        types.put("thunderclouds", new Trail(Particle.VILLAGER_ANGRY, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("thunderclouds", new Trail(Particle.ANGRY_VILLAGER, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 0, 0.6, 0.3, 0.6, 0, 0, 0));
         types.put("volcano", new Trail(Particle.LAVA, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 2, 0, 0, 0, 0, 0, 0, 0));
-        types.put("waterdrops", new Trail(Particle.DRIP_WATER, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("waterdrops", new Trail(Particle.DRIPPING_WATER, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 1, 0, 0, 0, 0, 0, 0.4, 0));
         presetTrailTypeNames.addAll(types.keySet());
         for (Material m : Material.values()) {
             if (m.isBlock()) {
-                types.put(m.toString().toLowerCase(), new Trail(Particle.BLOCK_CRACK,
+                types.put(m.toString().toLowerCase(), new Trail(Particle.BLOCK,
                         m.createBlockData(), Trail.Type.BLOCK, Trail.Style.NORMAL, 32, 0, 0, 0, 0, 0, 0, 0));
             }
         }

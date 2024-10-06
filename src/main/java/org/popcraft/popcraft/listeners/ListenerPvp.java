@@ -84,8 +84,8 @@ public class ListenerPvp extends PopCraftListener {
             return;
         }
         Player attacker = (Player) event.getEntity().getShooter();
-        List<PotionEffectType> pvpPotions = Arrays.asList(PotionEffectType.HARM, PotionEffectType.POISON,
-                PotionEffectType.SLOW, PotionEffectType.WEAKNESS);
+        List<PotionEffectType> pvpPotions = Arrays.asList(PotionEffectType.INSTANT_DAMAGE, PotionEffectType.POISON,
+                PotionEffectType.SLOWNESS, PotionEffectType.WEAKNESS);
         // If the potions aren't harmful, we don't care
         if (event.getPotion().getEffects().stream().noneMatch(p -> pvpPotions.contains(p.getType()))) {
             return;
@@ -109,7 +109,7 @@ public class ListenerPvp extends PopCraftListener {
             return;
         }
         Player attacker = (Player) event.getEntity().getSource();
-        List<PotionType> pvpPotions = Arrays.asList(PotionType.INSTANT_DAMAGE, PotionType.POISON, PotionType.SLOWNESS,
+        List<PotionType> pvpPotions = Arrays.asList(PotionType.HARMING, PotionType.POISON, PotionType.SLOWNESS,
                 PotionType.WEAKNESS);
         // If the potions aren't harmful, we don't care
         if (!pvpPotions.contains(event.getEntity().getBasePotionData().getType())) {

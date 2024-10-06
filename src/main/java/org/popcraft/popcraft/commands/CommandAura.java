@@ -21,22 +21,22 @@ public class CommandAura extends PopCraftCommand {
                 5, 1, 0, 0, 0, 0, 0, 0));
         types.put("flames", new Trail(Particle.FLAME, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 1, 0, 0, 0, 0, 0, 0));
-        types.put("smoke", new Trail(Particle.SMOKE_LARGE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("smoke", new Trail(Particle.LARGE_SMOKE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 1, 0, 0, 0, 0, 0, 0));
         types.put("dragon", new Trail(Particle.DRAGON_BREATH, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 1, 0, 0, 0, 0, 0, 0));
         types.put("glow", new Trail(Particle.END_ROD, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 1, 0, 0, 0, 0, 0, 0));
-        types.put("gusts", new Trail(Particle.SNOW_SHOVEL, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("gusts", new Trail(Particle.ITEM_SNOWBALL, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 1, 0, 0, 0, 0, 0, 0));
-        types.put("puffs", new Trail(Particle.SMOKE_NORMAL, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("puffs", new Trail(Particle.SMOKE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 5, 1, 0, 0, 0, 0, 0, 0));
-        types.put("waterdrops", new Trail(Particle.WATER_WAKE, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
+        types.put("waterdrops", new Trail(Particle.FISHING, null, Trail.Type.PARTICLE, Trail.Style.NORMAL,
                 10, 1, 0, 0, 0, 0, 0, 0));
         presetAuraTypeNames.addAll(types.keySet());
         for (Material m : Material.values()) {
             if (m.isBlock()) {
-                types.put(m.toString().toLowerCase(), new Trail(Particle.ITEM_CRACK, m.createBlockData(),
+                types.put(m.toString().toLowerCase(), new Trail(Particle.ITEM, m.createBlockData(),
                         Trail.Type.ITEM, Trail.Style.NORMAL, 5, 1, 0, 0, 0, 0, 0, 0));
             }
         }
