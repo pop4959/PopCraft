@@ -36,7 +36,7 @@ public class CommandHandicap extends PopCraftCommand {
         if (hp < 1 || hp > 20 && !player.hasPermission("popcraft.handicap.bypass")) {
             player.sendMessage(plugin.getMessage("error", plugin.getMessage("handicapRangeError")));
         } else {
-            AttributeInstance maxHealth = Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH));
+            AttributeInstance maxHealth = Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH));
             maxHealth.setBaseValue(hp);
             player.setHealthScale(hp);
             player.sendMessage(plugin.getMessage("handicapSet", hp));

@@ -14,12 +14,13 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class CommandTpr extends PopCraftCommand {
 
     private Cooldown cooldown = new Cooldown(plugin.getConfig().getLong("command.tpr.cooldown"));
 
-    private final EnumSet<Biome> UNSAFE_BIOMES = EnumSet.of(Biome.COLD_OCEAN, Biome.DEEP_COLD_OCEAN,
+    private final Set<Biome> UNSAFE_BIOMES = Set.of(Biome.COLD_OCEAN, Biome.DEEP_COLD_OCEAN,
             Biome.DEEP_FROZEN_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_OCEAN, Biome.FROZEN_OCEAN,
             Biome.FROZEN_RIVER, Biome.LUKEWARM_OCEAN, Biome.OCEAN, Biome.RIVER, Biome.WARM_OCEAN);
 

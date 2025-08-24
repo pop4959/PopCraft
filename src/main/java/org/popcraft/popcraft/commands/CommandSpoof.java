@@ -1,6 +1,7 @@
 package org.popcraft.popcraft.commands;
 
 import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.User;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,8 +11,6 @@ import org.popcraft.popcraft.utils.TabCompleteUtil;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static com.earth2me.essentials.I18n.tl;
 
 public class CommandSpoof extends PopCraftCommand {
 
@@ -35,11 +34,11 @@ public class CommandSpoof extends PopCraftCommand {
             Bukkit.broadcastMessage(plugin.getMessage("quit", sender.getName()));
         } else if ("afk".equalsIgnoreCase(args[0])) {
             if (essentials != null) {
-                Bukkit.broadcastMessage(tl("userIsAway", player.getDisplayName()));
+                essentials.broadcastTl("userIsAway", player.getDisplayName());
             }
         } else if ("unafk".equalsIgnoreCase(args[0])) {
             if (essentials != null) {
-                Bukkit.broadcastMessage(tl("userIsNotAway", player.getDisplayName()));
+                essentials.broadcastTl("userIsNotAway", player.getDisplayName());
             }
         } else {
             return Result.INCORRECT_USAGE;
